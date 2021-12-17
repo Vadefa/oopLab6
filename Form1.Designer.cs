@@ -36,6 +36,7 @@ namespace oopLab6
             this.btnTrn = new System.Windows.Forms.Button();
             this.btnRct = new System.Windows.Forms.Button();
             this.btnErs = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,14 +112,23 @@ namespace oopLab6
             this.btnErs.TabIndex = 1;
             this.btnErs.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(103, 54);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(450, 450);
+            this.panel1.TabIndex = 1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(691, 543);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -134,6 +144,7 @@ namespace oopLab6
         private System.Windows.Forms.Button btnRct;
         private System.Windows.Forms.Button btnErs;
         private System.Windows.Forms.Button btnArw;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 
