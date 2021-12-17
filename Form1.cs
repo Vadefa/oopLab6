@@ -21,9 +21,14 @@ namespace oopLab6
         }
         class Figure
         {
-            private Pen defaultPen;
+            private const int penWidth = 4;
+            private Pen defaultPen = new Pen(Color.Black, penWidth);
+            private Pen focusedPen = new Pen(Color.Violet, penWidth);
+
+            protected bool is_focused;
             virtual public void paint()
             {
+
             }
 
             public Figure()
@@ -33,9 +38,18 @@ namespace oopLab6
         }
         class Section : Figure
         {
-
+            private Point p1;
+            private Point p2;
             public override void paint()
             {
+
+            }
+            
+            public Section(int x1, int y1, int x2, int y2, Graphics grObj)
+            {
+                p1 = new Point(x1, y1);
+                p2 = new Point(x2, y2);
+                
 
             }
         }
