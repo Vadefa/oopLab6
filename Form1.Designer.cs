@@ -37,7 +37,21 @@ namespace oopLab6
             this.btnRct = new System.Windows.Forms.Button();
             this.btnErs = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numWdt = new System.Windows.Forms.NumericUpDown();
+            this.numHgh = new System.Windows.Forms.NumericUpDown();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numPosX = new System.Windows.Forms.NumericUpDown();
+            this.numPosY = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numWdt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHgh)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -114,22 +128,113 @@ namespace oopLab6
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(103, 54);
+            this.panel1.BackColor = System.Drawing.SystemColors.Window;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Location = new System.Drawing.Point(208, 54);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(450, 450);
             this.panel1.TabIndex = 1;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.AutoScroll = true;
+            this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.Window;
+            this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flowLayoutPanel2.Controls.Add(this.label1);
+            this.flowLayoutPanel2.Controls.Add(this.listView1);
+            this.flowLayoutPanel2.Controls.Add(this.label2);
+            this.flowLayoutPanel2.Controls.Add(this.numWdt);
+            this.flowLayoutPanel2.Controls.Add(this.numHgh);
+            this.flowLayoutPanel2.Controls.Add(this.label3);
+            this.flowLayoutPanel2.Controls.Add(this.numPosX);
+            this.flowLayoutPanel2.Controls.Add(this.numPosY);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(58, 54);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 230);
+            this.flowLayoutPanel2.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(48, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Color:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 59);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(89, 40);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Size (width; height):";
+            // 
+            // numWdt
+            // 
+            this.numWdt.Location = new System.Drawing.Point(3, 102);
+            this.numWdt.Name = "numWdt";
+            this.numWdt.Size = new System.Drawing.Size(48, 27);
+            this.numWdt.TabIndex = 3;
+            // 
+            // numHgh
+            // 
+            this.numHgh.Location = new System.Drawing.Point(57, 102);
+            this.numHgh.Name = "numHgh";
+            this.numHgh.Size = new System.Drawing.Size(48, 27);
+            this.numHgh.TabIndex = 4;
+            // 
+            // listView1
+            // 
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(3, 23);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(102, 33);
+            this.listView1.TabIndex = 5;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 132);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(101, 20);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Location (x; y)";
+            // 
+            // numPosX
+            // 
+            this.numPosX.Location = new System.Drawing.Point(3, 155);
+            this.numPosX.Name = "numPosX";
+            this.numPosX.Size = new System.Drawing.Size(48, 27);
+            this.numPosX.TabIndex = 7;
+            // 
+            // numPosY
+            // 
+            this.numPosY.Location = new System.Drawing.Point(57, 155);
+            this.numPosY.Name = "numPosY";
+            this.numPosY.Size = new System.Drawing.Size(48, 27);
+            this.numPosY.TabIndex = 8;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(691, 543);
+            this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numWdt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHgh)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -145,6 +250,15 @@ namespace oopLab6
         private System.Windows.Forms.Button btnErs;
         private System.Windows.Forms.Button btnArw;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown numWdt;
+        private System.Windows.Forms.NumericUpDown numHgh;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numPosX;
+        private System.Windows.Forms.NumericUpDown numPosY;
     }
 }
 
