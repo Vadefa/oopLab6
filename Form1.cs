@@ -122,18 +122,22 @@ namespace oopLab6
 
         public class Triangle : Figure
         {
-            private PointF[] points;
+            private Point[] points;
             Point p2;
             Point p3;
 
             public override void paint(Graphics grObj)
             {
-
+                if (is_focused)
+                    grObj.DrawPolygon(focusedPen, points);
+                else
+                    grObj.DrawPolygon(defaultPen, points);
             }
             public Triangle(int x1, int y1, int x2, int y2, int x3, int y3, Color col, Graphics grObj)
             :base(x1, y1, 10, 10, col)
             {
-
+                points = new Point[] { new Point(x1, y1), new Point(x2, y2), new Point(x3, y3) };
+                paint(grObj);
             }
         }
 
