@@ -15,12 +15,19 @@ namespace oopLab6
         Graphics grObj;
         StorageService storage;
         Model model;
+        Color currentColor;
+        string currentElement;
 
         public Form1()
         {
             InitializeComponent();
             storage = new StorageService();
+
+
             model = new Model();
+            model.observers += new EventHandler(UpdateFromModel);
+            model.observers.Invoke(this, null);
+
             grObj = canvas.CreateGraphics();
         }
 
@@ -174,7 +181,11 @@ namespace oopLab6
             }
         }
 
-
+        public void UpdateFromModel(object sender, EventArgs e)
+        {
+            currentColor = model.getColor();
+            currentElement = model.getElement();
+        }
         public class Model
         {
             private bool colorBlack;
@@ -214,6 +225,7 @@ namespace oopLab6
                     colorBlue = true;
                 else
                     colorGreen = true;
+                observers.Invoke(this, null);
             }
             public void nullElements()
             {
@@ -223,33 +235,18 @@ namespace oopLab6
                 rectangle = false;
                 triangle = false;
             }
-            public bool getElement(string name)
+            public string getElement()
             {
-                if (name == "btnArw")
-                    if (arrow == true)
-                        return true;
-                    else
-                        return false;
-                else if (name == "btnSctn")
-                    if (section == true)
-                        return true;
-                    else
-                        return false;
-                else if (name == "btnElps")
-                    if (ellipse == true)
-                        return true;
-                    else
-                        return false;
-                else if (name == "btnTrn")
-                    if (triangle == true)
-                        return true;
-                    else
-                        return false;
+                if (arrow == true)
+                    return "arrow";
+                else if (section == true)
+                    return "section";
+                else if (ellipse == true)
+                    return "ellipse";
+                else if (triangle == true)
+                    return "triangle";
                 else
-                    if (rectangle == true)
-                    return true;
-                else
-                    return false;
+                    return "rectangle";
             }
             public void setElement(string name)
             {
@@ -264,6 +261,7 @@ namespace oopLab6
                     triangle = true;
                 else
                     rectangle = true;
+                observers.Invoke(this, null);
             }
 
             public Model()
