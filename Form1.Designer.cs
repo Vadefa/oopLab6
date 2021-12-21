@@ -256,6 +256,7 @@ namespace oopLab6
             0,
             0,
             0});
+            this.numHgh.ValueChanged += new System.EventHandler(this.numHgh_ValueChanged);
             // 
             // label3
             // 
@@ -272,6 +273,7 @@ namespace oopLab6
             this.numPosX.Name = "numPosX";
             this.numPosX.Size = new System.Drawing.Size(48, 27);
             this.numPosX.TabIndex = 7;
+            this.numPosX.ValueChanged += new System.EventHandler(this.numPosX_ValueChanged);
             // 
             // numPosY
             // 
@@ -279,6 +281,7 @@ namespace oopLab6
             this.numPosY.Name = "numPosY";
             this.numPosY.Size = new System.Drawing.Size(48, 27);
             this.numPosY.TabIndex = 8;
+            this.numPosY.ValueChanged += new System.EventHandler(this.numPosY_ValueChanged);
             // 
             // objects
             // 

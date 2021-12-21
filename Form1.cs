@@ -17,6 +17,10 @@ namespace oopLab6
         Model model;
         Color currentColor;
         string currentElement;
+        int width;
+        int height;
+        int x;
+        int y;
 
         public Form1()
         {
@@ -186,6 +190,10 @@ namespace oopLab6
         {
             currentColor = model.getColor();
             currentElement = model.getElement();
+            width = model.getWidth();
+            height = model.getHeight();
+            x = model.getX();
+            y = model.gety();
         }
         public class Model
         {
@@ -402,22 +410,38 @@ namespace oopLab6
             model.setColor((sender as Button).BackColor);
         }
 
+        private void numWdt_ValueChanged(object sender, EventArgs e)
+        {
+            model.setWidth((int)(sender as NumericUpDown).Value);
+        }
+
+        private void numHgh_ValueChanged(object sender, EventArgs e)
+        {
+
+            model.setHeight((int)(sender as NumericUpDown).Value);
+        }
+
+        private void numPosX_ValueChanged(object sender, EventArgs e)
+        {
+            model.setX((int)(sender as NumericUpDown).Value);
+        }
+
+        private void numPosY_ValueChanged(object sender, EventArgs e)
+        {
+            model.setY((int)(sender as NumericUpDown).Value);
+        }
+
         private void canvas_Click(object sender, EventArgs e)
         {
             Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
             if (currentElement == "section")
-                storage.add(new Section(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+                storage.add(new Section(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
             else if (currentElement == "ellipse")
-                storage.add(new Ellipse(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+                storage.add(new Ellipse(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
             else if (currentElement == "triangle")
-                storage.add(new Triangle(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+                storage.add(new Triangle(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
             else if (currentElement == "rectangle")
-                storage.add(new Rect(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
-        }
-
-        private void numWdt_ValueChanged(object sender, EventArgs e)
-        {
-
+                storage.add(new Rect(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
         }
     }
 }
