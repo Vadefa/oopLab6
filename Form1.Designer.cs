@@ -36,13 +36,13 @@ namespace oopLab6
             this.btnTrn = new System.Windows.Forms.Button();
             this.btnRct = new System.Windows.Forms.Button();
             this.btnErs = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.canvas = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
+            this.listView1 = new System.Windows.Forms.ListView();
             this.label2 = new System.Windows.Forms.Label();
             this.numWdt = new System.Windows.Forms.NumericUpDown();
             this.numHgh = new System.Windows.Forms.NumericUpDown();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.label3 = new System.Windows.Forms.Label();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.numPosY = new System.Windows.Forms.NumericUpDown();
@@ -126,14 +126,14 @@ namespace oopLab6
             this.btnErs.TabIndex = 1;
             this.btnErs.UseVisualStyleBackColor = true;
             // 
-            // panel1
+            // canvas
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.Window;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(208, 54);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(450, 450);
-            this.panel1.TabIndex = 1;
+            this.canvas.BackColor = System.Drawing.SystemColors.Window;
+            this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.canvas.Location = new System.Drawing.Point(208, 54);
+            this.canvas.Name = "canvas";
+            this.canvas.Size = new System.Drawing.Size(450, 450);
+            this.canvas.TabIndex = 1;
             // 
             // flowLayoutPanel2
             // 
@@ -162,6 +162,15 @@ namespace oopLab6
             this.label1.TabIndex = 0;
             this.label1.Text = "Color:";
             // 
+            // listView1
+            // 
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(3, 23);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(102, 33);
+            this.listView1.TabIndex = 5;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -184,15 +193,6 @@ namespace oopLab6
             this.numHgh.Name = "numHgh";
             this.numHgh.Size = new System.Drawing.Size(48, 27);
             this.numHgh.TabIndex = 4;
-            // 
-            // listView1
-            // 
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(3, 23);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(102, 33);
-            this.listView1.TabIndex = 5;
-            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // label3
             // 
@@ -223,7 +223,7 @@ namespace oopLab6
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(691, 543);
             this.Controls.Add(this.flowLayoutPanel2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.canvas);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -249,7 +249,7 @@ namespace oopLab6
         private System.Windows.Forms.Button btnRct;
         private System.Windows.Forms.Button btnErs;
         private System.Windows.Forms.Button btnArw;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel canvas;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListView listView1;
