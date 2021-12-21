@@ -199,6 +199,11 @@ namespace oopLab6
             private bool rectangle;
             private bool triangle;
 
+            private int width;
+            private int height;
+            private int x;
+            private int y;
+
 
             public System.EventHandler observers;
 
@@ -263,6 +268,64 @@ namespace oopLab6
                 else
                     rectangle = true;
                 observers.Invoke(this, null);
+            }
+
+
+            public int getWidth()
+            {
+                return width;
+            }
+            public int getHeight()
+            {
+                return height;
+            }
+            public int getX()
+            {
+                return x;
+            }
+            public int gety()
+            {
+                return y;
+            }
+
+            public bool is_Correct(int value)
+            {
+                if ((value >= 10) && value <= 200)
+                    return true;
+                else
+                    return false;
+            }
+            public void setWidth(int value)
+            {
+                if (is_Correct(value))
+                {
+                    width = value;
+                    observers.Invoke(this, null);
+                }
+            }
+            public void setHeight(int value)
+            {
+                if (is_Correct(value))
+                {
+                    height = value;
+                    observers.Invoke(this, null);
+                }
+            }
+            public void setX(int value)
+            {
+                if (is_Correct(value))
+                {
+                    x = value;
+                    observers.Invoke(this, null);
+                }
+            }
+            public void setY(int value)
+            {
+                if (is_Correct(value))
+                {
+                    y = value;
+                    observers.Invoke(this, null);
+                }
             }
 
             public Model()
@@ -350,6 +413,11 @@ namespace oopLab6
                 storage.add(new Triangle(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
             else if (currentElement == "rectangle")
                 storage.add(new Rect(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+        }
+
+        private void numWdt_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -233,6 +233,7 @@ namespace oopLab6
             0,
             0,
             0});
+            this.numWdt.ValueChanged += new System.EventHandler(this.numWdt_ValueChanged);
             // 
             // numHgh
             // 
