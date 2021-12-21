@@ -25,12 +25,10 @@ namespace oopLab6
 
         public class Model
         {
-            private List<bool> colors;
             private bool colorBlack;
             private bool colorBlue;
             private bool colorGreen;
 
-            private bool[] elements;
             private bool arrow;
             private bool section;
             private bool ellipse;
@@ -73,69 +71,64 @@ namespace oopLab6
                     colorGreen = true;
                 }
             }
-            //public void setValueA(int value)
-            //{
-            //    if (value_isCorrect(value))
-            //    {
-            //        if (value <= valueB)
-            //            valueA = value;
-            //        else if (value <= valueC)
-            //        {
-            //            valueA = value;
-            //            valueB = value;
-            //        }
-            //        else
-            //        {
-            //            valueA = value;
-            //            valueB = value;
-            //            valueC = value;
-            //        }
-            //    }
-            //    observers.Invoke(this, null);
-            //}
-            //public void setValueB(int value)
-            //{
-            //    if ((value >= valueA) && (value <= valueC))
-            //        valueB = value;
-            //    observers.Invoke(this, null);
-            //}
-            //public void setValueC(int value)
-            //{
-            //    if (value_isCorrect(value))
-            //    {
-            //        if (value >= valueB)
-            //            valueC = value;
-            //        else if (value >= valueA)
-            //        {
-            //            valueC = value;
-            //            valueB = value;
-            //        }
-            //        else
-            //        {
-            //            valueC = value;
-            //            valueB = value;
-            //            valueA = value;
-            //        }
-            //    }
-            //    observers.Invoke(this, null);
-            //}
-            //public int getValueA() { return valueA; }
-            //public int getValueB() { return valueB; }
-            //public int getValueC() { return valueC; }
+            public bool getElement(string name)
+            {
+                if (name == "btnArw")
+                    if (arrow == true)
+                        return true;
+                    else
+                        return false;
+                else if (name == "btnSctn")
+                    if (section == true)
+                        return true;
+                    else
+                        return false;
+                else if (name == "btnElps")
+                    if (ellipse == true)
+                        return true;
+                    else
+                        return false;
+                else if (name == "btnTrn")
+                    if (triangle == true)
+                        return true;
+                    else
+                        return false;
+                else
+                    if (rectangle == true)
+                        return true;
+                else
+                    return false;
+            }
+            public void setElement(Color color)
+            {
+                if (color == Color.Black)
+                {
+                    nullColors();
+                    colorBlack = true;
+                }
+                else if (color == Color.Blue)
+                {
+                    nullColors();
+                    colorBlue = true;
+                }
+                else
+                {
+                    nullColors();
+                    colorGreen = true;
+                }
+            }
 
             public Model()
             {
                 colorBlack = true;
                 colorBlue = false;
                 colorGreen = false;
-                colors = new List<bool> { colorBlack, colorBlue, colorGreen };
 
                 arrow = true;
                 section = false;
                 ellipse = false;
                 rectangle = false;
                 triangle = false;
-                elements = new bool[5] { arrow, section, ellipse, rectangle, triangle };
 
                 //valueA = Properties.Settings.Default.valueA;
                 //valueB = Properties.Settings.Default.valueB;
