@@ -65,12 +65,13 @@ namespace oopLab6
                 p2 = new Point(x2, y2);
             }
         }
-        class Circle : Figure
+        class Ellipse : Figure
         {
             private Rectangle rect;
             private int x;
             private int y;
-            private int r = 40;
+            private int width;
+            private int height;
 
 
             public override void paint(Graphics paintForm)
@@ -86,8 +87,8 @@ namespace oopLab6
                 int x0 = x;
                 int y0 = y;
 
-                int x1 = x + r * 2 + ((int)(defaultPen.Width / 2));
-                int y1 = y + r * 2 + ((int)(defaultPen.Width / 2));
+                int x1 = x + width * 2 + ((int)(defaultPen.Width / 2));
+                int y1 = y + height * 2 + ((int)(defaultPen.Width / 2));
 
                 if ((x_mouse >= x0) && (x_mouse <= x1) && (y_mouse >= y0) && (y_mouse <= y1))
                     return true;
@@ -95,11 +96,13 @@ namespace oopLab6
                     return false;
             }
 
-            public Circle(int x, int y, Graphics paintForm)
+            public Ellipse(int x, int y, int width, int height, Graphics paintForm)
             {
-                this.x = x - r - ((int)(focusedPen.Width / 2));
-                this.y = y - r - ((int)(focusedPen.Width / 2));
-                rect = new Rectangle(this.x, this.y, r * 2, r * 2);
+                this.width = width;
+                this.height = height;
+                this.x = x - width - ((int)(focusedPen.Width / 2));
+                this.y = y - height - ((int)(focusedPen.Width / 2));
+                rect = new Rectangle(this.x, this.y, width * 2, height * 2);
 
                 paint(paintForm);
             }

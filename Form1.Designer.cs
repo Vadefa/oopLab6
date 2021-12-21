@@ -179,16 +179,46 @@ namespace oopLab6
             // numWdt
             // 
             this.numWdt.Location = new System.Drawing.Point(3, 103);
+            this.numWdt.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numWdt.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.numWdt.Name = "numWdt";
             this.numWdt.Size = new System.Drawing.Size(48, 27);
             this.numWdt.TabIndex = 3;
+            this.numWdt.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // numHgh
             // 
             this.numHgh.Location = new System.Drawing.Point(57, 103);
+            this.numHgh.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numHgh.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.numHgh.Name = "numHgh";
             this.numHgh.Size = new System.Drawing.Size(48, 27);
             this.numHgh.TabIndex = 4;
+            this.numHgh.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // label3
             // 
