@@ -38,7 +38,7 @@ namespace oopLab6
             protected const int penWidth = 4;
             Color color;
             protected Pen defaultPen;
-            protected Pen focusedPen;
+            protected Pen focusedPen = new Pen(Color.Violet, penWidth);
             protected bool is_focused = false;
             
             protected Point p1;
@@ -60,7 +60,8 @@ namespace oopLab6
 
             public Figure(int x, int y, int width, int height, Color color)
             {
-                p1 = new Point(x - width - ((int)(focusedPen.Width / 2)), y - height - ((int)(focusedPen.Width / 2)));
+                defaultPen = new Pen(color, penWidth);
+                p1 = new Point(x - width / 2 - penWidth / 2, y - height / 2 - penWidth / 2);
                 size = new Size(width, height);
                 this.color = color;
             }
@@ -85,10 +86,10 @@ namespace oopLab6
                     grObj.DrawLine(defaultPen, p1, p2);
             }
 
-            public Section(int x1, int y1, int x2, int y2, Color col, Graphics grObj)
-                : base(x1, y1, 10, 10, col)
+            public Section(int x1, int y1, int width, int height, Color col, Graphics grObj)
+                : base(x1, y1, width, height, col)
             {
-                p2 = new Point(x2, y2);
+                p2 = new Point(p1.X + width, p1.Y + height);
 
                 paint(grObj);
 
@@ -146,11 +147,11 @@ namespace oopLab6
                 else
                     grObj.DrawPolygon(defaultPen, points);
             }
-            public Triangle(int x1, int y1, int x2, int y2, int x3, int y3, Color col, Graphics grObj)
-            : base(x1, y1, 10, 10, col)
+            public Triangle(int x1, int y1, int width, int height, Color col, Graphics grObj)
+            : base(x1, y1, width, height, col)
             {
-                p2 = new Point(x2, y2);
-                p3 = new Point(x3, y3);
+                p2 = new Point (p1.X + width, p1.Y + height);
+                p3 = new Point(p2.X+ 50, p1.Y + 50);
                 points = new Point[] { p1, p2, p3 };
                 paint(grObj);
             }
@@ -293,6 +294,7 @@ namespace oopLab6
 
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
+            grObj = canvas.CreateGraphics();
             storage.Draw(grObj);
         }
 
@@ -337,21 +339,17 @@ namespace oopLab6
             model.setColor((sender as Button).BackColor);
         }
 
-        private void canvas_Click(object sender, MouseEventArgs e)
+        private void canvas_Click(object sender, EventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                Point mousePos = PointToClient(new Point(Cursor.Position.X, Cursor.Position.Y));
-                if (currentElement == "section")
-                    storage.add(new Section(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
-                else if (currentElement == "ellipse")
-                    storage.add(new Ellipse(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
-                else if (currentElement == "triangle")
-                    storage.add(new Triangle(mousePos.X, mousePos.Y, mousePos.X + 50, mousePos.Y + 50, mousePos.X + 100, mousePos.Y - 100, currentColor, grObj), grObj);
-                else 
-                    storage.add(new Rect(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
-                    
-            }
+            Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
+            if (currentElement == "section")
+                storage.add(new Section(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+            else if (currentElement == "ellipse")
+                storage.add(new Ellipse(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+            else if (currentElement == "triangle")
+                storage.add(new Triangle(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+            else if (currentElement == "rectangle")
+                storage.add(new Rect(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
         }
     }
 }
