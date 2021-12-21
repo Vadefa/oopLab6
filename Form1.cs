@@ -194,14 +194,6 @@ namespace oopLab6
             height = model.getHeight();
             x = model.getX();
             y = model.gety();
-
-            numPosX.Value = x;
-            numPosY.Value = y;
-            numWdt.Value = width;
-            numHgh.Value = height;
-            //textBox1.Text.StartsWith(model.getValueA().ToString());
-            //textBox2.Text.StartsWith(model.getValueB().ToString());
-            //textBox3.Text.StartsWith(model.getValueC().ToString());
         }
         public class Model
         {
