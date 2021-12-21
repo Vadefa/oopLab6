@@ -22,11 +22,18 @@ namespace oopLab6
         }
         public class Figure
         {
-            private const int penWidth = 4;
-            protected Pen defaultPen = new Pen(Color.Black, penWidth);
-            protected Pen focusedPen = new Pen(Color.Violet, penWidth);
+            protected const int penWidth = 4;
+            Color color;
+            protected Pen defaultPen;
+            protected Pen focusedPen;
             protected bool is_focused = false;
             
+            protected int x;
+            protected int y;
+
+            protected int width;
+            protected int height;
+
             public void focus()
             {
                 is_focused = true;
@@ -39,12 +46,23 @@ namespace oopLab6
             }
             virtual public void paint(Graphics grObj)
             {
-
             }
 
+            public Figure(int x, int y, int width, int height, Color color)
+            {
+                this.x = x - width - ((int)(focusedPen.Width / 2));
+                this.y = y - height - ((int)(focusedPen.Width / 2));
+                this.width = width;
+                this.height = height;
+                this.color = color;
+            }
             public Figure()
             {
-
+                color = Color.Black;
+                defaultPen = new Pen(color, penWidth);
+                focusedPen = new Pen(Color.Violet, penWidth);
+                x = 0;
+                y = 0;
             }
         }
         class Section : Figure
@@ -68,10 +86,6 @@ namespace oopLab6
         class Ellipse : Figure
         {
             private Rectangle rect;
-            private int x;
-            private int y;
-            private int width;
-            private int height;
 
 
             public override void paint(Graphics paintForm)
@@ -96,14 +110,10 @@ namespace oopLab6
                     return false;
             }
 
-            public Ellipse(int x, int y, int width, int height, Graphics paintForm)
+            public Ellipse(int x, int y, int width, int height, Color col, Graphics paintForm)
+                : base(x, y, width, height, col)
             {
-                this.width = width;
-                this.height = height;
-                this.x = x - width - ((int)(focusedPen.Width / 2));
-                this.y = y - height - ((int)(focusedPen.Width / 2));
                 rect = new Rectangle(this.x, this.y, width * 2, height * 2);
-
                 paint(paintForm);
             }
         }
