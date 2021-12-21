@@ -336,5 +336,22 @@ namespace oopLab6
         {
             model.setColor((sender as Button).BackColor);
         }
+
+        private void canvas_Click(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Point mousePos = PointToClient(new Point(Cursor.Position.X, Cursor.Position.Y));
+                if (currentElement == "section")
+                    storage.add(new Section(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+                else if (currentElement == "ellipse")
+                    storage.add(new Ellipse(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+                else if (currentElement == "triangle")
+                    storage.add(new Triangle(mousePos.X, mousePos.Y, mousePos.X + 50, mousePos.Y + 50, mousePos.X + 100, mousePos.Y - 100, currentColor, grObj), grObj);
+                else 
+                    storage.add(new Rect(mousePos.X, mousePos.Y, 50, 50, currentColor, grObj), grObj);
+                    
+            }
+        }
     }
 }
