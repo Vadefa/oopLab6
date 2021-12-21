@@ -131,7 +131,7 @@ namespace oopLab6
 
             }
             public Triangle(int x1, int y1, int x2, int y2, int x3, int y3, Color col, Graphics grObj)
-            :base(x1, y1, 0, 0, col)
+            :base(x1, y1, 10, 10, col)
             {
 
             }
