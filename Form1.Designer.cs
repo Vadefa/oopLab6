@@ -49,6 +49,7 @@ namespace oopLab6
             this.label3 = new System.Windows.Forms.Label();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.numPosY = new System.Windows.Forms.NumericUpDown();
+            this.objects = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -280,11 +281,21 @@ namespace oopLab6
             this.numPosY.Size = new System.Drawing.Size(48, 27);
             this.numPosY.TabIndex = 8;
             // 
+            // objects
+            // 
+            this.objects.FormattingEnabled = true;
+            this.objects.ItemHeight = 20;
+            this.objects.Location = new System.Drawing.Point(11, 320);
+            this.objects.Name = "objects";
+            this.objects.Size = new System.Drawing.Size(180, 184);
+            this.objects.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(696, 543);
+            this.Controls.Add(this.objects);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.canvas);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -325,6 +336,7 @@ namespace oopLab6
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ListBox objects;
     }
 }
 

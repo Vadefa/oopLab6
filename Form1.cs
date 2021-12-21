@@ -28,11 +28,8 @@ namespace oopLab6
             protected Pen focusedPen;
             protected bool is_focused = false;
             
-            protected int x;
-            protected int y;
-
-            protected int width;
-            protected int height;
+            protected Point p1;
+            protected Size size;
 
             public void focus()
             {
@@ -50,10 +47,8 @@ namespace oopLab6
 
             public Figure(int x, int y, int width, int height, Color color)
             {
-                this.x = x - width - ((int)(focusedPen.Width / 2));
-                this.y = y - height - ((int)(focusedPen.Width / 2));
-                this.width = width;
-                this.height = height;
+                p1 = new Point(x - width - ((int)(focusedPen.Width / 2)), y - height - ((int)(focusedPen.Width / 2)));
+                size = new Size(width, height);
                 this.color = color;
             }
             public Figure()
@@ -61,39 +56,35 @@ namespace oopLab6
                 color = Color.Black;
                 defaultPen = new Pen(color, penWidth);
                 focusedPen = new Pen(Color.Violet, penWidth);
-                x = 0;
-                y = 0;
+                size = new Size(10, 10);
+                p1 = new Point(0, 0);
             }
         }
-        class Section : Figure
+        public class Section : Figure
         {
-            private int x2;
-            private int y2;
+            private Point p2;
 
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
-                    grObj.DrawLine(focusedPen, new Point(x, y), new Point(x2, y2));
+                    grObj.DrawLine(focusedPen, p1, p2);
                 else
-                    grObj.DrawLine(defaultPen, new Point(x, y), new Point(x2, y2));
+                    grObj.DrawLine(defaultPen, p1, p2);
             }
 
             public Section(int x1, int y1, int x2, int y2, Color col, Graphics grObj)
-                : base(x1, y1, 0, 0, col)
+                : base(x1, y1, 10, 10, col)
             {
-                this.x2 = x2;
-                this.y2 = y2;
+                p2 = new Point(x2, y2);
 
                 paint(grObj);
 
                 
             }
         }
-        class Ellipse : Figure
+        public class Ellipse : Figure
         {
             private Rectangle rect;
-
-
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
@@ -105,12 +96,48 @@ namespace oopLab6
             public Ellipse(int x, int y, int width, int height, Color col, Graphics grObj)
                 : base(x, y, width, height, col)
             {
-                rect = new Rectangle(this.x, this.y, width * 2, height * 2);
+                rect = new Rectangle(p1, size);
                 paint(grObj);
             }
         }
 
-        class Storage
+        public class Rect: Figure
+        {
+            private Rectangle rect;
+
+            public override void paint(Graphics grObj)
+            {
+                if (is_focused)
+                    grObj.DrawRectangle(focusedPen, rect);
+                else
+                    grObj.DrawRectangle(defaultPen, rect);
+            }
+            public Rect(int x, int y, int width, int height, Color col, Graphics grObj)
+                :base(x, y, width, height, col)
+            {
+                rect = new Rectangle(p1, size);
+                paint(grObj);
+            }
+        }
+
+        public class Triangle : Figure
+        {
+            private PointF[] points;
+            Point p2;
+            Point p3;
+
+            public override void paint(Graphics grObj)
+            {
+
+            }
+            public Triangle(int x1, int y1, int x2, int y2, int x3, int y3, Color col, Graphics grObj)
+            :base(x1, y1, 0, 0, col)
+            {
+
+            }
+        }
+
+        public class Storage
         {
             protected List<Figure> storage;
             public void remove(Figure obj)                            // removes all nulled elements
@@ -126,7 +153,7 @@ namespace oopLab6
                 storage = new List<Figure>();
             }
         }
-        class StorageService : Storage
+        public class StorageService : Storage
         {
             public void Draw(Graphics grObj)
             {
