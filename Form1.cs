@@ -25,124 +25,7 @@ namespace oopLab6
         }
 
 
-        public class Model
-        {
-            private bool colorBlack;
-            private bool colorBlue;
-            private bool colorGreen;
-
-            private bool arrow;
-            private bool section;
-            private bool ellipse;
-            private bool rectangle;
-            private bool triangle;
-
-
-            public System.EventHandler observers;
-
-            private void nullColors()
-            {
-                colorBlack = false;
-                colorBlue = false;
-                colorGreen = false;
-            }
-            public Color getColor()
-            {
-                if (colorBlack == true)
-                    return Color.Black;
-                else if (colorBlue == true)
-                    return Color.Blue;
-                else
-                    return Color.ForestGreen;
-            }
-            public void setColor(Color color)
-            {
-                nullColors();
-                if (color == Color.Black)
-                    colorBlack = true;
-                else if (color == Color.Blue)
-                    colorBlue = true;
-                else
-                    colorGreen = true;
-            }
-            public void nullElements()
-            {
-                arrow = false;
-                section = false;
-                ellipse = false;
-                rectangle = false;
-                triangle = false;
-            }
-            public bool getElement(string name)
-            {
-                if (name == "btnArw")
-                    if (arrow == true)
-                        return true;
-                    else
-                        return false;
-                else if (name == "btnSctn")
-                    if (section == true)
-                        return true;
-                    else
-                        return false;
-                else if (name == "btnElps")
-                    if (ellipse == true)
-                        return true;
-                    else
-                        return false;
-                else if (name == "btnTrn")
-                    if (triangle == true)
-                        return true;
-                    else
-                        return false;
-                else
-                    if (rectangle == true)
-                        return true;
-                else
-                    return false;
-            }
-            public void setElement(string name)
-            {
-                nullElements();
-                if (name == "btnArw")
-                    arrow = true;
-                else if (name == "btnSctn")
-                    section = true;
-                else if (name == "btnElps")
-                    ellipse = true;
-                else if (name == "btnTrn")
-                    triangle = true;
-                else
-                    rectangle = true;
-            }
-
-            public Model()
-            {
-                colorBlack = true;
-                colorBlue = false;
-                colorGreen = false;
-
-                arrow = true;
-                section = false;
-                ellipse = false;
-                rectangle = false;
-                triangle = false;
-
-                //valueA = Properties.Settings.Default.valueA;
-                //valueB = Properties.Settings.Default.valueB;
-                //valueC = Properties.Settings.Default.valueC;
-            }
-            ~Model()
-            {
-                //Properties.Settings.Default.valueA = valueA;
-                //Properties.Settings.Default.valueB = valueB;
-                //Properties.Settings.Default.valueC = valueC;
-                //Properties.Settings.Default.Save();
-
-            }
-        }
-
-
+ 
         public class Figure
         {
             protected const int penWidth = 4;
@@ -291,6 +174,125 @@ namespace oopLab6
             }
         }
 
+
+        public class Model
+        {
+            private bool colorBlack;
+            private bool colorBlue;
+            private bool colorGreen;
+
+            private bool arrow;
+            private bool section;
+            private bool ellipse;
+            private bool rectangle;
+            private bool triangle;
+
+
+            public System.EventHandler observers;
+
+            private void nullColors()
+            {
+                colorBlack = false;
+                colorBlue = false;
+                colorGreen = false;
+            }
+            public Color getColor()
+            {
+                if (colorBlack == true)
+                    return Color.Black;
+                else if (colorBlue == true)
+                    return Color.Blue;
+                else
+                    return Color.ForestGreen;
+            }
+            public void setColor(Color color)
+            {
+                nullColors();
+                if (color == Color.Black)
+                    colorBlack = true;
+                else if (color == Color.Blue)
+                    colorBlue = true;
+                else
+                    colorGreen = true;
+            }
+            public void nullElements()
+            {
+                arrow = false;
+                section = false;
+                ellipse = false;
+                rectangle = false;
+                triangle = false;
+            }
+            public bool getElement(string name)
+            {
+                if (name == "btnArw")
+                    if (arrow == true)
+                        return true;
+                    else
+                        return false;
+                else if (name == "btnSctn")
+                    if (section == true)
+                        return true;
+                    else
+                        return false;
+                else if (name == "btnElps")
+                    if (ellipse == true)
+                        return true;
+                    else
+                        return false;
+                else if (name == "btnTrn")
+                    if (triangle == true)
+                        return true;
+                    else
+                        return false;
+                else
+                    if (rectangle == true)
+                    return true;
+                else
+                    return false;
+            }
+            public void setElement(string name)
+            {
+                nullElements();
+                if (name == "btnArw")
+                    arrow = true;
+                else if (name == "btnSctn")
+                    section = true;
+                else if (name == "btnElps")
+                    ellipse = true;
+                else if (name == "btnTrn")
+                    triangle = true;
+                else
+                    rectangle = true;
+            }
+
+            public Model()
+            {
+                colorBlack = true;
+                colorBlue = false;
+                colorGreen = false;
+
+                arrow = true;
+                section = false;
+                ellipse = false;
+                rectangle = false;
+                triangle = false;
+
+                //valueA = Properties.Settings.Default.valueA;
+                //valueB = Properties.Settings.Default.valueB;
+                //valueC = Properties.Settings.Default.valueC;
+            }
+            ~Model()
+            {
+                //Properties.Settings.Default.valueA = valueA;
+                //Properties.Settings.Default.valueB = valueB;
+                //Properties.Settings.Default.valueC = valueC;
+                //Properties.Settings.Default.Save();
+
+            }
+        }
+
+
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
             storage.Draw(grObj);
@@ -298,12 +300,43 @@ namespace oopLab6
 
         private void btnSctn_Click(object sender, EventArgs e)
         {
-
+            model.setElement((sender as Button).Name);
         }
 
         private void btnArw_Click(object sender, EventArgs e)
         {
             model.setElement((sender as Button).Name);
+        }
+
+        private void btnElps_Click(object sender, EventArgs e)
+        {
+            model.setElement((sender as Button).Name);
+        }
+
+        private void btnTrn_Click(object sender, EventArgs e)
+        {
+            model.setElement((sender as Button).Name);
+        }
+
+        private void btnRct_Click(object sender, EventArgs e)
+        {
+            model.setElement((sender as Button).Name);
+        }
+
+
+        private void btnBlck_Click(object sender, EventArgs e)
+        {
+            model.setColor((sender as Button).BackColor);
+        }
+
+        private void btnBlue_Click(object sender, EventArgs e)
+        {
+            model.setColor((sender as Button).BackColor);
+        }
+
+        private void btnGrn_Click(object sender, EventArgs e)
+        {
+            model.setColor((sender as Button).BackColor);
         }
     }
 }

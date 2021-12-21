@@ -39,9 +39,9 @@ namespace oopLab6
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnBlck = new System.Windows.Forms.Button();
+            this.btnBlue = new System.Windows.Forms.Button();
+            this.btnGrn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.numWdt = new System.Windows.Forms.NumericUpDown();
             this.numHgh = new System.Windows.Forms.NumericUpDown();
@@ -103,6 +103,7 @@ namespace oopLab6
             this.btnElps.Size = new System.Drawing.Size(32, 32);
             this.btnElps.TabIndex = 1;
             this.btnElps.UseVisualStyleBackColor = true;
+            this.btnElps.Click += new System.EventHandler(this.btnElps_Click);
             // 
             // btnTrn
             // 
@@ -112,6 +113,7 @@ namespace oopLab6
             this.btnTrn.Size = new System.Drawing.Size(32, 32);
             this.btnTrn.TabIndex = 1;
             this.btnTrn.UseVisualStyleBackColor = true;
+            this.btnTrn.Click += new System.EventHandler(this.btnTrn_Click);
             // 
             // btnRct
             // 
@@ -121,6 +123,7 @@ namespace oopLab6
             this.btnRct.Size = new System.Drawing.Size(32, 32);
             this.btnRct.TabIndex = 1;
             this.btnRct.UseVisualStyleBackColor = true;
+            this.btnRct.Click += new System.EventHandler(this.btnRct_Click);
             // 
             // canvas
             // 
@@ -161,40 +164,43 @@ namespace oopLab6
             // 
             // flowLayoutPanel3
             // 
-            this.flowLayoutPanel3.Controls.Add(this.button1);
-            this.flowLayoutPanel3.Controls.Add(this.button2);
-            this.flowLayoutPanel3.Controls.Add(this.button3);
+            this.flowLayoutPanel3.Controls.Add(this.btnBlck);
+            this.flowLayoutPanel3.Controls.Add(this.btnBlue);
+            this.flowLayoutPanel3.Controls.Add(this.btnGrn);
             this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 23);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(102, 34);
             this.flowLayoutPanel3.TabIndex = 9;
             // 
-            // button1
+            // btnBlck
             // 
-            this.button1.BackColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(3, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(28, 28);
-            this.button1.TabIndex = 0;
-            this.button1.UseVisualStyleBackColor = false;
+            this.btnBlck.BackColor = System.Drawing.Color.Black;
+            this.btnBlck.Location = new System.Drawing.Point(3, 3);
+            this.btnBlck.Name = "btnBlck";
+            this.btnBlck.Size = new System.Drawing.Size(28, 28);
+            this.btnBlck.TabIndex = 0;
+            this.btnBlck.UseVisualStyleBackColor = false;
+            this.btnBlck.Click += new System.EventHandler(this.btnBlck_Click);
             // 
-            // button2
+            // btnBlue
             // 
-            this.button2.BackColor = System.Drawing.Color.Blue;
-            this.button2.Location = new System.Drawing.Point(37, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(28, 28);
-            this.button2.TabIndex = 0;
-            this.button2.UseVisualStyleBackColor = false;
+            this.btnBlue.BackColor = System.Drawing.Color.Blue;
+            this.btnBlue.Location = new System.Drawing.Point(37, 3);
+            this.btnBlue.Name = "btnBlue";
+            this.btnBlue.Size = new System.Drawing.Size(28, 28);
+            this.btnBlue.TabIndex = 0;
+            this.btnBlue.UseVisualStyleBackColor = false;
+            this.btnBlue.Click += new System.EventHandler(this.btnBlue_Click);
             // 
-            // button3
+            // btnGrn
             // 
-            this.button3.BackColor = System.Drawing.Color.ForestGreen;
-            this.button3.Location = new System.Drawing.Point(71, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(28, 28);
-            this.button3.TabIndex = 0;
-            this.button3.UseVisualStyleBackColor = false;
+            this.btnGrn.BackColor = System.Drawing.Color.ForestGreen;
+            this.btnGrn.Location = new System.Drawing.Point(71, 3);
+            this.btnGrn.Name = "btnGrn";
+            this.btnGrn.Size = new System.Drawing.Size(28, 28);
+            this.btnGrn.TabIndex = 0;
+            this.btnGrn.UseVisualStyleBackColor = false;
+            this.btnGrn.Click += new System.EventHandler(this.btnGrn_Click);
             // 
             // label2
             // 
@@ -324,9 +330,10 @@ namespace oopLab6
         private System.Windows.Forms.NumericUpDown numPosY;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnBlue;
+        private System.Windows.Forms.Button btnGrn;
         private System.Windows.Forms.ListBox objects;
+        private System.Windows.Forms.Button btnBlck;
     }
 }
 
