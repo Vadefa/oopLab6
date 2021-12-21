@@ -67,20 +67,22 @@ namespace oopLab6
         }
         class Section : Figure
         {
-            private Point p1;
-            private Point p2;
+            private int x2;
+            private int y2;
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
-                    grObj.DrawLine(focusedPen, p1, p2);
+                    grObj.DrawLine(focusedPen, new Point(x, y), new Point(x2, y2));
                 else
-                    grObj.DrawLine(defaultPen, p1, p2);
+                    grObj.DrawLine(defaultPen, new Point(x, y), new Point(x2, y2));
             }
-            
-            public Section(int x1, int y1, int x2, int y2, Graphics grObj)
+
+            public Section(int x1, int y1, int x2, int y2, Color col, Graphics grObj)
+                : base(x1, y1, 0, 0, col)
             {
-                p1 = new Point(x1, y1);
-                p2 = new Point(x2, y2);
+                this.x2 = x2;
+                this.y2 = y2;
+                paint(grObj);
             }
         }
         class Ellipse : Figure
@@ -110,11 +112,11 @@ namespace oopLab6
                     return false;
             }
 
-            public Ellipse(int x, int y, int width, int height, Color col, Graphics paintForm)
+            public Ellipse(int x, int y, int width, int height, Color col, Graphics grObj)
                 : base(x, y, width, height, col)
             {
                 rect = new Rectangle(this.x, this.y, width * 2, height * 2);
-                paint(paintForm);
+                paint(grObj);
             }
         }
 
