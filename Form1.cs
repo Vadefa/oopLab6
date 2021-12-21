@@ -14,11 +14,13 @@ namespace oopLab6
     {
         Graphics grObj;
         StorageService storage;
+        Model model;
 
         public Form1()
         {
             InitializeComponent();
             storage = new StorageService();
+            model = new Model();
             grObj = canvas.CreateGraphics();
         }
 
@@ -55,21 +57,21 @@ namespace oopLab6
             }
             public void setColor(Color color)
             {
+                nullColors();
                 if (color == Color.Black)
-                {
-                    nullColors();
                     colorBlack = true;
-                }
                 else if (color == Color.Blue)
-                {
-                    nullColors();
                     colorBlue = true;
-                }
                 else
-                {
-                    nullColors();
                     colorGreen = true;
-                }
+            }
+            public void nullElements()
+            {
+                arrow = false;
+                section = false;
+                ellipse = false;
+                rectangle = false;
+                triangle = false;
             }
             public bool getElement(string name)
             {
@@ -99,23 +101,19 @@ namespace oopLab6
                 else
                     return false;
             }
-            public void setElement(Color color)
+            public void setElement(string name)
             {
-                if (color == Color.Black)
-                {
-                    nullColors();
-                    colorBlack = true;
-                }
-                else if (color == Color.Blue)
-                {
-                    nullColors();
-                    colorBlue = true;
-                }
+                nullElements();
+                if (name == "btnArw")
+                    arrow = true;
+                else if (name == "btnSctn")
+                    section = true;
+                else if (name == "btnElps")
+                    ellipse = true;
+                else if (name == "btnTrn")
+                    triangle = true;
                 else
-                {
-                    nullColors();
-                    colorGreen = true;
-                }
+                    rectangle = true;
             }
 
             public Model()
@@ -299,6 +297,11 @@ namespace oopLab6
         private void btnSctn_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnArw_Click(object sender, EventArgs e)
+        {
+            //model.setElement()
         }
     }
 }

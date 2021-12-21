@@ -83,6 +83,7 @@ namespace oopLab6
             this.btnArw.Size = new System.Drawing.Size(32, 32);
             this.btnArw.TabIndex = 1;
             this.btnArw.UseVisualStyleBackColor = true;
+            this.btnArw.Click += new System.EventHandler(this.btnArw_Click);
             // 
             // btnSctn
             // 
