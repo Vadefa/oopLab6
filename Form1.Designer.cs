@@ -92,6 +92,7 @@ namespace oopLab6
             this.btnSctn.Size = new System.Drawing.Size(32, 32);
             this.btnSctn.TabIndex = 1;
             this.btnSctn.UseVisualStyleBackColor = true;
+            this.btnSctn.Click += new System.EventHandler(this.btnSctn_Click);
             // 
             // btnElps
             // 

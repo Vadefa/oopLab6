@@ -14,12 +14,144 @@ namespace oopLab6
     {
         Graphics grObj;
         StorageService storage;
+
         public Form1()
         {
             InitializeComponent();
             storage = new StorageService();
             grObj = canvas.CreateGraphics();
         }
+
+
+        public class Model
+        {
+            private List<bool> colors;
+            private bool colorBlack;
+            private bool colorBlue;
+            private bool colorGreen;
+
+            private bool[] elements;
+            private bool arrow;
+            private bool section;
+            private bool ellipse;
+            private bool rectangle;
+            private bool triangle;
+
+
+            public System.EventHandler observers;
+
+            private void nullColors()
+            {
+                colorBlack = false;
+                colorBlue = false;
+                colorGreen = false;
+            }
+            public Color getColor()
+            {
+                if (colorBlack == true)
+                    return Color.Black;
+                else if (colorBlue == true)
+                    return Color.Blue;
+                else
+                    return Color.ForestGreen;
+            }
+            public void setColor(Color color)
+            {
+                if (color == Color.Black)
+                {
+                    nullColors();
+                    colorBlack = true;
+                }
+                else if (color == Color.Blue)
+                {
+                    nullColors();
+                    colorBlue = true;
+                }
+                else
+                {
+                    nullColors();
+                    colorGreen = true;
+                }
+            }
+            //public void setValueA(int value)
+            //{
+            //    if (value_isCorrect(value))
+            //    {
+            //        if (value <= valueB)
+            //            valueA = value;
+            //        else if (value <= valueC)
+            //        {
+            //            valueA = value;
+            //            valueB = value;
+            //        }
+            //        else
+            //        {
+            //            valueA = value;
+            //            valueB = value;
+            //            valueC = value;
+            //        }
+            //    }
+            //    observers.Invoke(this, null);
+            //}
+            //public void setValueB(int value)
+            //{
+            //    if ((value >= valueA) && (value <= valueC))
+            //        valueB = value;
+            //    observers.Invoke(this, null);
+            //}
+            //public void setValueC(int value)
+            //{
+            //    if (value_isCorrect(value))
+            //    {
+            //        if (value >= valueB)
+            //            valueC = value;
+            //        else if (value >= valueA)
+            //        {
+            //            valueC = value;
+            //            valueB = value;
+            //        }
+            //        else
+            //        {
+            //            valueC = value;
+            //            valueB = value;
+            //            valueA = value;
+            //        }
+            //    }
+            //    observers.Invoke(this, null);
+            //}
+            //public int getValueA() { return valueA; }
+            //public int getValueB() { return valueB; }
+            //public int getValueC() { return valueC; }
+
+            public Model()
+            {
+                colorBlack = true;
+                colorBlue = false;
+                colorGreen = false;
+                colors = new List<bool> { colorBlack, colorBlue, colorGreen };
+
+                arrow = true;
+                section = false;
+                ellipse = false;
+                rectangle = false;
+                triangle = false;
+                elements = new bool[5] { arrow, section, ellipse, rectangle, triangle };
+
+                //valueA = Properties.Settings.Default.valueA;
+                //valueB = Properties.Settings.Default.valueB;
+                //valueC = Properties.Settings.Default.valueC;
+            }
+            ~Model()
+            {
+                //Properties.Settings.Default.valueA = valueA;
+                //Properties.Settings.Default.valueB = valueB;
+                //Properties.Settings.Default.valueC = valueC;
+                //Properties.Settings.Default.Save();
+
+            }
+        }
+
+
         public class Figure
         {
             protected const int penWidth = 4;
@@ -169,6 +301,11 @@ namespace oopLab6
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
             storage.Draw(grObj);
+        }
+
+        private void btnSctn_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
