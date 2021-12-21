@@ -194,6 +194,14 @@ namespace oopLab6
             height = model.getHeight();
             x = model.getX();
             y = model.gety();
+
+            numPosX.Value = x;
+            numPosY.Value = y;
+            numWdt.Value = width;
+            numHgh.Value = height;
+            //textBox1.Text.StartsWith(model.getValueA().ToString());
+            //textBox2.Text.StartsWith(model.getValueB().ToString());
+            //textBox3.Text.StartsWith(model.getValueC().ToString());
         }
         public class Model
         {
@@ -348,16 +356,19 @@ namespace oopLab6
                 rectangle = false;
                 triangle = false;
 
-                //valueA = Properties.Settings.Default.valueA;
-                //valueB = Properties.Settings.Default.valueB;
-                //valueC = Properties.Settings.Default.valueC;
+                x = Properties.Settings.Default.x;
+                y = Properties.Settings.Default.y;
+                width = Properties.Settings.Default.width;
+                height = Properties.Settings.Default.height;
             }
             ~Model()
             {
-                //Properties.Settings.Default.valueA = valueA;
-                //Properties.Settings.Default.valueB = valueB;
-                //Properties.Settings.Default.valueC = valueC;
-                //Properties.Settings.Default.Save();
+
+                Properties.Settings.Default.x = x;
+                Properties.Settings.Default.y = y;
+                Properties.Settings.Default.width = width;
+                Properties.Settings.Default.height = height;
+                Properties.Settings.Default.Save();
 
             }
         }
