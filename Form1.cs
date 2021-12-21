@@ -257,9 +257,11 @@ namespace oopLab6
                     grObj.DrawPolygon(defaultPen, points);
             }
             public Triangle(int x1, int y1, int x2, int y2, int x3, int y3, Color col, Graphics grObj)
-            :base(x1, y1, 10, 10, col)
+            : base(x1, y1, 10, 10, col)
             {
-                points = new Point[] { new Point(x1, y1), new Point(x2, y2), new Point(x3, y3) };
+                p2 = new Point(x2, y2);
+                p3 = new Point(x3, y3);
+                points = new Point[] { p1, p2, p3 };
                 paint(grObj);
             }
         }
@@ -301,7 +303,7 @@ namespace oopLab6
 
         private void btnArw_Click(object sender, EventArgs e)
         {
-            //model.setElement()
+            model.setElement((sender as Button).Name);
         }
     }
 }
