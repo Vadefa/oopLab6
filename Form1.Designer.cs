@@ -39,23 +39,23 @@ namespace oopLab6
             this.canvas = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.numWdt = new System.Windows.Forms.NumericUpDown();
             this.numHgh = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.numPosY = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWdt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHgh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
-            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -167,6 +167,43 @@ namespace oopLab6
             this.label1.TabIndex = 0;
             this.label1.Text = "Color:";
             // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.button1);
+            this.flowLayoutPanel3.Controls.Add(this.button2);
+            this.flowLayoutPanel3.Controls.Add(this.button3);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 23);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(102, 34);
+            this.flowLayoutPanel3.TabIndex = 9;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(3, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(28, 28);
+            this.button1.TabIndex = 0;
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Blue;
+            this.button2.Location = new System.Drawing.Point(37, 3);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(28, 28);
+            this.button2.TabIndex = 0;
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.ForestGreen;
+            this.button3.Location = new System.Drawing.Point(71, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(28, 28);
+            this.button3.TabIndex = 0;
+            this.button3.UseVisualStyleBackColor = false;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -243,48 +280,11 @@ namespace oopLab6
             this.numPosY.Size = new System.Drawing.Size(48, 27);
             this.numPosY.TabIndex = 8;
             // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.button1);
-            this.flowLayoutPanel3.Controls.Add(this.button2);
-            this.flowLayoutPanel3.Controls.Add(this.button3);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 23);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(102, 34);
-            this.flowLayoutPanel3.TabIndex = 9;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(3, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(28, 28);
-            this.button1.TabIndex = 0;
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.Blue;
-            this.button2.Location = new System.Drawing.Point(37, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(28, 28);
-            this.button2.TabIndex = 0;
-            this.button2.UseVisualStyleBackColor = false;
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.ForestGreen;
-            this.button3.Location = new System.Drawing.Point(71, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(28, 28);
-            this.button3.TabIndex = 0;
-            this.button3.UseVisualStyleBackColor = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(691, 543);
+            this.ClientSize = new System.Drawing.Size(696, 543);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.canvas);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -293,11 +293,11 @@ namespace oopLab6
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numWdt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHgh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
-            this.flowLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -69,6 +69,7 @@ namespace oopLab6
         {
             private int x2;
             private int y2;
+
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
@@ -82,7 +83,10 @@ namespace oopLab6
             {
                 this.x2 = x2;
                 this.y2 = y2;
+
                 paint(grObj);
+
+                
             }
         }
         class Ellipse : Figure
@@ -90,26 +94,12 @@ namespace oopLab6
             private Rectangle rect;
 
 
-            public override void paint(Graphics paintForm)
+            public override void paint(Graphics grObj)
             {
                 if (is_focused)
-                    paintForm.DrawEllipse(focusedPen, rect);
+                    grObj.DrawEllipse(focusedPen, rect);
                 else
-                    paintForm.DrawEllipse(defaultPen, rect);
-            }
-
-            public bool checkUnderMouse(Graphics paintForm, int x_mouse, int y_mouse)
-            {
-                int x0 = x;
-                int y0 = y;
-
-                int x1 = x + width * 2 + ((int)(defaultPen.Width / 2));
-                int y1 = y + height * 2 + ((int)(defaultPen.Width / 2));
-
-                if ((x_mouse >= x0) && (x_mouse <= x1) && (y_mouse >= y0) && (y_mouse <= y1))
-                    return true;
-                else
-                    return false;
+                    grObj.DrawEllipse(defaultPen, rect);
             }
 
             public Ellipse(int x, int y, int width, int height, Color col, Graphics grObj)
