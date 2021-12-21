@@ -35,7 +35,6 @@ namespace oopLab6
             this.btnElps = new System.Windows.Forms.Button();
             this.btnTrn = new System.Windows.Forms.Button();
             this.btnRct = new System.Windows.Forms.Button();
-            this.btnErs = new System.Windows.Forms.Button();
             this.canvas = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -70,11 +69,10 @@ namespace oopLab6
             this.flowLayoutPanel1.Controls.Add(this.btnElps);
             this.flowLayoutPanel1.Controls.Add(this.btnTrn);
             this.flowLayoutPanel1.Controls.Add(this.btnRct);
-            this.flowLayoutPanel1.Controls.Add(this.btnErs);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 54);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(40, 230);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(40, 192);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // btnArw
@@ -122,15 +120,6 @@ namespace oopLab6
             this.btnRct.TabIndex = 1;
             this.btnRct.UseVisualStyleBackColor = true;
             // 
-            // btnErs
-            // 
-            this.btnErs.Image = global::oopLab6.Properties.Resources.Eraser;
-            this.btnErs.Location = new System.Drawing.Point(3, 193);
-            this.btnErs.Name = "btnErs";
-            this.btnErs.Size = new System.Drawing.Size(32, 32);
-            this.btnErs.TabIndex = 1;
-            this.btnErs.UseVisualStyleBackColor = true;
-            // 
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.SystemColors.Window;
@@ -156,7 +145,7 @@ namespace oopLab6
             this.flowLayoutPanel2.Controls.Add(this.numPosY);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(58, 54);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 230);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 192);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
             // label1
@@ -321,7 +310,6 @@ namespace oopLab6
         private System.Windows.Forms.Button btnElps;
         private System.Windows.Forms.Button btnTrn;
         private System.Windows.Forms.Button btnRct;
-        private System.Windows.Forms.Button btnErs;
         private System.Windows.Forms.Button btnArw;
         private System.Windows.Forms.Panel canvas;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
