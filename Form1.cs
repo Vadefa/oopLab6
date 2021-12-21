@@ -115,7 +115,6 @@ namespace oopLab6
             public void add(Figure obj, Graphics ellipses)
             {
                 storage.Add(obj);
-                //unfocus it
             }
             public Storage()
             {
@@ -131,9 +130,9 @@ namespace oopLab6
             }
         }
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
+        private void canvas_Paint(object sender, PaintEventArgs e)
         {
-
+            storage.Draw(grObj);
         }
     }
 }
