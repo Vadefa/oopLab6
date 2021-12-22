@@ -121,7 +121,7 @@ namespace oopLab6
             {
                 this.color = color;
                 this.size = size;
-                p1 = p;
+                p1 = new Point(p.X - size.Width / 2 - penWidth / 2, p.Y - size.Height / 2 - penWidth / 2);
                 p2 = new Point(0, 0);
                 p3 = new Point(0, 0);
 
@@ -132,7 +132,7 @@ namespace oopLab6
             {
                 this.color = color;
                 this.size = size;
-                this.p1 = p1;
+                this.p1 = new Point(p1.X - size.Width / 2 - penWidth / 2, p1.Y - size.Height / 2 - penWidth / 2);
                 this.p2 = p2;
                 p3 = new Point(0, 0);
 
@@ -143,7 +143,7 @@ namespace oopLab6
             {
                 this.color = color;
                 this.size = size;
-                this.p1 = p1;
+                this.p1 = new Point(p1.X - size.Width / 2 - penWidth / 2, p1.Y - size.Height / 2 - penWidth / 2);
                 this.p2 = p2;
                 this.p3 = p3;
 
@@ -417,8 +417,6 @@ namespace oopLab6
             }
         }
 
-
-
         private void btnSctn_Click(object sender, EventArgs e)
         {
             model.setElement((sender as Button).Name);
@@ -470,39 +468,42 @@ namespace oopLab6
             model.setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
         }
 
-        //private void canvas_Click(object sender, EventArgs e)
-        //{
-        //    //Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
-        //    //if (currentElement == "section")
-        //    //    storage.add(new Section(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
-        //    //else if (currentElement == "ellipse")
-        //    //    storage.add(new Ellipse(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
-        //    //else if (currentElement == "triangle")
-        //    //    storage.add(new Triangle(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
-        //    //else if (currentElement == "rectangle")
-        //    //    storage.add(new Rect(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
-        //    //else
-        //    //{
-        //    //    storage.unfocus();
-        //    //    lvObj.SetSelected(lvObj.SelectedIndex, false);
-        //    //}
-        //}
+        private void canvas_Click(object sender, EventArgs e)
+        {
+            Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
+            if (currentElement == "btnSctn")
+                storage.add(new Section(mousePos, p2, size, currentColor, grObj), grObj, lvObj);
+            else if (currentElement == "btnElps")
+                storage.add(new Ellipse(mousePos, size, currentColor, grObj), grObj, lvObj);
+            else if (currentElement == "btnTrn")
+                storage.add(new Triangle(mousePos, p2, p3, size, currentColor, grObj), grObj, lvObj);
+            else if (currentElement == "btnRct")
+                storage.add(new Rect(mousePos, size, currentColor, grObj), grObj, lvObj);
+            else
+            {
+                if (lvObj.SelectedItem != null)
+                {
+                    storage.unfocus();
+                    lvObj.SetSelected(lvObj.SelectedIndex, false);
+                }
+            }
+        }
 
-        //private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        //{
-        //    //model.destructor();
-        //}
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            model.destructor();
+        }
 
-        //private void btnTrsh_Click(object sender, EventArgs e)
-        //{
-        //    //storage.remove(lvObj.SelectedItem as Figure, lvObj);
-        //}
+        private void btnTrsh_Click(object sender, EventArgs e)
+        {
+            storage.remove(lvObj.SelectedItem as Figure, lvObj);
+        }
 
-        //private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    //storage.unfocus();
-        //    //model.getObject(lvObj.SelectedItem as Figure);
-        //    //storage.focus(lvObj.SelectedItem as Figure);
-        //}
+        private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            storage.unfocus();
+            model.getObject(lvObj.SelectedItem as Figure);
+            storage.focus(lvObj.SelectedItem as Figure);
+        }
     }
 }

@@ -146,6 +146,7 @@ namespace oopLab6
             this.canvas.Name = "canvas";
             this.canvas.Size = new System.Drawing.Size(500, 500);
             this.canvas.TabIndex = 1;
+            this.canvas.Click += new System.EventHandler(this.canvas_Click);
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
             // 
             // flowLayoutPanel2
@@ -406,6 +407,7 @@ namespace oopLab6
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
