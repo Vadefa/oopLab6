@@ -273,6 +273,11 @@ namespace oopLab6
             // numPosX
             // 
             this.numPosX.Location = new System.Drawing.Point(3, 156);
+            this.numPosX.Maximum = new decimal(new int[] {
+            700,
+            0,
+            0,
+            0});
             this.numPosX.Name = "numPosX";
             this.numPosX.Size = new System.Drawing.Size(48, 27);
             this.numPosX.TabIndex = 7;
@@ -281,6 +286,11 @@ namespace oopLab6
             // numPosY
             // 
             this.numPosY.Location = new System.Drawing.Point(57, 156);
+            this.numPosY.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
             this.numPosY.Name = "numPosY";
             this.numPosY.Size = new System.Drawing.Size(48, 27);
             this.numPosY.TabIndex = 8;

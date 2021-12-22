@@ -56,6 +56,42 @@ namespace oopLab6
             protected Point p1;
             protected Size size;
 
+            public void setWidth(int width)
+            {
+                size.Width = width;
+                ActiveForm.Invalidate();
+            }
+            public void setHeight(int height)
+            {
+                size.Height = height;
+                ActiveForm.Invalidate();
+            }
+            public void setX(int x)
+            {
+                p1.X = x;
+                ActiveForm.Invalidate();
+            }
+            public void setY(int y)
+            {
+                p1.Y = y;
+                ActiveForm.Invalidate();
+            }
+            public int getWidth()
+            {
+                return size.Width;
+            }
+            public int getHeight()
+            {
+                return size.Height;
+            }
+            public int getX()
+            {
+                return p1.X;
+            }
+            public int getY()
+            {
+                return p1.Y;
+            }
             public void focus()
             {
                 is_focused = true;
@@ -92,6 +128,7 @@ namespace oopLab6
 
             public override void paint(Graphics grObj)
             {
+                p2 = new Point(p1.X + size.Width, p1.Y + size.Height);
                 if (is_focused)
                     grObj.DrawLine(focusedPen, p1, p2);
                 else
@@ -113,6 +150,7 @@ namespace oopLab6
             private Rectangle rect;
             public override void paint(Graphics grObj)
             {
+                rect = new Rectangle(p1, size);
                 if (is_focused)
                     grObj.DrawEllipse(focusedPen, rect);
                 else
@@ -133,6 +171,7 @@ namespace oopLab6
 
             public override void paint(Graphics grObj)
             {
+                rect = new Rectangle(p1, size);
                 if (is_focused)
                     grObj.DrawRectangle(focusedPen, rect);
                 else
@@ -154,6 +193,7 @@ namespace oopLab6
 
             public override void paint(Graphics grObj)
             {
+                points = new Point[] { p1, p2, p3 };
                 if (is_focused)
                     grObj.DrawPolygon(focusedPen, points);
                 else
@@ -208,6 +248,22 @@ namespace oopLab6
                 if (selected != null)
                     selected.unfocus();
             }
+            public void setWidth(Figure obj, int width)
+            {
+                obj.setWidth(width);
+            }
+            public void setHeight(Figure obj, int height)
+            {
+                obj.setHeight(height);
+            }
+            public void setX(Figure obj, int x)
+            {
+                obj.setX(x);
+            }
+            public void setY(Figure obj, int y)
+            {
+                obj.setY(y);
+            }
         }
 
         public void UpdateFromModel(object sender, EventArgs e)
@@ -223,6 +279,14 @@ namespace oopLab6
             numHgh.Value = height;
             numPosX.Value = x;
             numPosY.Value = y;
+
+            if (lvObj.SelectedItem != null)
+            {
+                storage.setWidth(lvObj.SelectedItem as Figure, width);
+                storage.setHeight(lvObj.SelectedItem as Figure, height);
+                storage.setX(lvObj.SelectedItem as Figure, x);
+                storage.setY(lvObj.SelectedItem as Figure, y);
+            }
 
         }
         public class Model
@@ -366,6 +430,18 @@ namespace oopLab6
                 }
             }
 
+            public void getObject(Figure obj)
+            {
+                if (obj != null)
+                {
+                    width = obj.getWidth();
+                    height = obj.getHeight();
+                    x = obj.getX();
+                    y = obj.getY();
+                    observers.Invoke(this, null);
+                }
+            }
+
             public void destructor()
             {
                 Properties.Settings.Default.x = x;
@@ -439,6 +515,7 @@ namespace oopLab6
         private void numWdt_ValueChanged(object sender, EventArgs e)
         {
             model.setWidth((int)(sender as NumericUpDown).Value);
+            
         }
 
         private void numHgh_ValueChanged(object sender, EventArgs e)
@@ -469,7 +546,10 @@ namespace oopLab6
             else if (currentElement == "rectangle")
                 storage.add(new Rect(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
             else
+            {
                 storage.unfocus();
+                lvObj.SetSelected(lvObj.SelectedIndex, false);
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -485,6 +565,7 @@ namespace oopLab6
         private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
         {
             storage.unfocus();
+            model.getObject(lvObj.SelectedItem as Figure);
             storage.focus(lvObj.SelectedItem as Figure);
         }
     }
