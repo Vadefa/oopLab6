@@ -17,10 +17,10 @@ namespace oopLab6
         Model model;
         Color currentColor;
         string currentElement;
-        Size size;
-        Point p1;
-        Point p2;
-        Point p3;
+        //Size size;
+        //Point p1;
+        //Point p2;
+        //Point p3;
 
         public Form1()
         {
@@ -49,7 +49,7 @@ namespace oopLab6
         {
             protected const int penWidth = 4;
             protected Pen defaultPen;
-            protected Pen focusedPen;
+            protected Pen focusedPen = new Pen(Color.Violet, penWidth);
             protected bool is_focused = false;
 
             Color color;
@@ -126,7 +126,6 @@ namespace oopLab6
                 p3 = new Point(0, 0);
 
                 defaultPen = new Pen(color, penWidth);
-                focusedPen = new Pen(Color.Violet, penWidth);
             }
             public Figure(Point p1, Point p2, Size size, Color color)
             {
@@ -137,7 +136,6 @@ namespace oopLab6
                 p3 = new Point(0, 0);
 
                 defaultPen = new Pen(color, penWidth);
-                focusedPen = new Pen(Color.Violet, penWidth);
             }
             public Figure(Point p1, Point p2, Point p3, Size size, Color color)
             {
@@ -148,7 +146,6 @@ namespace oopLab6
                 this.p3 = p3;
 
                 defaultPen = new Pen(color, penWidth);
-                focusedPen = new Pen(Color.Violet, penWidth);
             }
             public Figure()
             {
@@ -158,7 +155,6 @@ namespace oopLab6
                 p2 = new Point(0, 0);
                 p3 = new Point(0, 0);
                 defaultPen = new Pen(color, penWidth);
-                focusedPen = new Pen(Color.Violet, penWidth);
             }
         }
         public class Section : Figure
@@ -268,31 +264,51 @@ namespace oopLab6
 
         public void UpdateFromModel(object sender, EventArgs e)
         {
+            //currentColor = model.getColor();
+            //currentElement = model.getElement();
+            //size = model.getSize();
+            //p1 = model.getP1();
+            //p2 = model.getP2();
+            //p3 = model.getP3();
+
+            //numWdt.Value = size.Width;
+            //numHgh.Value = size.Height;
+            //numPosX.Value = p1.X;
+            //numPosY.Value = p1.Y;
+
+            //nump2X.Value = p2.X;
+            //nump2Y.Value = p2.Y;
+
+            //nump3X.Value = p3.X;
+            //nump3Y.Value = p3.Y;
+
             currentColor = model.getColor();
             currentElement = model.getElement();
-            size = model.getSize();
-            p1 = model.getP1();
-            p2 = model.getP2();
-            p3 = model.getP3();
 
-            numWdt.Value = size.Width;
-            numHgh.Value = size.Height;
-            numPosX.Value = p1.X;
-            numPosY.Value = p1.Y;
+            numWdt.Value = model.getSize().Width;
+            numHgh.Value = model.getSize().Height;
+            numPosX.Value = model.getP1().X;
+            numPosY.Value = model.getP1().Y;
 
-            nump2X.Value = p2.X;
-            nump2Y.Value = p2.Y;
+            nump2X.Value = model.getP2().X;
+            nump2Y.Value = model.getP2().Y;
 
-            nump3X.Value = p3.X;
-            nump3Y.Value = p3.Y;
+            nump3X.Value = model.getP3().X;
+            nump3Y.Value = model.getP3().Y;
 
             if (lvObj.SelectedItem != null)
             {
+                //(lvObj.SelectedItem as Figure).setColor(currentColor);
+                //(lvObj.SelectedItem as Figure).setSize(size);
+                //(lvObj.SelectedItem as Figure).setP1(p1);
+                //(lvObj.SelectedItem as Figure).setP2(p2);
+                //(lvObj.SelectedItem as Figure).setP3(p3);
+
                 (lvObj.SelectedItem as Figure).setColor(currentColor);
-                (lvObj.SelectedItem as Figure).setSize(size);
-                (lvObj.SelectedItem as Figure).setP1(p1);
-                (lvObj.SelectedItem as Figure).setP2(p2);
-                (lvObj.SelectedItem as Figure).setP3(p3);
+                (lvObj.SelectedItem as Figure).setSize(new Size((int)numWdt.Value, (int)numHgh.Value));
+                (lvObj.SelectedItem as Figure).setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
+                (lvObj.SelectedItem as Figure).setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
+                (lvObj.SelectedItem as Figure).setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
             }
 
         }
@@ -472,13 +488,13 @@ namespace oopLab6
         {
             Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
             if (currentElement == "btnSctn")
-                storage.add(new Section(mousePos, p2, size, currentColor, grObj), grObj, lvObj);
+                storage.add(new Section(mousePos, new Point((int)nump2X.Value, (int)nump2Y.Value), new Size((int)numWdt.Value, (int)numHgh.Value), currentColor, grObj), grObj, lvObj);
             else if (currentElement == "btnElps")
-                storage.add(new Ellipse(mousePos, size, currentColor, grObj), grObj, lvObj);
+                storage.add(new Ellipse(mousePos, new Size((int)numWdt.Value, (int)numHgh.Value), currentColor, grObj), grObj, lvObj);
             else if (currentElement == "btnTrn")
-                storage.add(new Triangle(mousePos, p2, p3, size, currentColor, grObj), grObj, lvObj);
+                storage.add(new Triangle(mousePos, new Point((int)nump2X.Value, (int)nump2Y.Value), new Point((int)nump3X.Value, (int)nump3Y.Value), new Size((int)numWdt.Value, (int)numHgh.Value), currentColor, grObj), grObj, lvObj);
             else if (currentElement == "btnRct")
-                storage.add(new Rect(mousePos, size, currentColor, grObj), grObj, lvObj);
+                storage.add(new Rect(mousePos, new Size((int)numWdt.Value, (int)numHgh.Value), currentColor, grObj), grObj, lvObj);
             else
             {
                 if (lvObj.SelectedItem != null)
