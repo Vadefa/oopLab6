@@ -134,7 +134,7 @@ namespace oopLab6
             this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.canvas.Location = new System.Drawing.Point(208, 54);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(700, 500);
+            this.canvas.Size = new System.Drawing.Size(500, 500);
             this.canvas.TabIndex = 1;
             this.canvas.Click += new System.EventHandler(this.canvas_Click);
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
@@ -321,7 +321,7 @@ namespace oopLab6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(944, 590);
+            this.ClientSize = new System.Drawing.Size(792, 590);
             this.Controls.Add(this.btnTrsh);
             this.Controls.Add(this.lvObj);
             this.Controls.Add(this.flowLayoutPanel2);

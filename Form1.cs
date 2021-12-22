@@ -390,16 +390,23 @@ namespace oopLab6
                 return y;
             }
 
-            public bool is_Correct(int value)
+            public bool is_CorrectSize(int value)
             {
-                if ((value >= 10) && value <= 200)
+                if ((value >= 10) && value <= 500)
+                    return true;
+                else
+                    return false;
+            }
+            public bool is_CorrectPos(int value)
+            {
+                if (value >= 0 && value <= 500)
                     return true;
                 else
                     return false;
             }
             public void setWidth(int value)
             {
-                if (is_Correct(value))
+                if (is_CorrectSize(value))
                 {
                     width = value;
                     observers.Invoke(this, null);
@@ -407,7 +414,7 @@ namespace oopLab6
             }
             public void setHeight(int value)
             {
-                if (is_Correct(value))
+                if (is_CorrectSize(value))
                 {
                     height = value;
                     observers.Invoke(this, null);
@@ -415,7 +422,7 @@ namespace oopLab6
             }
             public void setX(int value)
             {
-                if (is_Correct(value))
+                if (is_CorrectPos(value))
                 {
                     x = value;
                     observers.Invoke(this, null);
@@ -423,7 +430,7 @@ namespace oopLab6
             }
             public void setY(int value)
             {
-                if (is_Correct(value))
+                if (is_CorrectPos(value))
                 {
                     y = value;
                     observers.Invoke(this, null);
