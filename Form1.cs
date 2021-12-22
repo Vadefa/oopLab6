@@ -48,49 +48,60 @@ namespace oopLab6
         public class Figure
         {
             protected const int penWidth = 4;
-            Color color;
             protected Pen defaultPen;
-            protected Pen focusedPen = new Pen(Color.Violet, penWidth);
+            protected Pen focusedPen;
             protected bool is_focused = false;
-            
-            protected Point p1;
-            protected Size size;
 
-            public void setWidth(int width)
+            Color color;
+            protected Size size;
+            protected Point p1;
+            protected Point p2;
+            protected Point p3;
+
+            public void setColor(Color color)
             {
-                size.Width = width;
+                this.color = color;
                 ActiveForm.Invalidate();
             }
-            public void setHeight(int height)
+            public void setSize(Size size)
             {
-                size.Height = height;
+                this.size = size;
                 ActiveForm.Invalidate();
             }
-            public void setX(int x)
+            public void setP1(Point p)
             {
-                p1.X = x;
+                p1 = p;
                 ActiveForm.Invalidate();
             }
-            public void setY(int y)
+            public void setP2(Point p)
             {
-                p1.Y = y;
+                p2 = p;
                 ActiveForm.Invalidate();
             }
-            public int getWidth()
+            public void setP3(Point p)
             {
-                return size.Width;
+                p3 = p;
+                ActiveForm.Invalidate();
             }
-            public int getHeight()
+            public Color getColor()
             {
-                return size.Height;
+                return color;
             }
-            public int getX()
+            public Size getSize()
             {
-                return p1.X;
+                return size;
             }
-            public int getY()
+            public Point getP1()
             {
-                return p1.Y;
+                return p1;
+            }
+            public Point getP2()
+            {
+                return p2;
+            }
+            public Point getP3()
+            {
+                return p3;
             }
             public void focus()
             {
@@ -106,107 +117,110 @@ namespace oopLab6
             {
             }
 
-            public Figure(int x, int y, int width, int height, Color color)
+            public Figure(Point p, Size size, Color color)
             {
-                defaultPen = new Pen(color, penWidth);
-                p1 = new Point(x - width / 2 - penWidth / 2, y - height / 2 - penWidth / 2);
-                size = new Size(width, height);
                 this.color = color;
+                this.size = size;
+                p1 = p;
+                p2 = new Point(0, 0);
+                p3 = new Point(0, 0);
+
+                defaultPen = new Pen(color, penWidth);
+                focusedPen = new Pen(Color.Violet, penWidth);
+            }
+            public Figure(Point p1, Point p2, Size size, Color color)
+            {
+                this.color = color;
+                this.size = size;
+                this.p1 = p1;
+                this.p2 = p2;
+                p3 = new Point(0, 0);
+
+                defaultPen = new Pen(color, penWidth);
+                focusedPen = new Pen(Color.Violet, penWidth);
+            }
+            public Figure(Point p1, Point p2, Point p3, Size size, Color color)
+            {
+                this.color = color;
+                this.size = size;
+                this.p1 = p1;
+                this.p2 = p2;
+                this.p3 = p3;
+
+                defaultPen = new Pen(color, penWidth);
+                focusedPen = new Pen(Color.Violet, penWidth);
             }
             public Figure()
             {
                 color = Color.Black;
-                defaultPen = new Pen(color, penWidth);
-                focusedPen = new Pen(Color.Violet, penWidth);
                 size = new Size(10, 10);
                 p1 = new Point(0, 0);
+                p2 = new Point(0, 0);
+                p3 = new Point(0, 0);
+                defaultPen = new Pen(color, penWidth);
+                focusedPen = new Pen(Color.Violet, penWidth);
             }
         }
         public class Section : Figure
         {
-            private Point p2;
-
             public override void paint(Graphics grObj)
             {
-                p2 = new Point(p1.X + size.Width, p1.Y + size.Height);
                 if (is_focused)
                     grObj.DrawLine(focusedPen, p1, p2);
                 else
                     grObj.DrawLine(defaultPen, p1, p2);
             }
-
-            public Section(int x1, int y1, int width, int height, Color col, Graphics grObj)
-                : base(x1, y1, width, height, col)
+            public Section(Point p1, Point p2, Size size, Color col, Graphics grObj)
+                : base(p1, p2, size, col)
             {
-                p2 = new Point(p1.X + width, p1.Y + height);
-
                 paint(grObj);
-
-                
             }
         }
         public class Ellipse : Figure
         {
-            private Rectangle rect;
             public override void paint(Graphics grObj)
             {
-                rect = new Rectangle(p1, size);
                 if (is_focused)
-                    grObj.DrawEllipse(focusedPen, rect);
+                    grObj.DrawEllipse(focusedPen, new Rectangle(p1, size));
                 else
-                    grObj.DrawEllipse(defaultPen, rect);
+                    grObj.DrawEllipse(defaultPen, new Rectangle(p1, size));
             }
 
-            public Ellipse(int x, int y, int width, int height, Color col, Graphics grObj)
-                : base(x, y, width, height, col)
+            public Ellipse(Point p, Size size, Color col, Graphics grObj)
+                : base(p, size, col)
             {
-                rect = new Rectangle(p1, size);
                 paint(grObj);
             }
         }
 
         public class Rect: Figure
         {
-            private Rectangle rect;
-
             public override void paint(Graphics grObj)
             {
-                rect = new Rectangle(p1, size);
                 if (is_focused)
-                    grObj.DrawRectangle(focusedPen, rect);
+                    grObj.DrawRectangle(focusedPen, new Rectangle(p1, size));
                 else
-                    grObj.DrawRectangle(defaultPen, rect);
+                    grObj.DrawRectangle(defaultPen, new Rectangle(p1, size));
             }
-            public Rect(int x, int y, int width, int height, Color col, Graphics grObj)
-                :base(x, y, width, height, col)
+            public Rect(Point p, Size size, Color col, Graphics grObj)
+                :base(p, size, col)
             {
-                rect = new Rectangle(p1, size);
                 paint(grObj);
             }
         }
 
         public class Triangle : Figure
         {
-            private Point[] points;
-            Point p2;
-            Point p3;
-
             public override void paint(Graphics grObj)
             {
-                p2 = new Point(p1.X + size.Width, p1.Y + size.Height);
-                p3 = new Point(p1.X + (p2.X - p1.X) / 2, p1.Y + (p2.Y + p1.Y) / 2);
-                points = new Point[] { p1, p2, p3 };
                 if (is_focused)
-                    grObj.DrawPolygon(focusedPen, points);
+                    grObj.DrawPolygon(focusedPen, new Point[] { p1, p2, p3 });
                 else
-                    grObj.DrawPolygon(defaultPen, points);
+                    grObj.DrawPolygon(defaultPen, new Point[] { p1, p2, p3 });
             }
-            public Triangle(int x1, int y1, int width, int height, Color col, Graphics grObj)
-            : base(x1, y1, width, height, col)
+            public Triangle(Point p1, Point p2, Point p3, Size size, Color col, Graphics grObj)
+            : base(p1, p2, p3, size, col)
             {
-                p2 = new Point (p1.X + width, p1.Y + height);
-                p3 = new Point(p1.X + (p2.X - p1.X) / 2, p1.Y + (p2.Y + p1.Y) / 2);
-                points = new Point[] { p1, p2, p3 };
                 paint(grObj);
             }
         }
@@ -250,22 +264,6 @@ namespace oopLab6
                 if (selected != null)
                     selected.unfocus();
             }
-            public void setWidth(Figure obj, int width)
-            {
-                obj.setWidth(width);
-            }
-            public void setHeight(Figure obj, int height)
-            {
-                obj.setHeight(height);
-            }
-            public void setX(Figure obj, int x)
-            {
-                obj.setX(x);
-            }
-            public void setY(Figure obj, int y)
-            {
-                obj.setY(y);
-            }
         }
 
         public void UpdateFromModel(object sender, EventArgs e)
@@ -293,148 +291,94 @@ namespace oopLab6
         }
         public class Model
         {
-            private bool colorBlack;
-            private bool colorBlue;
-            private bool colorGreen;
+            private Color color;
+            private string element;
 
-            private bool arrow;
-            private bool section;
-            private bool ellipse;
-            private bool rectangle;
-            private bool triangle;
-
-            private int width;
-            private int height;
-            private int x;
-            private int y;
+            private Size size;
+            private Point p1;
+            private Point p2;
+            private Point p3;
 
 
             public System.EventHandler observers;
 
-            private void nullColors()
-            {
-                colorBlack = false;
-                colorBlue = false;
-                colorGreen = false;
-            }
             public Color getColor()
             {
-                if (colorBlack == true)
-                    return Color.Black;
-                else if (colorBlue == true)
-                    return Color.Blue;
-                else
-                    return Color.ForestGreen;
+                return color;
             }
             public void setColor(Color color)
             {
-                nullColors();
-                if (color == Color.Black)
-                    colorBlack = true;
-                else if (color == Color.Blue)
-                    colorBlue = true;
-                else
-                    colorGreen = true;
-                observers.Invoke(this, null);
-            }
-            public void nullElements()
-            {
-                arrow = false;
-                section = false;
-                ellipse = false;
-                rectangle = false;
-                triangle = false;
+                this.color = color;
             }
             public string getElement()
             {
-                if (arrow == true)
-                    return "arrow";
-                else if (section == true)
-                    return "section";
-                else if (ellipse == true)
-                    return "ellipse";
-                else if (triangle == true)
-                    return "triangle";
-                else
-                    return "rectangle";
+                return element;
             }
             public void setElement(string name)
             {
-                nullElements();
-                if (name == "btnArw")
-                    arrow = true;
-                else if (name == "btnSctn")
-                    section = true;
-                else if (name == "btnElps")
-                    ellipse = true;
-                else if (name == "btnTrn")
-                    triangle = true;
-                else
-                    rectangle = true;
+                element = name;
                 observers.Invoke(this, null);
             }
-
-
-            public int getWidth()
+            public Size getSize()
             {
-                return width;
+                return size;
             }
-            public int getHeight()
+            public Point getP1()
             {
-                return height;
+                return p1;
             }
-            public int getX()
+            public Point getP2()
             {
-                return x;
+                return p2;
             }
-            public int gety()
+            public Point getP3()
             {
-                return y;
+                return p3;
             }
 
-            public bool is_CorrectSize(int value)
+            public bool is_CorrectSize(Size s)
             {
-                if ((value >= 10) && value <= 500)
+                if ((s.Width >= 10) && s.Width <= 500 && s.Height >= 10 && s.Height <= 500)
                     return true;
                 else
                     return false;
             }
-            public bool is_CorrectPos(int value)
+            public bool is_CorrectPos(Point p)
             {
-                if (value >= 0 && value <= 500)
+                if (p.X >= 0 && p.X <= 500 && p.Y >= 0 && p.Y <= 500)
                     return true;
                 else
                     return false;
             }
-            public void setWidth(int value)
+            public void setSize(Size size)
             {
-                if (is_CorrectSize(value))
+                if (is_CorrectSize(size))
                 {
-                    width = value;
+                    this.size = size;
                     observers.Invoke(this, null);
                 }
             }
-            public void setHeight(int value)
+            public void setP1(Point p)
             {
-                if (is_CorrectSize(value))
+                if (is_CorrectPos(p))
                 {
-                    height = value;
+                    p1 = p;
                     observers.Invoke(this, null);
                 }
             }
-            public void setX(int value)
+            public void setP2(Point p)
             {
-                if (is_CorrectPos(value))
+                if (is_CorrectPos(p))
                 {
-                    x = value;
+                    p2 = p;
                     observers.Invoke(this, null);
                 }
             }
-            public void setY(int value)
+            public void setP3(Point p)
             {
-                if (is_CorrectPos(value))
+                if (is_CorrectPos(p))
                 {
-                    y = value;
+                    p3 = p;
                     observers.Invoke(this, null);
                 }
             }
@@ -443,38 +387,27 @@ namespace oopLab6
             {
                 if (obj != null)
                 {
-                    width = obj.getWidth();
-                    height = obj.getHeight();
-                    x = obj.getX();
-                    y = obj.getY();
+                    color = obj.getColor();
+                    size = obj.getSize();
+                    p1 = obj.getP1();
+                    p2 = obj.getP2();
+                    p3 = obj.getP3();
                     observers.Invoke(this, null);
                 }
             }
 
             public void destructor()
             {
-                //Properties.Settings.Default.x = x;
-                //Properties.Settings.Default.y = y;
-                //Properties.Settings.Default.width = width;
-                //Properties.Settings.Default.height = height;
-                //Properties.Settings.Default.Save();
+
             }
             public Model()
             {
-                colorBlack = true;
-                colorBlue = false;
-                colorGreen = false;
-
-                arrow = true;
-                section = false;
-                ellipse = false;
-                rectangle = false;
-                triangle = false;
-
-                x = Properties.Settings.Default.x;
-                y = Properties.Settings.Default.y;
-                width = Properties.Settings.Default.width;
-                height = Properties.Settings.Default.height;
+                color = Color.Black;
+                size = new Size(Properties.Settings.Default.width, Properties.Settings.Default.height);
+                element = "";
+                p1 = new Point(0, 0);
+                p2 = new Point(0, 0);
+                p3 = new Point(0, 0);
             }
         }
 

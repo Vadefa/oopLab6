@@ -2,12 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="oopLab6.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="x" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
-    </Setting>
-    <Setting Name="y" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
-    </Setting>
     <Setting Name="width" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
