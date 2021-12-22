@@ -194,6 +194,12 @@ namespace oopLab6
             height = model.getHeight();
             x = model.getX();
             y = model.gety();
+
+            numWdt.Value = width;
+            numHgh.Value = height;
+            numPosX.Value = x;
+            numPosY.Value = y;
+
         }
         public class Model
         {
@@ -336,6 +342,14 @@ namespace oopLab6
                 }
             }
 
+            public void destructor()
+            {
+                Properties.Settings.Default.x = x;
+                Properties.Settings.Default.y = y;
+                Properties.Settings.Default.width = width;
+                Properties.Settings.Default.height = height;
+                Properties.Settings.Default.Save();
+            }
             public Model()
             {
                 colorBlack = true;
@@ -352,16 +366,6 @@ namespace oopLab6
                 y = Properties.Settings.Default.y;
                 width = Properties.Settings.Default.width;
                 height = Properties.Settings.Default.height;
-            }
-            ~Model()
-            {
-
-                Properties.Settings.Default.x = x;
-                Properties.Settings.Default.y = y;
-                Properties.Settings.Default.width = width;
-                Properties.Settings.Default.height = height;
-                Properties.Settings.Default.Save();
-
             }
         }
 
@@ -445,6 +449,11 @@ namespace oopLab6
                 storage.add(new Triangle(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
             else if (currentElement == "rectangle")
                 storage.add(new Rect(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            model.destructor();
         }
     }
 }
