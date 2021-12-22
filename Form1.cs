@@ -453,11 +453,11 @@ namespace oopLab6
 
             public void destructor()
             {
-                Properties.Settings.Default.x = x;
-                Properties.Settings.Default.y = y;
-                Properties.Settings.Default.width = width;
-                Properties.Settings.Default.height = height;
-                Properties.Settings.Default.Save();
+                //Properties.Settings.Default.x = x;
+                //Properties.Settings.Default.y = y;
+                //Properties.Settings.Default.width = width;
+                //Properties.Settings.Default.height = height;
+                //Properties.Settings.Default.Save();
             }
             public Model()
             {

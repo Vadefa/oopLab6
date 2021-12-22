@@ -49,12 +49,15 @@ namespace oopLab6
             this.label3 = new System.Windows.Forms.Label();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.numPosY = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.nump2X = new System.Windows.Forms.NumericUpDown();
+            this.nump2Y = new System.Windows.Forms.NumericUpDown();
             this.lvObj = new System.Windows.Forms.ListBox();
             this.btnTrsh = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label4 = new System.Windows.Forms.Label();
-            this.nump3 = new System.Windows.Forms.NumericUpDown();
-            this.nump2 = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.nump3Y = new System.Windows.Forms.NumericUpDown();
+            this.nump3X = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -62,8 +65,10 @@ namespace oopLab6
             ((System.ComponentModel.ISupportInitialize)(this.numHgh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nump3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nump2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nump2X)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nump2Y)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nump3X)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -157,11 +162,14 @@ namespace oopLab6
             this.flowLayoutPanel2.Controls.Add(this.numPosX);
             this.flowLayoutPanel2.Controls.Add(this.numPosY);
             this.flowLayoutPanel2.Controls.Add(this.label4);
-            this.flowLayoutPanel2.Controls.Add(this.nump2);
-            this.flowLayoutPanel2.Controls.Add(this.nump3);
+            this.flowLayoutPanel2.Controls.Add(this.nump2X);
+            this.flowLayoutPanel2.Controls.Add(this.nump2Y);
+            this.flowLayoutPanel2.Controls.Add(this.label5);
+            this.flowLayoutPanel2.Controls.Add(this.nump3X);
+            this.flowLayoutPanel2.Controls.Add(this.nump3Y);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(58, 54);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 260);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 350);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
             // label1
@@ -303,20 +311,53 @@ namespace oopLab6
             this.numPosY.TabIndex = 8;
             this.numPosY.ValueChanged += new System.EventHandler(this.numPosY_ValueChanged);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 186);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(110, 40);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "2nd additional point";
+            // 
+            // nump2X
+            // 
+            this.nump2X.Location = new System.Drawing.Point(3, 229);
+            this.nump2X.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.nump2X.Name = "nump2X";
+            this.nump2X.Size = new System.Drawing.Size(48, 27);
+            this.nump2X.TabIndex = 5;
+            // 
+            // nump2Y
+            // 
+            this.nump2Y.Location = new System.Drawing.Point(57, 229);
+            this.nump2Y.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.nump2Y.Name = "nump2Y";
+            this.nump2Y.Size = new System.Drawing.Size(48, 27);
+            this.nump2Y.TabIndex = 5;
+            // 
             // lvObj
             // 
             this.lvObj.FormattingEnabled = true;
             this.lvObj.ItemHeight = 20;
-            this.lvObj.Location = new System.Drawing.Point(11, 320);
+            this.lvObj.Location = new System.Drawing.Point(11, 410);
             this.lvObj.Name = "lvObj";
-            this.lvObj.Size = new System.Drawing.Size(180, 184);
+            this.lvObj.Size = new System.Drawing.Size(180, 144);
             this.lvObj.TabIndex = 3;
             this.lvObj.SelectedIndexChanged += new System.EventHandler(this.lvObj_SelectedIndexChanged);
             // 
             // btnTrsh
             // 
             this.btnTrsh.BackgroundImage = global::oopLab6.Properties.Resources.Trash_can;
-            this.btnTrsh.Location = new System.Drawing.Point(159, 510);
+            this.btnTrsh.Location = new System.Drawing.Point(159, 565);
             this.btnTrsh.Name = "btnTrsh";
             this.btnTrsh.Size = new System.Drawing.Size(32, 32);
             this.btnTrsh.TabIndex = 4;
@@ -324,44 +365,44 @@ namespace oopLab6
             this.btnTrsh.UseVisualStyleBackColor = true;
             this.btnTrsh.Click += new System.EventHandler(this.btnTrsh_Click);
             // 
-            // label4
+            // label5
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 186);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(124, 40);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Additional points (p2, p3)";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 259);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(107, 40);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "3rd additional point";
             // 
-            // nump3
+            // nump3Y
             // 
-            this.nump3.Location = new System.Drawing.Point(58, 229);
-            this.nump3.Maximum = new decimal(new int[] {
+            this.nump3Y.Location = new System.Drawing.Point(57, 302);
+            this.nump3Y.Maximum = new decimal(new int[] {
             500,
             0,
             0,
             0});
-            this.nump3.Name = "nump3";
-            this.nump3.Size = new System.Drawing.Size(48, 27);
-            this.nump3.TabIndex = 5;
+            this.nump3Y.Name = "nump3Y";
+            this.nump3Y.Size = new System.Drawing.Size(48, 27);
+            this.nump3Y.TabIndex = 5;
             // 
-            // nump2
+            // nump3X
             // 
-            this.nump2.Location = new System.Drawing.Point(3, 229);
-            this.nump2.Maximum = new decimal(new int[] {
+            this.nump3X.Location = new System.Drawing.Point(3, 302);
+            this.nump3X.Maximum = new decimal(new int[] {
             500,
             0,
             0,
             0});
-            this.nump2.Name = "nump2";
-            this.nump2.Size = new System.Drawing.Size(49, 27);
-            this.nump2.TabIndex = 5;
+            this.nump3X.Name = "nump3X";
+            this.nump3X.Size = new System.Drawing.Size(48, 27);
+            this.nump3X.TabIndex = 5;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 590);
+            this.ClientSize = new System.Drawing.Size(792, 609);
             this.Controls.Add(this.btnTrsh);
             this.Controls.Add(this.lvObj);
             this.Controls.Add(this.flowLayoutPanel2);
@@ -379,8 +420,10 @@ namespace oopLab6
             ((System.ComponentModel.ISupportInitialize)(this.numHgh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nump3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nump2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nump2X)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nump2Y)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nump3X)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -412,8 +455,11 @@ namespace oopLab6
         private System.Windows.Forms.Button btnTrsh;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown nump2;
-        private System.Windows.Forms.NumericUpDown nump3;
+        private System.Windows.Forms.NumericUpDown nump2X;
+        private System.Windows.Forms.NumericUpDown nump2Y;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown nump3X;
+        private System.Windows.Forms.NumericUpDown nump3Y;
     }
 }
 
