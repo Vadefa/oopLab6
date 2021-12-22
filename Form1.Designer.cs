@@ -294,6 +294,7 @@ namespace oopLab6
             this.lvObj.Name = "lvObj";
             this.lvObj.Size = new System.Drawing.Size(180, 184);
             this.lvObj.TabIndex = 3;
+            this.lvObj.SelectedIndexChanged += new System.EventHandler(this.lvObj_SelectedIndexChanged);
             // 
             // btnTrsh
             // 

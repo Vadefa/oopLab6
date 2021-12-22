@@ -189,10 +189,24 @@ namespace oopLab6
         }
         public class StorageService : Storage
         {
+            Figure selected;
             public void Draw(Graphics grObj)
             {
                 foreach (Figure f in storage)
                     f.paint(grObj);
+            }
+            public void focus(Figure obj)
+            {
+                if (obj != null)
+                {
+                    obj.focus();
+                    selected = obj;
+                }
+            }
+            public void unfocus()
+            {
+                if (selected != null)
+                    selected.unfocus();
             }
         }
 
@@ -454,6 +468,8 @@ namespace oopLab6
                 storage.add(new Triangle(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
             else if (currentElement == "rectangle")
                 storage.add(new Rect(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
+            else
+                storage.unfocus();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -466,5 +482,10 @@ namespace oopLab6
             storage.remove(lvObj.SelectedItem as Figure, lvObj);
         }
 
+        private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            storage.unfocus();
+            storage.focus(lvObj.SelectedItem as Figure);
+        }
     }
 }
