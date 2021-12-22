@@ -29,6 +29,7 @@ namespace oopLab6
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnArw = new System.Windows.Forms.Button();
             this.btnSctn = new System.Windows.Forms.Button();
@@ -48,7 +49,9 @@ namespace oopLab6
             this.label3 = new System.Windows.Forms.Label();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.numPosY = new System.Windows.Forms.NumericUpDown();
-            this.objects = new System.Windows.Forms.ListBox();
+            this.lvObj = new System.Windows.Forms.ListBox();
+            this.btnTrsh = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -283,27 +286,40 @@ namespace oopLab6
             this.numPosY.TabIndex = 8;
             this.numPosY.ValueChanged += new System.EventHandler(this.numPosY_ValueChanged);
             // 
-            // objects
+            // lvObj
             // 
-            this.objects.FormattingEnabled = true;
-            this.objects.ItemHeight = 20;
-            this.objects.Location = new System.Drawing.Point(11, 320);
-            this.objects.Name = "objects";
-            this.objects.Size = new System.Drawing.Size(180, 184);
-            this.objects.TabIndex = 3;
+            this.lvObj.FormattingEnabled = true;
+            this.lvObj.ItemHeight = 20;
+            this.lvObj.Location = new System.Drawing.Point(11, 320);
+            this.lvObj.Name = "lvObj";
+            this.lvObj.Size = new System.Drawing.Size(180, 184);
+            this.lvObj.TabIndex = 3;
+            // 
+            // btnTrsh
+            // 
+            this.btnTrsh.BackgroundImage = global::oopLab6.Properties.Resources.Trash_can;
+            this.btnTrsh.Location = new System.Drawing.Point(159, 510);
+            this.btnTrsh.Name = "btnTrsh";
+            this.btnTrsh.Size = new System.Drawing.Size(32, 32);
+            this.btnTrsh.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.btnTrsh, "Delete element");
+            this.btnTrsh.UseVisualStyleBackColor = true;
+            this.btnTrsh.Click += new System.EventHandler(this.btnTrsh_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(803, 558);
-            this.Controls.Add(this.objects);
+            this.ClientSize = new System.Drawing.Size(944, 590);
+            this.Controls.Add(this.btnTrsh);
+            this.Controls.Add(this.lvObj);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.canvas);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
@@ -338,8 +354,10 @@ namespace oopLab6
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnBlue;
         private System.Windows.Forms.Button btnGrn;
-        private System.Windows.Forms.ListBox objects;
+        private System.Windows.Forms.ListBox lvObj;
         private System.Windows.Forms.Button btnBlck;
+        private System.Windows.Forms.Button btnTrsh;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

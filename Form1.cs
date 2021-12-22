@@ -34,9 +34,17 @@ namespace oopLab6
 
             grObj = canvas.CreateGraphics();
         }
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            canvas.Invalidate();
+        }
+        private void canvas_Paint(object sender, PaintEventArgs e)
+        {
+            grObj = canvas.CreateGraphics();
+            storage.Draw(grObj);
+        }
 
 
- 
         public class Figure
         {
             protected const int penWidth = 4;
@@ -164,13 +172,15 @@ namespace oopLab6
         public class Storage
         {
             protected List<Figure> storage;
-            public void remove(Figure obj)                            // removes all nulled elements
+            public void remove(Figure obj, ListBox lb)                            // removes all nulled elements
             {
                 storage.Remove(obj);
+                lb.Items.Remove(obj);
             }
-            public void add(Figure obj, Graphics ellipses)
+            public void add(Figure obj, Graphics ellipses, ListBox lb)
             {
                 storage.Add(obj);
+                lb.Items.Add(obj);
             }
             public Storage()
             {
@@ -370,11 +380,6 @@ namespace oopLab6
         }
 
 
-        private void canvas_Paint(object sender, PaintEventArgs e)
-        {
-            grObj = canvas.CreateGraphics();
-            storage.Draw(grObj);
-        }
 
         private void btnSctn_Click(object sender, EventArgs e)
         {
@@ -442,18 +447,24 @@ namespace oopLab6
         {
             Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
             if (currentElement == "section")
-                storage.add(new Section(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
+                storage.add(new Section(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
             else if (currentElement == "ellipse")
-                storage.add(new Ellipse(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
+                storage.add(new Ellipse(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
             else if (currentElement == "triangle")
-                storage.add(new Triangle(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
+                storage.add(new Triangle(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
             else if (currentElement == "rectangle")
-                storage.add(new Rect(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj);
+                storage.add(new Rect(mousePos.X, mousePos.Y, width, height, currentColor, grObj), grObj, lvObj);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             model.destructor();
         }
+
+        private void btnTrsh_Click(object sender, EventArgs e)
+        {
+            storage.remove(lvObj.SelectedItem as Figure, lvObj);
+        }
+
     }
 }

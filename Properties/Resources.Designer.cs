@@ -123,6 +123,16 @@ namespace oopLab6.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Trash_can {
+            get {
+                object obj = ResourceManager.GetObject("Trash can", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Triangle {
             get {
                 object obj = ResourceManager.GetObject("Triangle", resourceCulture);
