@@ -193,6 +193,8 @@ namespace oopLab6
 
             public override void paint(Graphics grObj)
             {
+                p2 = new Point(p1.X + size.Width, p1.Y + size.Height);
+                p3 = new Point(p1.X + (p2.X - p1.X) / 2, p1.Y + (p2.Y - p1.Y) / 2);
                 points = new Point[] { p1, p2, p3 };
                 if (is_focused)
                     grObj.DrawPolygon(focusedPen, points);
@@ -203,7 +205,7 @@ namespace oopLab6
             : base(x1, y1, width, height, col)
             {
                 p2 = new Point (p1.X + width, p1.Y + height);
-                p3 = new Point(p2.X+ 50, p1.Y + 50);
+                p3 = new Point(p1.X + (p2.X - p1.X) / 2, p1.Y + (p2.Y - p1.Y) / 2);
                 points = new Point[] { p1, p2, p3 };
                 paint(grObj);
             }
