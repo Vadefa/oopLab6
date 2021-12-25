@@ -249,6 +249,10 @@ namespace oopLab6
         }
         public class Section : Figure
         {
+            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
+                : base(p1, p2, thickness, color, grObj)
+            {
+            }
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
@@ -256,13 +260,13 @@ namespace oopLab6
                 else
                     grObj.DrawLine(new Pen(color, thickness), p1, p2);
             }
-            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
-                : base(p1, p2, thickness, color, grObj)
-            {
-            }
         }
         public class Ellipse : Figure
         {
+            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
+                : base(p1, p2, thickness, col, grObj)
+            {
+            }
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
@@ -271,13 +275,13 @@ namespace oopLab6
                     grObj.DrawEllipse(new Pen(color, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
             }
 
-            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                : base(p1, p2, thickness, col, grObj)
-            {
-            }
         }
         public class Rect: Figure
         {
+            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
+                : base(p1, p2, thickness, col, grObj)
+            {
+            }
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
@@ -285,15 +289,16 @@ namespace oopLab6
                 else
                     grObj.DrawRectangle(new Pen(color, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
             }
-            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                :base(p1, p2, thickness, col, grObj)
-            {
-            }
         }
-
         public class Triangle : Figure
         {
             Point p3;
+            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
+            : base(p1, p2, thickness, col, null)
+            {
+                p3 = new Point(p3.X - thickness / 2, p3.Y - thickness / 2);
+                paint(grObj);
+            }
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
@@ -301,11 +306,15 @@ namespace oopLab6
                 else
                     grObj.DrawPolygon(new Pen(color, thickness), new Point[] { p1, p2, p3 });
             }
-            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
-            : base(p1, p2, thickness, col, null)
+
+            public Point getP3()
             {
-                p3 = new Point(p3.X - thickness / 2, p3.Y - thickness / 2);
-                paint(grObj);
+                return p3;
+            }
+            public void setP3(Point p3)
+            {
+                this.p3 = p3;
+                ActiveForm.Invalidate();
             }
         }
 
