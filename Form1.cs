@@ -194,8 +194,6 @@ namespace oopLab6
             {
                 this.thickness = thickness;
                 this.color = color;
-                //this.p1 = new Point (p1.X - ((p2.X - p1.X) / 2 - thickness / 2), p1.Y - ((p2.Y - p1.Y) / 2 - thickness / 2));
-                //this.p2 = new Point (this.p1.X ;
                 this.p1 = p1;
                 this.p2 = p2;
                 if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
@@ -275,9 +273,9 @@ namespace oopLab6
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
-                    grObj.DrawEllipse(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
+                    grObj.DrawEllipse(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
                 else
-                    grObj.DrawEllipse(new Pen(color, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
+                    grObj.DrawEllipse(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
             }
 
         }
@@ -290,9 +288,9 @@ namespace oopLab6
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
-                    grObj.DrawRectangle(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
+                    grObj.DrawRectangle(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
                 else
-                    grObj.DrawRectangle(new Pen(color, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
+                    grObj.DrawRectangle(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
             }
         }
         public class Triangle : Figure
@@ -301,7 +299,7 @@ namespace oopLab6
             public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
             : base(p1, p2, thickness, col, null)
             {
-                p3 = new Point(p3.X - thickness / 2, p3.Y - thickness / 2);
+                this.p3 = p3;
                 paint(grObj);
             }
             public override void paint(Graphics grObj)
@@ -406,9 +404,9 @@ namespace oopLab6
         
         public void btnClick()
         {
-            mp1 = new Point();
-            mp2 = new Point();
-            mp3 = new Point();
+            mp1 = new Point(-1, -1);
+            mp2 = new Point(-1, -1);
+            mp3 = new Point(-1, -1);
         }
         private void btnSctn_Click(object sender, EventArgs e)
         {
@@ -479,38 +477,37 @@ namespace oopLab6
             Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
             if (currentElement == "btnSctn")
             {
-                if (mp1 == null)
+                if (mp1.X == -1)
                 {
                     mp1 = mousePos;
-                    return;
                 }
                 else
                 {
                     mp2 = mousePos;
                     storage.add(new Section(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                    btnClick();
                 }
             }
             else if (currentElement == "btnElps")
             {
-                if (mp1 == null)
+                if (mp1.X == -1)
                 {
                     mp1 = mousePos;
-                    return;
                 }
                 else
                 {
                     mp2 = mousePos;
                     storage.add(new Ellipse(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                    btnClick();
                 }
             }
             else if (currentElement == "btnTrn")
             {
-                if (mp1 == null)
+                if (mp1.X == -1)
                 {
                     mp1 = mousePos;
-                    return;
                 }
-                else if (mp2 == null)
+                else if (mp2.X == -1)
                 {
                     mp2 = mousePos;
                 }
@@ -518,21 +515,20 @@ namespace oopLab6
                 {
                     mp3 = mousePos;
                     storage.add(new Triangle(mp1, mp2, mp3, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                    btnClick();
                 }
             }
             else if (currentElement == "btnRct")
             {
+                if (mp1.X == -1)
                 {
-                    if (mp1 == null)
-                    {
-                        mp1 = mousePos;
-                        return;
-                    }
-                    else
-                    {
-                        mp2 = mousePos;
-                        storage.add(new Rect(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
-                    }
+                    mp1 = mousePos;
+                }
+                else
+                {
+                    mp2 = mousePos;
+                    storage.add(new Rect(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                    btnClick();
                 }
             }
             else
