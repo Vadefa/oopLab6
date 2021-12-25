@@ -193,7 +193,8 @@ namespace oopLab6
                 this.color = color;
                 this.p1 = new Point(p1.X - thickness, p1.Y - thickness / 2);
                 this.p2 = new Point(p2.X - thickness, p2.Y - thickness / 2);
-                paint(grObj);
+                if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
+                    paint(grObj);
             }
             virtual public void paint(Graphics grObj)
             {
@@ -251,14 +252,13 @@ namespace oopLab6
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
-                    grObj.DrawLine(focusedPen, p1, p2);
+                    grObj.DrawLine(new Pen(Color.Violet, thickness), p1, p2);
                 else
-                    grObj.DrawLine(defaultPen, p1, p2);
+                    grObj.DrawLine(new Pen(color, thickness), p1, p2);
             }
-            public Section(Point p1, Point p2, Size size, Color col, Graphics grObj)
-                : base(p1, p2, size, col)
+            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
+                : base(p1, p2, thickness, color, grObj)
             {
-                paint(grObj);
             }
         }
         public class Ellipse : Figure
@@ -266,46 +266,45 @@ namespace oopLab6
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
-                    grObj.DrawEllipse(focusedPen, new Rectangle(p1, size));
+                    grObj.DrawEllipse(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
                 else
-                    grObj.DrawEllipse(defaultPen, new Rectangle(p1, size));
+                    grObj.DrawEllipse(new Pen(color, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
             }
 
-            public Ellipse(Point p, Size size, Color col, Graphics grObj)
-                : base(p, size, col)
+            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
+                : base(p1, p2, thickness, col, grObj)
             {
-                paint(grObj);
             }
         }
-
         public class Rect: Figure
         {
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
-                    grObj.DrawRectangle(focusedPen, new Rectangle(p1, size));
+                    grObj.DrawRectangle(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
                 else
-                    grObj.DrawRectangle(defaultPen, new Rectangle(p1, size));
+                    grObj.DrawRectangle(new Pen(color, thickness), new Rectangle(p1, new Size(p2.X, p2.Y)));
             }
-            public Rect(Point p, Size size, Color col, Graphics grObj)
-                :base(p, size, col)
+            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
+                :base(p1, p2, thickness, col, grObj)
             {
-                paint(grObj);
             }
         }
 
         public class Triangle : Figure
         {
+            Point p3;
             public override void paint(Graphics grObj)
             {
                 if (is_focused)
-                    grObj.DrawPolygon(focusedPen, new Point[] { p1, p2, p3 });
+                    grObj.DrawPolygon(new Pen(Color.Violet, thickness), new Point[] { p1, p2, p3 });
                 else
-                    grObj.DrawPolygon(defaultPen, new Point[] { p1, p2, p3 });
+                    grObj.DrawPolygon(new Pen(color, thickness), new Point[] { p1, p2, p3 });
             }
-            public Triangle(Point p1, Point p2, Point p3, Size size, Color col, Graphics grObj)
-            : base(p1, p2, p3, size, col)
+            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
+            : base(p1, p2, thickness, col, null)
             {
+                p3 = new Point(p3.X - thickness / 2, p3.Y - thickness / 2);
                 paint(grObj);
             }
         }
