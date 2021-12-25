@@ -14,7 +14,7 @@ namespace oopLab6
     {
         Graphics grObj;
         StorageService storage;
-        //Model model;
+        Model model;
         Color currentColor = Color.Black;
         string currentElement;
         Point mp1;
@@ -27,17 +27,17 @@ namespace oopLab6
             storage = new StorageService();
 
 
-            //model = new Model();
-            //model.observers += new EventHandler(UpdateFromModel);
-            //model.observers.Invoke(this, null);
+            model = new Model();
+            model.observers += new EventHandler(UpdateFromModel);
+            model.actions += new EventHandler(ActionsFromModel);
+            model.observers.Invoke(this, null);
+
 
             grObj = canvas.CreateGraphics();
         }
 
         public class Model
         {
-            private string element;
-
             private Color color;
             private int thickness;
             private Point p1;
@@ -55,11 +55,6 @@ namespace oopLab6
                     return true;
                 else
                     return false;
-            }
-            public void setElement(string name)
-            {
-                element = name;
-                observers.Invoke(this, null);
             }
             public void setColor(Color color)
             {
@@ -90,10 +85,6 @@ namespace oopLab6
                     p3 = p;
 
                 observers.Invoke(this, null);
-            }
-            public string getElement()
-            {
-                return element;
             }
             public void setcanvWidth(int width)
             {
@@ -135,6 +126,15 @@ namespace oopLab6
             {
                 return p3;
             }
+            public int getCanvWidth()
+            {
+                return canvasWidth;
+            }
+            public int getCanvHeight()
+            {
+                return canvasHeight;
+            }
+
             public void getObject(Figure obj)
             {
                 if (obj != null)
@@ -151,6 +151,42 @@ namespace oopLab6
                     observers.Invoke(this, null);
                 }
             }
+
+            ////// clicked buttons & actions
+
+            private Point mouseP1;
+            private Point mouseP2;
+            private Point mouseP3;
+            public EventHandler actions;
+            string btnName = "";
+
+            public void setBtn(string btnName)
+            {
+                this.btnName = btnName;
+            }
+            public string getBtn()
+            {
+                return btnName;
+            }
+            void createObj(Point mouseP)
+            {
+                if (mouseP1.X == -1)
+                {
+                    mouseP1 = mouseP;
+                }
+                else if (mouseP2.X == -1)
+                {
+                    mouseP2 = mouseP;
+                    if (btnName != "btnTrn" || btnName != "btnSctn")
+                        actions.Invoke(this, null);
+                }
+                else
+                {
+                    mouseP3 = mouseP;
+                    actions.Invoke(this, null);
+                }
+            }
+
             public void destructor()
             {
                 Properties.Settings.Default.thickness = thickness;
@@ -160,7 +196,6 @@ namespace oopLab6
             }
             public Model()
             {
-                element = "";
                 color = Color.Black;
                 thickness = Properties.Settings.Default.thickness;
                 canvasWidth = Properties.Settings.Default.canvasWidth;
@@ -170,33 +205,119 @@ namespace oopLab6
                 p3 = new Point(-1, -1);
             }
         }
-        //public void UpdateFromModel(object sender, EventArgs e)
-        //{
-        //    currentColor = model.getColor();
-        //    currentElement = model.getElement();
+        public void UpdateFromModel(object sender, EventArgs e)
+        {
+            currentColor = model.getColor();
+            numThck.Value = model.getThickness();
 
-        //    numWdt.Value = model.getSize().Width;
-        //    numHgh.Value = model.getSize().Height;
-        //    numPosX.Value = model.getP1().X;
-        //    numPosY.Value = model.getP1().Y;
+            numPosX.Value = model.getP1().X;
+            numPosY.Value = model.getP1().Y;
 
-        //    nump2X.Value = model.getP2().X;
-        //    nump2Y.Value = model.getP2().Y;
+            nump2X.Value = model.getP2().X;
+            nump2Y.Value = model.getP2().Y;
 
-        //    nump3X.Value = model.getP3().X;
-        //    nump3Y.Value = model.getP3().Y;
+            if (currentElement == "btnTrn")
+            {
+                nump3X.Value = model.getP3().X;
+                nump3Y.Value = model.getP3().Y;
+                flpP3.Visible = true;
+            }
+            else
+            {
+                flpP3.Visible = false;
+            }
 
-        //    if (lvObj.SelectedItem != null)
-        //    {
-        //        (lvObj.SelectedItem as Figure).setColor(currentColor);
-        //        (lvObj.SelectedItem as Figure).setSize(new Size((int)numWdt.Value, (int)numHgh.Value));
-        //        (lvObj.SelectedItem as Figure).setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
-        //        (lvObj.SelectedItem as Figure).setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
-        //        (lvObj.SelectedItem as Figure).setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
-        //    }
+            if (currentElement != "btnTrn" || currentElement != "btnSctn")
+            {
+                numWdt.Value = Math.Abs(model.getP2().X - model.getP1().X);
+                numHgh.Value = Math.Abs(model.getP2().Y - model.getP1().Y);
+                flpSz.Visible = true;
+            }
+            else
+            {
+                flpSz.Visible = false;
+            }
 
-        //}
+            if (lvObj.SelectedItem != null)
+            {
+                (lvObj.SelectedItem as Figure).setColor(currentColor);
+                (lvObj.SelectedItem as Figure).setThickness((int)numThck.Value);
+                (lvObj.SelectedItem as Figure).setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
+                (lvObj.SelectedItem as Figure).setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
+                if (lvObj.SelectedItem is Triangle)
+                    (lvObj.SelectedItem as Triangle).setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
+            }
+        }
+        public void ActionsFromModel(object sender, EventArgs e)
+        {
+            string btn = model.getBtn();
 
+            Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
+            if (currentElement == "btnSctn")
+            {
+                if (mp1.X == -1)
+                {
+                    mp1 = mousePos;
+                }
+                else
+                {
+                    mp2 = mousePos;
+                    storage.add(new Section(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                    btnClick();
+                }
+            }
+            else if (currentElement == "btnElps")
+            {
+                if (mp1.X == -1)
+                {
+                    mp1 = mousePos;
+                }
+                else
+                {
+                    mp2 = mousePos;
+                    storage.add(new Ellipse(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                    btnClick();
+                }
+            }
+            else if (currentElement == "btnTrn")
+            {
+                if (mp1.X == -1)
+                {
+                    mp1 = mousePos;
+                }
+                else if (mp2.X == -1)
+                {
+                    mp2 = mousePos;
+                }
+                else
+                {
+                    mp3 = mousePos;
+                    storage.add(new Triangle(mp1, mp2, mp3, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                    btnClick();
+                }
+            }
+            else if (currentElement == "btnRct")
+            {
+                if (mp1.X == -1)
+                {
+                    mp1 = mousePos;
+                }
+                else
+                {
+                    mp2 = mousePos;
+                    storage.add(new Rect(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                    btnClick();
+                }
+            }
+            else
+            {
+                if (lvObj.SelectedItem != null)
+                {
+                    storage.unfocus();
+                    lvObj.SetSelected(lvObj.SelectedIndex, false);
+                }
+            }
+        }
 
         public class Figure
         {
@@ -473,56 +594,51 @@ namespace oopLab6
         }
         private void btnSctn_Click(object sender, EventArgs e)
         {
-            //model.setElement((sender as Button).Name);
-            currentElement = "btnSctn";
             btnClick();
+            model.setBtn((sender as Button).Name);
         }
 
         private void btnArw_Click(object sender, EventArgs e)
         {
-            //model.setElement((sender as Button).Name);
-            currentElement = "btnArw";
             btnClick();
+            model.setBtn((sender as Button).Name);
         }
 
         private void btnElps_Click(object sender, EventArgs e)
         {
-            //model.setElement((sender as Button).Name);
-            currentElement = "btnElps";
             btnClick();
+            model.setBtn((sender as Button).Name);
         }
 
         private void btnTrn_Click(object sender, EventArgs e)
         {
-            //model.setElement((sender as Button).Name);
-            currentElement = "btnTrn";
             btnClick();
+            model.setBtn((sender as Button).Name);
         }
 
         private void btnRct_Click(object sender, EventArgs e)
         {
-            //model.setElement((sender as Button).Name);
-            currentElement = "btnRct";
             btnClick();
+            model.setBtn((sender as Button).Name);
         }
 
 
         private void btnBlck_Click(object sender, EventArgs e)
         {
-            //model.setColor((sender as Button).BackColor);
-            currentColor = Color.Black;
+            model.setColor((sender as Button).BackColor);
+            //currentColor = Color.Black;
         }
 
         private void btnBlue_Click(object sender, EventArgs e)
         {
-            //model.setColor((sender as Button).BackColor);
-            currentColor = Color.Blue;
+            model.setColor((sender as Button).BackColor);
+            //currentColor = Color.Blue;
         }
 
         private void btnGrn_Click(object sender, EventArgs e)
         {
-            //model.setColor((sender as Button).BackColor);
-            currentColor = Color.ForestGreen;
+            model.setColor((sender as Button).BackColor);
+            //currentColor = Color.ForestGreen;
         }
 
         private void size_ValueChanged(object sender, EventArgs e)
@@ -532,7 +648,13 @@ namespace oopLab6
 
         private void numP1_ValueChanged(object sender, EventArgs e)
         {
-            //model.setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
+            model.setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
+        }
+        private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            storage.unfocus();
+            model.getObject(lvObj.SelectedItem as Figure);
+            storage.focus(lvObj.SelectedItem as Figure);
         }
 
         private void canvas_Click(object sender, EventArgs e)
@@ -606,19 +728,12 @@ namespace oopLab6
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //model.destructor();
+            model.destructor();
         }
 
         private void btnTrsh_Click(object sender, EventArgs e)
         {
             storage.remove(lvObj.SelectedItem as Figure, lvObj);
-        }
-
-        private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            storage.unfocus();
-            //model.getObject(lvObj.SelectedItem as Figure);
-            storage.focus(lvObj.SelectedItem as Figure);
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
