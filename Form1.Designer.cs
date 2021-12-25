@@ -60,6 +60,8 @@ namespace oopLab6
             this.lvObj = new System.Windows.Forms.ListBox();
             this.btnTrsh = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -72,6 +74,7 @@ namespace oopLab6
             ((System.ComponentModel.ISupportInitialize)(this.nump3X)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numThck)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -444,6 +447,25 @@ namespace oopLab6
             this.btnTrsh.UseVisualStyleBackColor = true;
             this.btnTrsh.Click += new System.EventHandler(this.btnTrsh_Click);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(792, 28);
+            this.menuStrip1.TabIndex = 5;
+            this.menuStrip1.Text = "menuStrip1";
+            this.toolTip1.SetToolTip(this.menuStrip1, "Clear the easel");
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(130, 24);
+            this.toolStripMenuItem1.Text = "Clear everything";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -454,6 +476,8 @@ namespace oopLab6
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.canvas);
             this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -471,6 +495,8 @@ namespace oopLab6
             ((System.ComponentModel.ISupportInitialize)(this.nump3X)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numThck)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -509,6 +535,8 @@ namespace oopLab6
         private System.Windows.Forms.NumericUpDown nump3Y;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown numThck;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

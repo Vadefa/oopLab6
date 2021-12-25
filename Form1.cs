@@ -406,6 +406,12 @@ namespace oopLab6
                 lb.Items.Remove(obj);
                 ActiveForm.Invalidate();
             }
+            public void removeAll(ListBox lb)
+            {
+                storage = new Figure[0];
+                lb.Items.Clear();
+                ActiveForm.Invalidate();
+            }
             public void paint(Graphics grObj)
             {
                 foreach (Figure f in storage)
@@ -593,6 +599,11 @@ namespace oopLab6
             storage.unfocus();
             //model.getObject(lvObj.SelectedItem as Figure);
             storage.focus(lvObj.SelectedItem as Figure);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            storage.removeAll(lvObj);
         }
     }
 }
