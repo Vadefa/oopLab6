@@ -15,9 +15,6 @@ namespace oopLab6
         Graphics grObj;
         StorageService storage;
         Model model;
-        Point mp1;
-        Point mp2;
-        Point mp3;
 
         public Form1()
         {
@@ -223,9 +220,9 @@ namespace oopLab6
 
             numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
             numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
-            //numPosY.ValueChanged -= new EventHandler(nump2);
-            //nump2X.ValueChanged -= new EventHandler();
-            //nump2Y.ValueChanged -= new EventHandler();
+            numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
+            nump2X.ValueChanged -= new EventHandler(numP2_ValueChanged);
+            nump2Y.ValueChanged -= new EventHandler(numP2_ValueChanged);
 
             numThck.Value = model.getThickness();
             numPosX.Value = model.getP1().X;
@@ -233,11 +230,23 @@ namespace oopLab6
             nump2X.Value = model.getP2().X;
             nump2Y.Value = model.getP2().Y;
 
+            numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
+            numPosX.ValueChanged += new EventHandler(numP1_ValueChanged);
+            numPosY.ValueChanged += new EventHandler(numP1_ValueChanged);
+            nump2X.ValueChanged += new EventHandler(numP2_ValueChanged);
+            nump2Y.ValueChanged += new EventHandler(numP2_ValueChanged);
+
             if (model.getBtn() == "btnTrn")
             {
+                nump3X.ValueChanged -= new EventHandler(numP3_ValueChanged);
+                nump3Y.ValueChanged -= new EventHandler(numP3_ValueChanged);
+
                 nump3X.Value = model.getP3().X;
                 nump3Y.Value = model.getP3().Y;
                 flpP3.Visible = true;
+
+                nump3X.ValueChanged += new EventHandler(numP3_ValueChanged);
+                nump3Y.ValueChanged += new EventHandler(numP3_ValueChanged);
             }
             else
             {
@@ -263,7 +272,8 @@ namespace oopLab6
                 (lvObj.SelectedItem as Figure).setP2(model.getP2());
                 if (lvObj.SelectedItem is Triangle)
                     (lvObj.SelectedItem as Triangle).setP3(model.getP3());
-                storage.paint(grObj);
+
+                ActiveForm.Invalidate();
             }
         }
         public void ActionsFromModel(object sender, EventArgs e)
@@ -298,6 +308,7 @@ namespace oopLab6
             else if (btn == "btnTrsh")
             {
                 storage.remove(lvObj.SelectedItem as Figure, lvObj);
+                model.unselect();
             }
             model.posReset();
         }
@@ -520,8 +531,8 @@ namespace oopLab6
             }
             public void remove(Figure obj, ListBox lb)
             {
-                base.remove(obj);
                 lb.Items.Remove(obj);
+                base.remove(obj);
                 ActiveForm.Invalidate();
             }
             public void removeAll(ListBox lb)
@@ -621,8 +632,12 @@ namespace oopLab6
         }
         private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
         {
-            model.setObject(lvObj.SelectedItem as Figure);
-            storage.focus(lvObj.SelectedItem as Figure);
+            if (lvObj.SelectedItem != null)
+            {
+                model.unselect();
+                model.setObject(lvObj.SelectedItem as Figure);
+                storage.focus(lvObj.SelectedItem as Figure);
+            }
         }
 
         private void canvas_Click(object sender, EventArgs e)
