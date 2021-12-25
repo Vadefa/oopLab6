@@ -320,20 +320,45 @@ namespace oopLab6
 
         public class Storage
         {
-            protected List<Figure> storage;
-            public void remove(Figure obj, ListBox lb)
-            {
-                storage.Remove(obj);
-                lb.Items.Remove(obj);
-            }
+            protected Figure[] storage = new Figure[0];
             public void add(Figure obj, Graphics ellipses, ListBox lb)
             {
-                storage.Add(obj);
+                sizeInc();
+                storage[storage.Length - 1] = obj;
                 lb.Items.Add(obj);
             }
-            public Storage()
+            public void remove(Figure obj, ListBox lb)
             {
-                storage = new List<Figure>();
+                sizeDec();
+                lb.Items.Remove(obj);
+            }
+            public void sizeInc()
+            {
+                Figure[] temp = new Figure[storage.Length];
+                for (int i = 0; i < temp.Length; i++)
+                    temp[i] = storage[i];
+
+                storage = new Figure[temp.Length + 1];
+                for (int i = 0; i < temp.Length; i++)
+                    storage[i] = temp[i];
+            }
+            public void sizeDec()
+            {
+                Figure[] temp = new Figure[storage.Length - 1];
+                int i = 0;
+                while (storage[i] != null)
+                {
+                    temp[i] = storage[i];
+                    i++;
+                }
+                i = i + 1;
+                for ( ; i < storage.Length; i++)
+                    temp[i - 1] = storage[i];
+
+                storage = new Figure[temp.Length];
+                for (i = 0; i < temp.Length; i++)
+                    storage[i] = temp[i];
+                    
             }
         }
         public class StorageService : Storage
