@@ -34,126 +34,120 @@ namespace oopLab6
             grObj = canvas.CreateGraphics();
         }
 
-        //public class Model
-        //{
-        //    private Color color;
-        //    private string element;
+        public class Model
+        {
+            private string element;
 
-        //    private Size size;
-        //    private Point p1;
-        //    private Point p2;
-        //    private Point p3;
+            private Color color;
+            private int thickness;
+            private Point p1;
+            private Point p2;
+            private Point p3;
 
+            //private int form
 
-        //    public System.EventHandler observers;
+            public System.EventHandler observers;
 
-        //    public Color getColor()
-        //    {
-        //        return color;
-        //    }
-        //    public void setColor(Color color)
-        //    {
-        //        this.color = color;
-        //    }
-        //    public string getElement()
-        //    {
-        //        return element;
-        //    }
-        //    public void setElement(string name)
-        //    {
-        //        element = name;
-        //        observers.Invoke(this, null);
-        //    }
-        //    public Size getSize()
-        //    {
-        //        return size;
-        //    }
-        //    public Point getP1()
-        //    {
-        //        return p1;
-        //    }
-        //    public Point getP2()
-        //    {
-        //        return p2;
-        //    }
-        //    public Point getP3()
-        //    {
-        //        return p3;
-        //    }
+            public bool is_CorrectPos(Point p)
+            {
+                if (p.X >= 0 && p.X <= 500 && p.Y >= 0 && p.Y <= 500)
+                    return true;
+                else
+                    return false;
+            }
+            public void setElement(string name)
+            {
+                element = name;
+                observers.Invoke(this, null);
+            }
+            public void setColor(Color color)
+            {
+                this.color = color;
+            }
+            public void setThickness(int thickness)
+            {
+                if (thickness > 0 && thickness <= 20)
+                    this.thickness = thickness;
+            }
+            public void setP1(Point p)
+            {
+                if (is_CorrectPos(p))
+                {
+                    p1 = p;
+                    observers.Invoke(this, null);
+                }
+            }
+            public void setP2(Point p)
+            {
+                if (is_CorrectPos(p))
+                {
+                    p2 = p;
+                    observers.Invoke(this, null);
+                }
+            }
+            public void setP3(Point p)
+            {
+                if (is_CorrectPos(p))
+                {
+                    p3 = p;
+                    observers.Invoke(this, null);
+                }
+            }
+            public string getElement()
+            {
+                return element;
+            }
+            public Color getColor()
+            {
+                return color;
+            }
+            public int getThickness()
+            {
+                return thickness;
+            }
+            public Point getP1()
+            {
+                return p1;
+            }
+            public Point getP2()
+            {
+                return p2;
+            }
+            public Point getP3()
+            {
+                return p3;
+            }
+            public void getObject(Figure obj)
+            {
+                if (obj != null)
+                {
+                    color = obj.getColor();
+                    thickness = obj.getThickness();
+                    p1 = obj.getP1();
+                    p2 = obj.getP2();
+                    if (obj is Triangle)
+                        p3 = (obj as Triangle).getP3();
+                    else
+                        p3 = new Point(-1, -1);
 
-        //    public bool is_CorrectSize(Size s)
-        //    {
-        //        if ((s.Width >= 10) && s.Width <= 500 && s.Height >= 10 && s.Height <= 500)
-        //            return true;
-        //        else
-        //            return false;
-        //    }
-        //    public bool is_CorrectPos(Point p)
-        //    {
-        //        if (p.X >= 0 && p.X <= 500 && p.Y >= 0 && p.Y <= 500)
-        //            return true;
-        //        else
-        //            return false;
-        //    }
-        //    public void setSize(Size size)
-        //    {
-        //        if (is_CorrectSize(size))
-        //        {
-        //            this.size = size;
-        //            observers.Invoke(this, null);
-        //        }
-        //    }
-        //    public void setP1(Point p)
-        //    {
-        //        if (is_CorrectPos(p))
-        //        {
-        //            p1 = p;
-        //            observers.Invoke(this, null);
-        //        }
-        //    }
-        //    public void setP2(Point p)
-        //    {
-        //        if (is_CorrectPos(p))
-        //        {
-        //            p2 = p;
-        //            observers.Invoke(this, null);
-        //        }
-        //    }
-        //    public void setP3(Point p)
-        //    {
-        //        if (is_CorrectPos(p))
-        //        {
-        //            p3 = p;
-        //            observers.Invoke(this, null);
-        //        }
-        //    }
-
-        //    public void getObject(Figure obj)
-        //    {
-        //        if (obj != null)
-        //        {
-        //            color = obj.getColor();
-        //            size = obj.getSize();
-        //            p1 = obj.getP1();
-        //            p2 = obj.getP2();
-        //            p3 = obj.getP3();
-        //            observers.Invoke(this, null);
-        //        }
-        //    }
-        //    public void destructor()
-        //    {
-
-        //    }
-        //    public Model()
-        //    {
-        //        color = Color.Black;
-        //        size = new Size(Properties.Settings.Default.width, Properties.Settings.Default.height);
-        //        element = "";
-        //        p1 = new Point(0, 0);
-        //        p2 = new Point(0, 0);
-        //        p3 = new Point(0, 0);
-        //    }
-        //}
+                    observers.Invoke(this, null);
+                }
+            }
+            public void destructor()
+            {
+                Properties.Settings.Default.thickness = thickness;
+                Properties.Settings.Default.Save();
+            }
+            public Model()
+            {
+                element = "";
+                color = Color.Black;
+                thickness = Properties.Settings.Default.thickness;
+                p1 = new Point(-1, -1);
+                p2 = new Point(-1, -1);
+                p3 = new Point(-1, -1);
+            }
+        }
         //public void UpdateFromModel(object sender, EventArgs e)
         //{
         //    currentColor = model.getColor();

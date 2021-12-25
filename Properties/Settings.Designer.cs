@@ -46,5 +46,41 @@ namespace oopLab6.Properties {
                 this["height"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int thickness {
+            get {
+                return ((int)(this["thickness"]));
+            }
+            set {
+                this["thickness"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("536")]
+        public int canvasWidth {
+            get {
+                return ((int)(this["canvasWidth"]));
+            }
+            set {
+                this["canvasWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("536")]
+        public int canvasHeight {
+            get {
+                return ((int)(this["canvasHeight"]));
+            }
+            set {
+                this["canvasHeight"] = value;
+            }
+        }
     }
 }
