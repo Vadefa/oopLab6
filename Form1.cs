@@ -191,8 +191,8 @@ namespace oopLab6
             {
                 this.thickness = thickness;
                 this.color = color;
-                this.p1 = new Point(p1.X - thickness, p1.Y - thickness / 2);
-                this.p2 = new Point(p2.X - thickness, p2.Y - thickness / 2);
+                this.p1 = new Point(Math.Abs(p1.X - p2.X) - thickness / 2, Math.Abs(p1.Y - p2.Y) - thickness / 2);
+                this.p2 = new Point(p2.X, p2.Y);
                 if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
                     paint(grObj);
             }

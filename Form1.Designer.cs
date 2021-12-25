@@ -55,11 +55,11 @@ namespace oopLab6
             this.label5 = new System.Windows.Forms.Label();
             this.nump3X = new System.Windows.Forms.NumericUpDown();
             this.nump3Y = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numThck = new System.Windows.Forms.NumericUpDown();
             this.lvObj = new System.Windows.Forms.ListBox();
             this.btnTrsh = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label6 = new System.Windows.Forms.Label();
-            this.numThck = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -383,6 +383,36 @@ namespace oopLab6
             this.nump3Y.Size = new System.Drawing.Size(48, 27);
             this.nump3Y.TabIndex = 5;
             // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(3, 332);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(102, 25);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Thickness:";
+            // 
+            // numThck
+            // 
+            this.numThck.Location = new System.Drawing.Point(3, 360);
+            this.numThck.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numThck.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numThck.Name = "numThck";
+            this.numThck.Size = new System.Drawing.Size(48, 27);
+            this.numThck.TabIndex = 5;
+            this.numThck.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // lvObj
             // 
             this.lvObj.FormattingEnabled = true;
@@ -402,21 +432,6 @@ namespace oopLab6
             this.btnTrsh.TabIndex = 4;
             this.toolTip1.SetToolTip(this.btnTrsh, "Delete element");
             this.btnTrsh.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.Location = new System.Drawing.Point(3, 332);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(102, 25);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Thickness:";
-            // 
-            // numThck
-            // 
-            this.numThck.Location = new System.Drawing.Point(3, 360);
-            this.numThck.Name = "numThck";
-            this.numThck.Size = new System.Drawing.Size(48, 27);
-            this.numThck.TabIndex = 5;
             // 
             // Form1
             // 
