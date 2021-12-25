@@ -105,6 +105,7 @@ namespace oopLab6
             this.btnSctn.Name = "btnSctn";
             this.btnSctn.Size = new System.Drawing.Size(32, 32);
             this.btnSctn.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.btnSctn, "Tap 2 times on the easel");
             this.btnSctn.UseVisualStyleBackColor = true;
             this.btnSctn.Click += new System.EventHandler(this.btnSctn_Click);
             // 
@@ -125,6 +126,7 @@ namespace oopLab6
             this.btnTrn.Name = "btnTrn";
             this.btnTrn.Size = new System.Drawing.Size(32, 32);
             this.btnTrn.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.btnTrn, "Tap 3 times on the easel");
             this.btnTrn.UseVisualStyleBackColor = true;
             this.btnTrn.Click += new System.EventHandler(this.btnTrn_Click);
             // 
