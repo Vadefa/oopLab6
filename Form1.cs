@@ -348,18 +348,7 @@ namespace oopLab6
         public class Storage
         {
             protected Figure[] storage = new Figure[0];
-            public void add(Figure obj, Graphics ellipses, ListBox lb)
-            {
-                sizeInc();
-                storage[storage.Length - 1] = obj;
-                lb.Items.Add(obj);
-            }
-            virtual public void remove(Figure obj, ListBox lb)
-            {
-                sizeDec();
-                lb.Items.Remove(obj);
-            }
-            public void sizeInc()
+            public void add(Figure obj)
             {
                 Figure[] temp = new Figure[storage.Length];
                 for (int i = 0; i < temp.Length; i++)
@@ -368,32 +357,45 @@ namespace oopLab6
                 storage = new Figure[temp.Length + 1];
                 for (int i = 0; i < temp.Length; i++)
                     storage[i] = temp[i];
+
+                storage[storage.Length - 1] = obj;
             }
-            public void sizeDec()
+            virtual public void remove(Figure obj)
             {
-                Figure[] temp = new Figure[storage.Length - 1];
                 int i = 0;
-                while (storage[i] != null)
-                {
-                    temp[i] = storage[i];
-                    i++;
-                }
-                i = i + 1;
                 for ( ; i < storage.Length; i++)
-                    temp[i - 1] = storage[i];
+                    if (storage[i] == obj)
+                        break;
+
+                Figure[] temp = new Figure[storage.Length - 1];
+                int j = 0;
+                while (j != i)
+                {
+                    temp[j] = storage[j];
+                    j++;
+                }
+                j = j + 1;
+                for (; j < storage.Length; j++)
+                    temp[j - 1] = storage[j];
 
                 storage = new Figure[temp.Length];
                 for (i = 0; i < temp.Length; i++)
                     storage[i] = temp[i];
-                    
             }
         }
         public class StorageService : Storage
         {
             Figure selected;
-            public override void remove(Figure obj, ListBox lb)
+            public void add(Figure obj, Graphics gtObj, ListBox lb)
             {
-                base.remove(obj, lb);
+                base.add(obj);
+                lb.Items.Add(obj);
+                ActiveForm.Invalidate();
+            }
+            public void remove(Figure obj, ListBox lb)
+            {
+                base.remove(obj);
+                lb.Items.Remove(obj);
                 ActiveForm.Invalidate();
             }
             public void paint(Graphics grObj)
@@ -416,6 +418,9 @@ namespace oopLab6
             }
         }
 
+        ////
+        ////classes are done
+        ////
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             canvas.Invalidate();
