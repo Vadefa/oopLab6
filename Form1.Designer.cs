@@ -38,28 +38,28 @@ namespace oopLab6
             this.btnRct = new System.Windows.Forms.Button();
             this.canvas = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpCol = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnBlck = new System.Windows.Forms.Button();
             this.btnBlue = new System.Windows.Forms.Button();
             this.btnGrn = new System.Windows.Forms.Button();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpThck = new System.Windows.Forms.FlowLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.numThck = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpSz = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.numHgh = new System.Windows.Forms.NumericUpDown();
             this.numWdt = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpP1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.numPosY = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpP2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.nump2X = new System.Windows.Forms.NumericUpDown();
             this.nump2Y = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpP3 = new System.Windows.Forms.FlowLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.nump3X = new System.Windows.Forms.NumericUpDown();
             this.nump3Y = new System.Windows.Forms.NumericUpDown();
@@ -70,20 +70,20 @@ namespace oopLab6
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
-            this.flowLayoutPanel5.SuspendLayout();
+            this.flpCol.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
-            this.flowLayoutPanel4.SuspendLayout();
+            this.flpThck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numThck)).BeginInit();
-            this.flowLayoutPanel6.SuspendLayout();
+            this.flpSz.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numHgh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWdt)).BeginInit();
-            this.flowLayoutPanel7.SuspendLayout();
+            this.flpP1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
-            this.flowLayoutPanel8.SuspendLayout();
+            this.flpP2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nump2X)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump2Y)).BeginInit();
-            this.flowLayoutPanel9.SuspendLayout();
+            this.flpP3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nump3X)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -173,25 +173,25 @@ namespace oopLab6
             // 
             this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel5);
-            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel4);
-            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel6);
-            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel7);
-            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel8);
-            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel9);
+            this.flowLayoutPanel2.Controls.Add(this.flpCol);
+            this.flowLayoutPanel2.Controls.Add(this.flpThck);
+            this.flowLayoutPanel2.Controls.Add(this.flpSz);
+            this.flowLayoutPanel2.Controls.Add(this.flpP1);
+            this.flowLayoutPanel2.Controls.Add(this.flpP2);
+            this.flowLayoutPanel2.Controls.Add(this.flpP3);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(58, 54);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 426);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
-            // flowLayoutPanel5
+            // flpCol
             // 
-            this.flowLayoutPanel5.Controls.Add(this.label1);
-            this.flowLayoutPanel5.Controls.Add(this.flowLayoutPanel3);
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(129, 61);
-            this.flowLayoutPanel5.TabIndex = 12;
+            this.flpCol.Controls.Add(this.label1);
+            this.flpCol.Controls.Add(this.flowLayoutPanel3);
+            this.flpCol.Location = new System.Drawing.Point(3, 3);
+            this.flpCol.Name = "flpCol";
+            this.flpCol.Size = new System.Drawing.Size(129, 61);
+            this.flpCol.TabIndex = 12;
             // 
             // label1
             // 
@@ -242,15 +242,15 @@ namespace oopLab6
             this.btnGrn.UseVisualStyleBackColor = false;
             this.btnGrn.Click += new System.EventHandler(this.btnGrn_Click);
             // 
-            // flowLayoutPanel4
+            // flpThck
             // 
-            this.flowLayoutPanel4.BackColor = System.Drawing.Color.White;
-            this.flowLayoutPanel4.Controls.Add(this.label6);
-            this.flowLayoutPanel4.Controls.Add(this.numThck);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 70);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(129, 60);
-            this.flowLayoutPanel4.TabIndex = 11;
+            this.flpThck.BackColor = System.Drawing.Color.White;
+            this.flpThck.Controls.Add(this.label6);
+            this.flpThck.Controls.Add(this.numThck);
+            this.flpThck.Location = new System.Drawing.Point(3, 70);
+            this.flpThck.Name = "flpThck";
+            this.flpThck.Size = new System.Drawing.Size(129, 60);
+            this.flpThck.TabIndex = 11;
             // 
             // label6
             // 
@@ -282,15 +282,15 @@ namespace oopLab6
             0,
             0});
             // 
-            // flowLayoutPanel6
+            // flpSz
             // 
-            this.flowLayoutPanel6.Controls.Add(this.label2);
-            this.flowLayoutPanel6.Controls.Add(this.numHgh);
-            this.flowLayoutPanel6.Controls.Add(this.numWdt);
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 136);
-            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(129, 70);
-            this.flowLayoutPanel6.TabIndex = 13;
+            this.flpSz.Controls.Add(this.label2);
+            this.flpSz.Controls.Add(this.numHgh);
+            this.flpSz.Controls.Add(this.numWdt);
+            this.flpSz.Location = new System.Drawing.Point(3, 136);
+            this.flpSz.Name = "flpSz";
+            this.flpSz.Size = new System.Drawing.Size(129, 70);
+            this.flpSz.TabIndex = 13;
             // 
             // label2
             // 
@@ -347,15 +347,15 @@ namespace oopLab6
             0});
             this.numWdt.ValueChanged += new System.EventHandler(this.size_ValueChanged);
             // 
-            // flowLayoutPanel7
+            // flpP1
             // 
-            this.flowLayoutPanel7.Controls.Add(this.label3);
-            this.flowLayoutPanel7.Controls.Add(this.numPosX);
-            this.flowLayoutPanel7.Controls.Add(this.numPosY);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 212);
-            this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-            this.flowLayoutPanel7.Size = new System.Drawing.Size(129, 54);
-            this.flowLayoutPanel7.TabIndex = 14;
+            this.flpP1.Controls.Add(this.label3);
+            this.flpP1.Controls.Add(this.numPosX);
+            this.flpP1.Controls.Add(this.numPosY);
+            this.flpP1.Location = new System.Drawing.Point(3, 212);
+            this.flpP1.Name = "flpP1";
+            this.flpP1.Size = new System.Drawing.Size(129, 54);
+            this.flpP1.TabIndex = 14;
             // 
             // label3
             // 
@@ -391,15 +391,15 @@ namespace oopLab6
             this.numPosY.Size = new System.Drawing.Size(48, 27);
             this.numPosY.TabIndex = 8;
             // 
-            // flowLayoutPanel8
+            // flpP2
             // 
-            this.flowLayoutPanel8.Controls.Add(this.label4);
-            this.flowLayoutPanel8.Controls.Add(this.nump2X);
-            this.flowLayoutPanel8.Controls.Add(this.nump2Y);
-            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 272);
-            this.flowLayoutPanel8.Name = "flowLayoutPanel8";
-            this.flowLayoutPanel8.Size = new System.Drawing.Size(129, 73);
-            this.flowLayoutPanel8.TabIndex = 15;
+            this.flpP2.Controls.Add(this.label4);
+            this.flpP2.Controls.Add(this.nump2X);
+            this.flpP2.Controls.Add(this.nump2Y);
+            this.flpP2.Location = new System.Drawing.Point(3, 272);
+            this.flpP2.Name = "flpP2";
+            this.flpP2.Size = new System.Drawing.Size(129, 73);
+            this.flpP2.TabIndex = 15;
             // 
             // label4
             // 
@@ -444,15 +444,15 @@ namespace oopLab6
             0,
             0});
             // 
-            // flowLayoutPanel9
+            // flpP3
             // 
-            this.flowLayoutPanel9.Controls.Add(this.label5);
-            this.flowLayoutPanel9.Controls.Add(this.nump3X);
-            this.flowLayoutPanel9.Controls.Add(this.nump3Y);
-            this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 351);
-            this.flowLayoutPanel9.Name = "flowLayoutPanel9";
-            this.flowLayoutPanel9.Size = new System.Drawing.Size(129, 68);
-            this.flowLayoutPanel9.TabIndex = 16;
+            this.flpP3.Controls.Add(this.label5);
+            this.flpP3.Controls.Add(this.nump3X);
+            this.flpP3.Controls.Add(this.nump3Y);
+            this.flpP3.Location = new System.Drawing.Point(3, 351);
+            this.flpP3.Name = "flpP3";
+            this.flpP3.Size = new System.Drawing.Size(129, 68);
+            this.flpP3.TabIndex = 16;
             // 
             // label5
             // 
@@ -545,25 +545,25 @@ namespace oopLab6
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel5.ResumeLayout(false);
-            this.flowLayoutPanel5.PerformLayout();
+            this.flpCol.ResumeLayout(false);
+            this.flpCol.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
-            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flpThck.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numThck)).EndInit();
-            this.flowLayoutPanel6.ResumeLayout(false);
-            this.flowLayoutPanel6.PerformLayout();
+            this.flpSz.ResumeLayout(false);
+            this.flpSz.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numHgh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWdt)).EndInit();
-            this.flowLayoutPanel7.ResumeLayout(false);
-            this.flowLayoutPanel7.PerformLayout();
+            this.flpP1.ResumeLayout(false);
+            this.flpP1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
-            this.flowLayoutPanel8.ResumeLayout(false);
-            this.flowLayoutPanel8.PerformLayout();
+            this.flpP2.ResumeLayout(false);
+            this.flpP2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nump2X)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump2Y)).EndInit();
-            this.flowLayoutPanel9.ResumeLayout(false);
-            this.flowLayoutPanel9.PerformLayout();
+            this.flpP3.ResumeLayout(false);
+            this.flpP3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nump3X)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -608,12 +608,12 @@ namespace oopLab6
         private System.Windows.Forms.NumericUpDown numThck;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel8;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel9;
+        private System.Windows.Forms.FlowLayoutPanel flpCol;
+        private System.Windows.Forms.FlowLayoutPanel flpThck;
+        private System.Windows.Forms.FlowLayoutPanel flpSz;
+        private System.Windows.Forms.FlowLayoutPanel flpP1;
+        private System.Windows.Forms.FlowLayoutPanel flpP2;
+        private System.Windows.Forms.FlowLayoutPanel flpP3;
     }
 }
 

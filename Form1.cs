@@ -396,8 +396,11 @@ namespace oopLab6
             Figure selected;
             public void add(Figure obj, Graphics gtObj, ListBox lb)
             {
+                unfocus();
                 base.add(obj);
                 lb.Items.Add(obj);
+                lb.SelectedItem = obj;
+                focus(obj);
                 ActiveForm.Invalidate();
             }
             public void remove(Figure obj, ListBox lb)
@@ -423,6 +426,7 @@ namespace oopLab6
                 {
                     obj.focus();
                     selected = obj;
+
                 }
             }
             public void unfocus()
@@ -461,7 +465,7 @@ namespace oopLab6
         private void btnArw_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
-            currentElement = "btnElps";
+            currentElement = "btnArw";
             btnClick();
         }
 
