@@ -44,13 +44,14 @@ namespace oopLab6
             private Point p2;
             private Point p3;
 
-            //private int form
+            private int canvasWidth;
+            private int canvasHeight;
 
             public System.EventHandler observers;
 
             public bool is_CorrectPos(Point p)
             {
-                if (p.X >= 0 && p.X <= 500 && p.Y >= 0 && p.Y <= 500)
+                if (p.X >= 0 && p.X <= canvasWidth && p.Y >= 0 && p.Y <= canvasHeight)
                     return true;
                 else
                     return false;
@@ -72,26 +73,23 @@ namespace oopLab6
             public void setP1(Point p)
             {
                 if (is_CorrectPos(p))
-                {
                     p1 = p;
-                    observers.Invoke(this, null);
-                }
+
+                observers.Invoke(this, null);
             }
             public void setP2(Point p)
             {
                 if (is_CorrectPos(p))
-                {
                     p2 = p;
-                    observers.Invoke(this, null);
-                }
+
+                observers.Invoke(this, null);
             }
             public void setP3(Point p)
             {
                 if (is_CorrectPos(p))
-                {
                     p3 = p;
-                    observers.Invoke(this, null);
-                }
+
+                observers.Invoke(this, null);
             }
             public string getElement()
             {
@@ -136,6 +134,8 @@ namespace oopLab6
             public void destructor()
             {
                 Properties.Settings.Default.thickness = thickness;
+                Properties.Settings.Default.canvasWidth = canvasWidth;
+                Properties.Settings.Default.canvasHeight = canvasHeight;
                 Properties.Settings.Default.Save();
             }
             public Model()
@@ -143,6 +143,8 @@ namespace oopLab6
                 element = "";
                 color = Color.Black;
                 thickness = Properties.Settings.Default.thickness;
+                canvasWidth = Properties.Settings.Default.canvasWidth;
+                canvasHeight = Properties.Settings.Default.canvasHeight;
                 p1 = new Point(-1, -1);
                 p2 = new Point(-1, -1);
                 p3 = new Point(-1, -1);

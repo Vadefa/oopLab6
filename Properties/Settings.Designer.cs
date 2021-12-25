@@ -25,42 +25,6 @@ namespace oopLab6.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public int width {
-            get {
-                return ((int)(this["width"]));
-            }
-            set {
-                this["width"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public int height {
-            get {
-                return ((int)(this["height"]));
-            }
-            set {
-                this["height"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int thickness {
-            get {
-                return ((int)(this["thickness"]));
-            }
-            set {
-                this["thickness"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("536")]
         public int canvasWidth {
             get {
@@ -80,6 +44,18 @@ namespace oopLab6.Properties {
             }
             set {
                 this["canvasHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int thickness {
+            get {
+                return ((int)(this["thickness"]));
+            }
+            set {
+                this["thickness"] = value;
             }
         }
     }

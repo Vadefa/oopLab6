@@ -531,7 +531,7 @@ namespace oopLab6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(948, 609);
+            this.ClientSize = new System.Drawing.Size(948, 653);
             this.Controls.Add(this.btnTrsh);
             this.Controls.Add(this.lvObj);
             this.Controls.Add(this.flowLayoutPanel2);
