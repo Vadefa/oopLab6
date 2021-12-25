@@ -181,25 +181,31 @@ namespace oopLab6
 
         public class Figure
         {
-            protected const int penWidth = 4;
-            protected Pen defaultPen;
-            protected Pen focusedPen = new Pen(Color.Violet, penWidth);
-            protected bool is_focused = false;
-
-            Color color;
-            protected Size size;
             protected Point p1;
             protected Point p2;
-            protected Point p3;
+            protected int thickness;
+            protected Color color;
 
-            public void setColor(Color color)
+            protected bool is_focused = false;
+            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj)
             {
+                this.thickness = thickness;
                 this.color = color;
+                this.p1 = new Point(p1.X - thickness, p1.Y - thickness / 2);
+                this.p2 = new Point(p2.X - thickness, p2.Y - thickness / 2);
+                paint(grObj);
+            }
+            virtual public void paint(Graphics grObj)
+            {
+            }
+            public void focus()
+            {
+                is_focused = true;
                 ActiveForm.Invalidate();
             }
-            public void setSize(Size size)
+            public void unfocus()
             {
-                this.size = size;
+                is_focused = false;
                 ActiveForm.Invalidate();
             }
             public void setP1(Point p)
@@ -212,18 +218,15 @@ namespace oopLab6
                 p2 = p;
                 ActiveForm.Invalidate();
             }
-            public void setP3(Point p)
+            public void setThickness(int thickness)
             {
-                p3 = p;
+                this.thickness = thickness;
                 ActiveForm.Invalidate();
             }
-            public Color getColor()
+            public void setColor(Color color)
             {
-                return color;
-            }
-            public Size getSize()
-            {
-                return size;
+                this.color = color;
+                ActiveForm.Invalidate();
             }
             public Point getP1()
             {
@@ -233,63 +236,15 @@ namespace oopLab6
             {
                 return p2;
             }
-            public Point getP3()
+            public int getThickness()
             {
-                return p3;
+                return thickness;
             }
-            public void focus()
+            public Color getColor()
             {
-                is_focused = true;
-                ActiveForm.Invalidate();
-            }
-            public void unfocus()
-            {
-                is_focused = false;
-                ActiveForm.Invalidate();
-            }
-            virtual public void paint(Graphics grObj)
-            {
+                return color;
             }
 
-            public Figure(Point p, Size size, Color color)
-            {
-                this.color = color;
-                this.size = size;
-                p1 = new Point(p.X - size.Width / 2 - penWidth / 2, p.Y - size.Height / 2 - penWidth / 2);
-                p2 = new Point(0, 0);
-                p3 = new Point(0, 0);
-
-                defaultPen = new Pen(color, penWidth);
-            }
-            public Figure(Point p1, Point p2, Size size, Color color)
-            {
-                this.color = color;
-                this.size = size;
-                this.p1 = new Point(p1.X - size.Width / 2 - penWidth / 2, p1.Y - size.Height / 2 - penWidth / 2);
-                this.p2 = p2;
-                p3 = new Point(0, 0);
-
-                defaultPen = new Pen(color, penWidth);
-            }
-            public Figure(Point p1, Point p2, Point p3, Size size, Color color)
-            {
-                this.color = color;
-                this.size = size;
-                this.p1 = new Point(p1.X - size.Width / 2 - penWidth / 2, p1.Y - size.Height / 2 - penWidth / 2);
-                this.p2 = p2;
-                this.p3 = p3;
-
-                defaultPen = new Pen(color, penWidth);
-            }
-            public Figure()
-            {
-                color = Color.Black;
-                size = new Size(10, 10);
-                p1 = new Point(0, 0);
-                p2 = new Point(0, 0);
-                p3 = new Point(0, 0);
-                defaultPen = new Pen(color, penWidth);
-            }
         }
         public class Section : Figure
         {
