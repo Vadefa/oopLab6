@@ -38,6 +38,7 @@ namespace oopLab6
 
         public class Model
         {
+            Figure obj;
             private Color color;
             private int thickness;
             private Point p1;
@@ -106,6 +107,27 @@ namespace oopLab6
                     }
                 observers.Invoke(this, null);
             }
+
+            public void getObject(Figure obj)
+            {
+                if (obj != null)
+                {
+                    color = obj.getColor();
+                    thickness = obj.getThickness();
+                    p1 = obj.getP1();
+                    p2 = obj.getP2();
+                    if (obj is Triangle)
+                        p3 = (obj as Triangle).getP3();
+                    else
+                        p3 = new Point(-1, -1);
+
+                    observers.Invoke(this, null);
+                }
+            }
+            public Figure getFigure()
+            {
+                return obj;
+            }
             public Color getColor()
             {
                 return color;
@@ -135,22 +157,6 @@ namespace oopLab6
                 return canvasHeight;
             }
 
-            public void getObject(Figure obj)
-            {
-                if (obj != null)
-                {
-                    color = obj.getColor();
-                    thickness = obj.getThickness();
-                    p1 = obj.getP1();
-                    p2 = obj.getP2();
-                    if (obj is Triangle)
-                        p3 = (obj as Triangle).getP3();
-                    else
-                        p3 = new Point(-1, -1);
-
-                    observers.Invoke(this, null);
-                }
-            }
 
             ////// clicked buttons & actions
 
@@ -189,7 +195,6 @@ namespace oopLab6
                     actions.Invoke(this, null);
                 }
             }
-
             public void destructor()
             {
                 Properties.Settings.Default.thickness = thickness;
@@ -272,13 +277,17 @@ namespace oopLab6
             {
                     storage.add(new Rect(model.getP1(), model.getP2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
-            else
+            else if (btn == "btnArw")
             {
                 if (lvObj.SelectedItem != null)
                 {
                     storage.unfocus();
                     lvObj.SetSelected(lvObj.SelectedIndex, false);
                 }
+            }
+            else if (btn == "btnTrsh")
+            {
+                storage.remove(lvObj.SelectedItem as Figure, lvObj);
             }
             model.posReset();
         }
@@ -550,39 +559,28 @@ namespace oopLab6
             storage.paint(grObj);
         }
         
-        public void btnClick()
-        {
-            mp1 = new Point(-1, -1);
-            mp2 = new Point(-1, -1);
-            mp3 = new Point(-1, -1);
-        }
         private void btnSctn_Click(object sender, EventArgs e)
         {
-            btnClick();
             model.setBtn((sender as Button).Name);
         }
 
         private void btnArw_Click(object sender, EventArgs e)
         {
-            btnClick();
             model.setBtn((sender as Button).Name);
         }
 
         private void btnElps_Click(object sender, EventArgs e)
         {
-            btnClick();
             model.setBtn((sender as Button).Name);
         }
 
         private void btnTrn_Click(object sender, EventArgs e)
         {
-            btnClick();
             model.setBtn((sender as Button).Name);
         }
 
         private void btnRct_Click(object sender, EventArgs e)
         {
-            btnClick();
             model.setBtn((sender as Button).Name);
         }
 
@@ -590,19 +588,21 @@ namespace oopLab6
         private void btnBlck_Click(object sender, EventArgs e)
         {
             model.setColor((sender as Button).BackColor);
-            //currentColor = Color.Black;
         }
 
         private void btnBlue_Click(object sender, EventArgs e)
         {
             model.setColor((sender as Button).BackColor);
-            //currentColor = Color.Blue;
         }
 
         private void btnGrn_Click(object sender, EventArgs e)
         {
             model.setColor((sender as Button).BackColor);
-            //currentColor = Color.ForestGreen;
+        }
+        private void btnTrsh_Click(object sender, EventArgs e)
+        {
+            model.setBtn((sender as Button).Name);
+            model.actions.Invoke(this, null);
         }
 
         private void size_ValueChanged(object sender, EventArgs e)
@@ -632,10 +632,6 @@ namespace oopLab6
             model.destructor();
         }
 
-        private void btnTrsh_Click(object sender, EventArgs e)
-        {
-            storage.remove(lvObj.SelectedItem as Figure, lvObj);
-        }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
