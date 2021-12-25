@@ -403,42 +403,50 @@ namespace oopLab6
         private void btnSctn_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
+            currentElement = "btnSctn";
         }
 
         private void btnArw_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
+            currentElement = "btnElps";
         }
 
         private void btnElps_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
+            currentElement = "btnElps";
         }
 
         private void btnTrn_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
+            currentElement = "btnTrn";
         }
 
         private void btnRct_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
+            currentElement = "btnRct";
         }
 
 
         private void btnBlck_Click(object sender, EventArgs e)
         {
             //model.setColor((sender as Button).BackColor);
+            currentColor = Color.Black;
         }
 
         private void btnBlue_Click(object sender, EventArgs e)
         {
             //model.setColor((sender as Button).BackColor);
+            currentColor = Color.Blue;
         }
 
         private void btnGrn_Click(object sender, EventArgs e)
         {
             //model.setColor((sender as Button).BackColor);
+            currentColor = Color.ForestGreen;
         }
 
         private void size_ValueChanged(object sender, EventArgs e)
