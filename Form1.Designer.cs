@@ -337,6 +337,11 @@ namespace oopLab6
             this.nump2X.Name = "nump2X";
             this.nump2X.Size = new System.Drawing.Size(48, 27);
             this.nump2X.TabIndex = 5;
+            this.nump2X.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // nump2Y
             // 
@@ -349,6 +354,11 @@ namespace oopLab6
             this.nump2Y.Name = "nump2Y";
             this.nump2Y.Size = new System.Drawing.Size(48, 27);
             this.nump2Y.TabIndex = 5;
+            this.nump2Y.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // label5
             // 

@@ -15,8 +15,11 @@ namespace oopLab6
         Graphics grObj;
         StorageService storage;
         //Model model;
-        Color currentColor;
+        Color currentColor = Color.Black;
         string currentElement;
+        Point mp1;
+        Point mp2;
+        Point mp3;
 
         public Form1()
         {
@@ -191,8 +194,10 @@ namespace oopLab6
             {
                 this.thickness = thickness;
                 this.color = color;
-                this.p1 = new Point(Math.Abs(p1.X - p2.X) - thickness / 2, Math.Abs(p1.Y - p2.Y) - thickness / 2);
-                this.p2 = new Point(p2.X, p2.Y);
+                //this.p1 = new Point (p1.X - ((p2.X - p1.X) / 2 - thickness / 2), p1.Y - ((p2.Y - p1.Y) / 2 - thickness / 2));
+                //this.p2 = new Point (this.p1.X ;
+                this.p1 = p1;
+                this.p2 = p2;
                 if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
                     paint(grObj);
             }
@@ -399,35 +404,45 @@ namespace oopLab6
             storage.paint(grObj);
         }
         
-
+        public void btnClick()
+        {
+            mp1 = new Point();
+            mp2 = new Point();
+            mp3 = new Point();
+        }
         private void btnSctn_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
             currentElement = "btnSctn";
+            btnClick();
         }
 
         private void btnArw_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
             currentElement = "btnElps";
+            btnClick();
         }
 
         private void btnElps_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
             currentElement = "btnElps";
+            btnClick();
         }
 
         private void btnTrn_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
             currentElement = "btnTrn";
+            btnClick();
         }
 
         private void btnRct_Click(object sender, EventArgs e)
         {
             //model.setElement((sender as Button).Name);
             currentElement = "btnRct";
+            btnClick();
         }
 
 
@@ -463,13 +478,63 @@ namespace oopLab6
         {
             Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
             if (currentElement == "btnSctn")
-                storage.add(new Section(mousePos, new Point((int)nump2X.Value, (int)nump2Y.Value), (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+            {
+                if (mp1 == null)
+                {
+                    mp1 = mousePos;
+                    return;
+                }
+                else
+                {
+                    mp2 = mousePos;
+                    storage.add(new Section(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                }
+            }
             else if (currentElement == "btnElps")
-                storage.add(new Ellipse(mousePos, new Point((int)nump2X.Value, (int)nump2Y.Value), (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+            {
+                if (mp1 == null)
+                {
+                    mp1 = mousePos;
+                    return;
+                }
+                else
+                {
+                    mp2 = mousePos;
+                    storage.add(new Ellipse(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                }
+            }
             else if (currentElement == "btnTrn")
-                storage.add(new Triangle(mousePos, new Point((int)nump2X.Value, (int)nump2Y.Value), new Point((int)nump3X.Value, (int)nump3Y.Value), (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+            {
+                if (mp1 == null)
+                {
+                    mp1 = mousePos;
+                    return;
+                }
+                else if (mp2 == null)
+                {
+                    mp2 = mousePos;
+                }
+                else
+                {
+                    mp3 = mousePos;
+                    storage.add(new Triangle(mp1, mp2, mp3, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                }
+            }
             else if (currentElement == "btnRct")
-                storage.add(new Rect(mousePos, new Point((int)nump2X.Value, (int)nump2Y.Value), (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+            {
+                {
+                    if (mp1 == null)
+                    {
+                        mp1 = mousePos;
+                        return;
+                    }
+                    else
+                    {
+                        mp2 = mousePos;
+                        storage.add(new Rect(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+                    }
+                }
+            }
             else
             {
                 if (lvObj.SelectedItem != null)
