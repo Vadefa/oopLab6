@@ -364,8 +364,7 @@ namespace oopLab6
         public class StorageService : Storage
         {
             Figure selected;
-
-            public void Draw(Graphics grObj)
+            public void paint(Graphics grObj)
             {
                 foreach (Figure f in storage)
                     f.paint(grObj);
