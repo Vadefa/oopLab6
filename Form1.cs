@@ -194,8 +194,32 @@ namespace oopLab6
             {
                 this.thickness = thickness;
                 this.color = color;
-                this.p1 = p1;
-                this.p2 = p2;
+                if (p1.X < p2.X)                            // if we don't painting as the default left-right, up-down style
+                {
+                    if (p1.Y < p2.Y)
+                    {
+                        this.p1 = p1;
+                        this.p2 = p2;
+                    }
+                    else
+                    {
+                        this.p1 = new Point(p1.X, p2.Y);
+                        this.p2 = new Point(p2.X, p1.Y);
+                    }
+                }
+                else
+                {
+                    if (p1.Y > p2.Y)
+                    {
+                        this.p1 = p2;
+                        this.p2 = p1;
+                    }
+                    else
+                    {
+                        this.p1 = new Point(p2.X, p1.Y);
+                        this.p2 = new Point(p1.X, p2.Y);
+                    }
+                }
                 if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
                     paint(grObj);
             }
