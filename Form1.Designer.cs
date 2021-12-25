@@ -38,25 +38,31 @@ namespace oopLab6
             this.btnRct = new System.Windows.Forms.Button();
             this.canvas = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnBlck = new System.Windows.Forms.Button();
             this.btnBlue = new System.Windows.Forms.Button();
             this.btnGrn = new System.Windows.Forms.Button();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numThck = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
-            this.numWdt = new System.Windows.Forms.NumericUpDown();
             this.numHgh = new System.Windows.Forms.NumericUpDown();
+            this.numWdt = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.numPosY = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.nump2X = new System.Windows.Forms.NumericUpDown();
             this.nump2Y = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.nump3X = new System.Windows.Forms.NumericUpDown();
             this.nump3Y = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.numThck = new System.Windows.Forms.NumericUpDown();
             this.lvObj = new System.Windows.Forms.ListBox();
             this.btnTrsh = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -64,16 +70,22 @@ namespace oopLab6
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel5.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numWdt)).BeginInit();
+            this.flowLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numThck)).BeginInit();
+            this.flowLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numHgh)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numWdt)).BeginInit();
+            this.flowLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
+            this.flowLayoutPanel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nump2X)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump2Y)).BeginInit();
+            this.flowLayoutPanel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nump3X)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numThck)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -150,9 +162,9 @@ namespace oopLab6
             // 
             this.canvas.BackColor = System.Drawing.SystemColors.Window;
             this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.canvas.Location = new System.Drawing.Point(208, 54);
+            this.canvas.Location = new System.Drawing.Point(197, 54);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(500, 500);
+            this.canvas.Size = new System.Drawing.Size(500, 536);
             this.canvas.TabIndex = 1;
             this.canvas.Click += new System.EventHandler(this.canvas_Click);
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
@@ -161,26 +173,25 @@ namespace oopLab6
             // 
             this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel2.Controls.Add(this.label1);
-            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel3);
-            this.flowLayoutPanel2.Controls.Add(this.label2);
-            this.flowLayoutPanel2.Controls.Add(this.numWdt);
-            this.flowLayoutPanel2.Controls.Add(this.numHgh);
-            this.flowLayoutPanel2.Controls.Add(this.label3);
-            this.flowLayoutPanel2.Controls.Add(this.numPosX);
-            this.flowLayoutPanel2.Controls.Add(this.numPosY);
-            this.flowLayoutPanel2.Controls.Add(this.label4);
-            this.flowLayoutPanel2.Controls.Add(this.nump2X);
-            this.flowLayoutPanel2.Controls.Add(this.nump2Y);
-            this.flowLayoutPanel2.Controls.Add(this.label5);
-            this.flowLayoutPanel2.Controls.Add(this.nump3X);
-            this.flowLayoutPanel2.Controls.Add(this.nump3Y);
-            this.flowLayoutPanel2.Controls.Add(this.label6);
-            this.flowLayoutPanel2.Controls.Add(this.numThck);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel5);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel4);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel6);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel7);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel8);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel9);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(58, 54);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 390);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 426);
             this.flowLayoutPanel2.TabIndex = 2;
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.Controls.Add(this.label1);
+            this.flowLayoutPanel5.Controls.Add(this.flowLayoutPanel3);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(129, 61);
+            this.flowLayoutPanel5.TabIndex = 12;
             // 
             // label1
             // 
@@ -231,41 +242,68 @@ namespace oopLab6
             this.btnGrn.UseVisualStyleBackColor = false;
             this.btnGrn.Click += new System.EventHandler(this.btnGrn_Click);
             // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.BackColor = System.Drawing.Color.White;
+            this.flowLayoutPanel4.Controls.Add(this.label6);
+            this.flowLayoutPanel4.Controls.Add(this.numThck);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 70);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(129, 60);
+            this.flowLayoutPanel4.TabIndex = 11;
+            // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(3, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(102, 25);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Thickness:";
+            // 
+            // numThck
+            // 
+            this.numThck.Location = new System.Drawing.Point(3, 28);
+            this.numThck.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numThck.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numThck.Name = "numThck";
+            this.numThck.Size = new System.Drawing.Size(48, 27);
+            this.numThck.TabIndex = 5;
+            this.numThck.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // flowLayoutPanel6
+            // 
+            this.flowLayoutPanel6.Controls.Add(this.label2);
+            this.flowLayoutPanel6.Controls.Add(this.numHgh);
+            this.flowLayoutPanel6.Controls.Add(this.numWdt);
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 136);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(129, 70);
+            this.flowLayoutPanel6.TabIndex = 13;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 60);
+            this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 40);
             this.label2.TabIndex = 2;
             this.label2.Text = "Size (width; height):";
             // 
-            // numWdt
-            // 
-            this.numWdt.Location = new System.Drawing.Point(3, 103);
-            this.numWdt.Maximum = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            this.numWdt.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numWdt.Name = "numWdt";
-            this.numWdt.Size = new System.Drawing.Size(48, 27);
-            this.numWdt.TabIndex = 3;
-            this.numWdt.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numWdt.ValueChanged += new System.EventHandler(this.size_ValueChanged);
-            // 
             // numHgh
             // 
-            this.numHgh.Location = new System.Drawing.Point(57, 103);
+            this.numHgh.Location = new System.Drawing.Point(3, 43);
             this.numHgh.Maximum = new decimal(new int[] {
             500,
             0,
@@ -286,10 +324,43 @@ namespace oopLab6
             0});
             this.numHgh.ValueChanged += new System.EventHandler(this.size_ValueChanged);
             // 
+            // numWdt
+            // 
+            this.numWdt.Location = new System.Drawing.Point(57, 43);
+            this.numWdt.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numWdt.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numWdt.Name = "numWdt";
+            this.numWdt.Size = new System.Drawing.Size(48, 27);
+            this.numWdt.TabIndex = 3;
+            this.numWdt.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numWdt.ValueChanged += new System.EventHandler(this.size_ValueChanged);
+            // 
+            // flowLayoutPanel7
+            // 
+            this.flowLayoutPanel7.Controls.Add(this.label3);
+            this.flowLayoutPanel7.Controls.Add(this.numPosX);
+            this.flowLayoutPanel7.Controls.Add(this.numPosY);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 212);
+            this.flowLayoutPanel7.Name = "flowLayoutPanel7";
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(129, 54);
+            this.flowLayoutPanel7.TabIndex = 14;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 133);
+            this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(101, 20);
             this.label3.TabIndex = 6;
@@ -297,7 +368,7 @@ namespace oopLab6
             // 
             // numPosX
             // 
-            this.numPosX.Location = new System.Drawing.Point(3, 156);
+            this.numPosX.Location = new System.Drawing.Point(3, 23);
             this.numPosX.Maximum = new decimal(new int[] {
             700,
             0,
@@ -310,7 +381,7 @@ namespace oopLab6
             // 
             // numPosY
             // 
-            this.numPosY.Location = new System.Drawing.Point(57, 156);
+            this.numPosY.Location = new System.Drawing.Point(57, 23);
             this.numPosY.Maximum = new decimal(new int[] {
             500,
             0,
@@ -320,10 +391,20 @@ namespace oopLab6
             this.numPosY.Size = new System.Drawing.Size(48, 27);
             this.numPosY.TabIndex = 8;
             // 
+            // flowLayoutPanel8
+            // 
+            this.flowLayoutPanel8.Controls.Add(this.label4);
+            this.flowLayoutPanel8.Controls.Add(this.nump2X);
+            this.flowLayoutPanel8.Controls.Add(this.nump2Y);
+            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 272);
+            this.flowLayoutPanel8.Name = "flowLayoutPanel8";
+            this.flowLayoutPanel8.Size = new System.Drawing.Size(129, 73);
+            this.flowLayoutPanel8.TabIndex = 15;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 186);
+            this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(110, 40);
             this.label4.TabIndex = 5;
@@ -331,7 +412,7 @@ namespace oopLab6
             // 
             // nump2X
             // 
-            this.nump2X.Location = new System.Drawing.Point(3, 229);
+            this.nump2X.Location = new System.Drawing.Point(3, 43);
             this.nump2X.Maximum = new decimal(new int[] {
             500,
             0,
@@ -348,7 +429,7 @@ namespace oopLab6
             // 
             // nump2Y
             // 
-            this.nump2Y.Location = new System.Drawing.Point(57, 229);
+            this.nump2Y.Location = new System.Drawing.Point(57, 43);
             this.nump2Y.Maximum = new decimal(new int[] {
             500,
             0,
@@ -363,10 +444,20 @@ namespace oopLab6
             0,
             0});
             // 
+            // flowLayoutPanel9
+            // 
+            this.flowLayoutPanel9.Controls.Add(this.label5);
+            this.flowLayoutPanel9.Controls.Add(this.nump3X);
+            this.flowLayoutPanel9.Controls.Add(this.nump3Y);
+            this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 351);
+            this.flowLayoutPanel9.Name = "flowLayoutPanel9";
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(129, 68);
+            this.flowLayoutPanel9.TabIndex = 16;
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 259);
+            this.label5.Location = new System.Drawing.Point(3, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(107, 40);
             this.label5.TabIndex = 5;
@@ -374,7 +465,7 @@ namespace oopLab6
             // 
             // nump3X
             // 
-            this.nump3X.Location = new System.Drawing.Point(3, 302);
+            this.nump3X.Location = new System.Drawing.Point(3, 43);
             this.nump3X.Maximum = new decimal(new int[] {
             500,
             0,
@@ -386,7 +477,7 @@ namespace oopLab6
             // 
             // nump3Y
             // 
-            this.nump3Y.Location = new System.Drawing.Point(57, 302);
+            this.nump3Y.Location = new System.Drawing.Point(57, 43);
             this.nump3Y.Maximum = new decimal(new int[] {
             500,
             0,
@@ -396,41 +487,11 @@ namespace oopLab6
             this.nump3Y.Size = new System.Drawing.Size(48, 27);
             this.nump3Y.TabIndex = 5;
             // 
-            // label6
-            // 
-            this.label6.Location = new System.Drawing.Point(3, 332);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(102, 25);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Thickness:";
-            // 
-            // numThck
-            // 
-            this.numThck.Location = new System.Drawing.Point(3, 360);
-            this.numThck.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.numThck.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numThck.Name = "numThck";
-            this.numThck.Size = new System.Drawing.Size(48, 27);
-            this.numThck.TabIndex = 5;
-            this.numThck.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // lvObj
             // 
             this.lvObj.FormattingEnabled = true;
             this.lvObj.ItemHeight = 20;
-            this.lvObj.Location = new System.Drawing.Point(11, 450);
+            this.lvObj.Location = new System.Drawing.Point(11, 486);
             this.lvObj.Name = "lvObj";
             this.lvObj.Size = new System.Drawing.Size(180, 104);
             this.lvObj.TabIndex = 3;
@@ -439,7 +500,7 @@ namespace oopLab6
             // btnTrsh
             // 
             this.btnTrsh.BackgroundImage = global::oopLab6.Properties.Resources.Trash_can;
-            this.btnTrsh.Location = new System.Drawing.Point(159, 565);
+            this.btnTrsh.Location = new System.Drawing.Point(159, 558);
             this.btnTrsh.Name = "btnTrsh";
             this.btnTrsh.Size = new System.Drawing.Size(32, 32);
             this.btnTrsh.TabIndex = 4;
@@ -454,7 +515,7 @@ namespace oopLab6
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(792, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(948, 28);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             this.toolTip1.SetToolTip(this.menuStrip1, "Clear the easel");
@@ -470,7 +531,7 @@ namespace oopLab6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 609);
+            this.ClientSize = new System.Drawing.Size(948, 609);
             this.Controls.Add(this.btnTrsh);
             this.Controls.Add(this.lvObj);
             this.Controls.Add(this.flowLayoutPanel2);
@@ -484,17 +545,27 @@ namespace oopLab6
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
             this.flowLayoutPanel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numWdt)).EndInit();
+            this.flowLayoutPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numThck)).EndInit();
+            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numHgh)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numWdt)).EndInit();
+            this.flowLayoutPanel7.ResumeLayout(false);
+            this.flowLayoutPanel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
+            this.flowLayoutPanel8.ResumeLayout(false);
+            this.flowLayoutPanel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nump2X)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump2Y)).EndInit();
+            this.flowLayoutPanel9.ResumeLayout(false);
+            this.flowLayoutPanel9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nump3X)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numThck)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -537,6 +608,12 @@ namespace oopLab6
         private System.Windows.Forms.NumericUpDown numThck;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel5;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel6;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel8;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel9;
     }
 }
 
