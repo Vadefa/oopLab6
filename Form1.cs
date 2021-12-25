@@ -95,6 +95,26 @@ namespace oopLab6
             {
                 return element;
             }
+            public void setcanvWidth(int width)
+            {
+                if (ActiveForm != null)
+                    if (width < ActiveForm.Size.Width && width >= 50)
+                    {
+                        canvasWidth = width;
+                        ActiveForm.Invalidate();
+                    }
+                observers.Invoke(this, null);
+            }
+            public void setcanvHeight(int height)
+            {
+                if (ActiveForm != null)
+                    if (height < ActiveForm.Size.Height && height >= 50)
+                    {
+                        canvasHeight = height;
+                        ActiveForm.Invalidate();
+                    }
+                observers.Invoke(this, null);
+            }
             public Color getColor()
             {
                 return color;
