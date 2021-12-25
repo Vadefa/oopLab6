@@ -154,9 +154,6 @@ namespace oopLab6
 
             ////// clicked buttons & actions
 
-            private Point mouseP1;
-            private Point mouseP2;
-            private Point mouseP3;
             public EventHandler actions;
             string btnName = "";
 
@@ -168,21 +165,27 @@ namespace oopLab6
             {
                 return btnName;
             }
-            void createObj(Point mouseP)
+            public void posReset()
             {
-                if (mouseP1.X == -1)
+                p1 = new Point(-1, -1);
+                p2 = p1;
+                p3 = p1;
+            }
+            public void createObj(Point mouseP)
+            {
+                if (p1.X == -1)
                 {
-                    mouseP1 = mouseP;
+                    p1 = mouseP;
                 }
-                else if (mouseP2.X == -1)
+                else if (p2.X == -1)
                 {
-                    mouseP2 = mouseP;
-                    if (btnName != "btnTrn" || btnName != "btnSctn")
+                    p2 = mouseP;
+                    if (btnName != "btnTrn")
                         actions.Invoke(this, null);
                 }
                 else
                 {
-                    mouseP3 = mouseP;
+                    p3 = mouseP;
                     actions.Invoke(this, null);
                 }
             }
@@ -207,107 +210,67 @@ namespace oopLab6
         }
         public void UpdateFromModel(object sender, EventArgs e)
         {
-            currentColor = model.getColor();
-            numThck.Value = model.getThickness();
+            //currentColor = model.getColor();
+            //numThck.Value = model.getThickness();
 
-            numPosX.Value = model.getP1().X;
-            numPosY.Value = model.getP1().Y;
+            //numPosX.Value = model.getP1().X;
+            //numPosY.Value = model.getP1().Y;
 
-            nump2X.Value = model.getP2().X;
-            nump2Y.Value = model.getP2().Y;
+            //nump2X.Value = model.getP2().X;
+            //nump2Y.Value = model.getP2().Y;
 
-            if (currentElement == "btnTrn")
-            {
-                nump3X.Value = model.getP3().X;
-                nump3Y.Value = model.getP3().Y;
-                flpP3.Visible = true;
-            }
-            else
-            {
-                flpP3.Visible = false;
-            }
+            //if (currentElement == "btnTrn")
+            //{
+            //    nump3X.Value = model.getP3().X;
+            //    nump3Y.Value = model.getP3().Y;
+            //    flpP3.Visible = true;
+            //}
+            //else
+            //{
+            //    flpP3.Visible = false;
+            //}
 
-            if (currentElement != "btnTrn" || currentElement != "btnSctn")
-            {
-                numWdt.Value = Math.Abs(model.getP2().X - model.getP1().X);
-                numHgh.Value = Math.Abs(model.getP2().Y - model.getP1().Y);
-                flpSz.Visible = true;
-            }
-            else
-            {
-                flpSz.Visible = false;
-            }
+            //if (currentElement != "btnTrn" || currentElement != "btnSctn")
+            //{
+            //    numWdt.Value = Math.Abs(model.getP2().X - model.getP1().X);
+            //    numHgh.Value = Math.Abs(model.getP2().Y - model.getP1().Y);
+            //    flpSz.Visible = true;
+            //}
+            //else
+            //{
+            //    flpSz.Visible = false;
+            //}
 
-            if (lvObj.SelectedItem != null)
-            {
-                (lvObj.SelectedItem as Figure).setColor(currentColor);
-                (lvObj.SelectedItem as Figure).setThickness((int)numThck.Value);
-                (lvObj.SelectedItem as Figure).setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
-                (lvObj.SelectedItem as Figure).setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
-                if (lvObj.SelectedItem is Triangle)
-                    (lvObj.SelectedItem as Triangle).setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
-            }
+            //if (lvObj.SelectedItem != null)
+            //{
+            //    (lvObj.SelectedItem as Figure).setColor(currentColor);
+            //    (lvObj.SelectedItem as Figure).setThickness((int)numThck.Value);
+            //    (lvObj.SelectedItem as Figure).setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
+            //    (lvObj.SelectedItem as Figure).setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
+            //    if (lvObj.SelectedItem is Triangle)
+            //        (lvObj.SelectedItem as Triangle).setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
+            //}
         }
         public void ActionsFromModel(object sender, EventArgs e)
         {
             string btn = model.getBtn();
 
-            Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
-            if (currentElement == "btnSctn")
+
+            if (btn == "btnSctn")
             {
-                if (mp1.X == -1)
-                {
-                    mp1 = mousePos;
-                }
-                else
-                {
-                    mp2 = mousePos;
-                    storage.add(new Section(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
-                    btnClick();
-                }
+                storage.add(new Section(model.getP1(), model.getP2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
-            else if (currentElement == "btnElps")
+            else if (btn == "btnElps")
             {
-                if (mp1.X == -1)
-                {
-                    mp1 = mousePos;
-                }
-                else
-                {
-                    mp2 = mousePos;
-                    storage.add(new Ellipse(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
-                    btnClick();
-                }
+                storage.add(new Ellipse(model.getP1(), model.getP2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
-            else if (currentElement == "btnTrn")
+            else if (btn == "btnTrn")
             {
-                if (mp1.X == -1)
-                {
-                    mp1 = mousePos;
-                }
-                else if (mp2.X == -1)
-                {
-                    mp2 = mousePos;
-                }
-                else
-                {
-                    mp3 = mousePos;
-                    storage.add(new Triangle(mp1, mp2, mp3, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
-                    btnClick();
-                }
+                    storage.add(new Triangle(model.getP1(), model.getP2(), model.getP3(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
-            else if (currentElement == "btnRct")
+            else if (btn == "btnRct")
             {
-                if (mp1.X == -1)
-                {
-                    mp1 = mousePos;
-                }
-                else
-                {
-                    mp2 = mousePos;
-                    storage.add(new Rect(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
-                    btnClick();
-                }
+                    storage.add(new Rect(model.getP1(), model.getP2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
             else
             {
@@ -317,6 +280,7 @@ namespace oopLab6
                     lvObj.SetSelected(lvObj.SelectedIndex, false);
                 }
             }
+            model.posReset();
         }
 
         public class Figure
@@ -660,70 +624,71 @@ namespace oopLab6
         private void canvas_Click(object sender, EventArgs e)
         {
             Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
-            if (currentElement == "btnSctn")
-            {
-                if (mp1.X == -1)
-                {
-                    mp1 = mousePos;
-                }
-                else
-                {
-                    mp2 = mousePos;
-                    storage.add(new Section(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
-                    btnClick();
-                }
-            }
-            else if (currentElement == "btnElps")
-            {
-                if (mp1.X == -1)
-                {
-                    mp1 = mousePos;
-                }
-                else
-                {
-                    mp2 = mousePos;
-                    storage.add(new Ellipse(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
-                    btnClick();
-                }
-            }
-            else if (currentElement == "btnTrn")
-            {
-                if (mp1.X == -1)
-                {
-                    mp1 = mousePos;
-                }
-                else if (mp2.X == -1)
-                {
-                    mp2 = mousePos;
-                }
-                else
-                {
-                    mp3 = mousePos;
-                    storage.add(new Triangle(mp1, mp2, mp3, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
-                    btnClick();
-                }
-            }
-            else if (currentElement == "btnRct")
-            {
-                if (mp1.X == -1)
-                {
-                    mp1 = mousePos;
-                }
-                else
-                {
-                    mp2 = mousePos;
-                    storage.add(new Rect(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
-                    btnClick();
-                }
-            }
-            else
-            {
-                if (lvObj.SelectedItem != null)
-                {
-                    storage.unfocus();
-                    lvObj.SetSelected(lvObj.SelectedIndex, false);
-                }
-            }
+            model.createObj(mousePos);
+            //if (currentElement == "btnSctn")
+            //{
+            //    if (mp1.X == -1)
+            //    {
+            //        mp1 = mousePos;
+            //    }
+            //    else
+            //    {
+            //        mp2 = mousePos;
+            //        storage.add(new Section(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+            //        btnClick();
+            //    }
+            //}
+            //else if (currentElement == "btnElps")
+            //{
+            //    if (mp1.X == -1)
+            //    {
+            //        mp1 = mousePos;
+            //    }
+            //    else
+            //    {
+            //        mp2 = mousePos;
+            //        storage.add(new Ellipse(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+            //        btnClick();
+            //    }
+            //}
+            //else if (currentElement == "btnTrn")
+            //{
+            //    if (mp1.X == -1)
+            //    {
+            //        mp1 = mousePos;
+            //    }
+            //    else if (mp2.X == -1)
+            //    {
+            //        mp2 = mousePos;
+            //    }
+            //    else
+            //    {
+            //        mp3 = mousePos;
+            //        storage.add(new Triangle(mp1, mp2, mp3, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+            //        btnClick();
+            //    }
+            //}
+            //else if (currentElement == "btnRct")
+            //{
+            //    if (mp1.X == -1)
+            //    {
+            //        mp1 = mousePos;
+            //    }
+            //    else
+            //    {
+            //        mp2 = mousePos;
+            //        storage.add(new Rect(mp1, mp2, (int)numThck.Value, currentColor, grObj), grObj, lvObj);
+            //        btnClick();
+            //    }
+            //}
+            //else
+            //{
+            //    if (lvObj.SelectedItem != null)
+            //    {
+            //        storage.unfocus();
+            //        lvObj.SetSelected(lvObj.SelectedIndex, false);
+            //    }
+            //}
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
