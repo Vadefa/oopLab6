@@ -190,35 +190,43 @@ namespace oopLab6
             protected Color color;
 
             protected bool is_focused = false;
-            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj)
+            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
             {
                 this.thickness = thickness;
                 this.color = color;
-                if (p1.X < p2.X)                            // if we don't painting as the default left-right, up-down style
+                if (allow_reverse)
                 {
-                    if (p1.Y < p2.Y)
+                    if (p1.X < p2.X)                            // if we don't painting as the default left-right, up-down style
                     {
-                        this.p1 = p1;
-                        this.p2 = p2;
+                        if (p1.Y < p2.Y)
+                        {
+                            this.p1 = p1;
+                            this.p2 = p2;
+                        }
+                        else
+                        {
+                            this.p1 = new Point(p1.X, p2.Y);
+                            this.p2 = new Point(p2.X, p1.Y);
+                        }
                     }
                     else
                     {
-                        this.p1 = new Point(p1.X, p2.Y);
-                        this.p2 = new Point(p2.X, p1.Y);
+                        if (p1.Y > p2.Y)
+                        {
+                            this.p1 = p2;
+                            this.p2 = p1;
+                        }
+                        else
+                        {
+                            this.p1 = new Point(p2.X, p1.Y);
+                            this.p2 = new Point(p1.X, p2.Y);
+                        }
                     }
                 }
                 else
                 {
-                    if (p1.Y > p2.Y)
-                    {
-                        this.p1 = p2;
-                        this.p2 = p1;
-                    }
-                    else
-                    {
-                        this.p1 = new Point(p2.X, p1.Y);
-                        this.p2 = new Point(p1.X, p2.Y);
-                    }
+                    this.p1 = p1;
+                    this.p2 = p2;
                 }
                 if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
                     paint(grObj);
@@ -277,7 +285,7 @@ namespace oopLab6
         public class Section : Figure
         {
             public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
-                : base(p1, p2, thickness, color, grObj)
+                : base(p1, p2, thickness, color, grObj, false)
             {
             }
             public override void paint(Graphics grObj)
@@ -291,7 +299,7 @@ namespace oopLab6
         public class Ellipse : Figure
         {
             public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                : base(p1, p2, thickness, col, grObj)
+                : base(p1, p2, thickness, col, grObj, true)
             {
             }
             public override void paint(Graphics grObj)
@@ -306,7 +314,7 @@ namespace oopLab6
         public class Rect: Figure
         {
             public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                : base(p1, p2, thickness, col, grObj)
+                : base(p1, p2, thickness, col, grObj, true)
             {
             }
             public override void paint(Graphics grObj)
@@ -321,7 +329,7 @@ namespace oopLab6
         {
             Point p3;
             public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
-            : base(p1, p2, thickness, col, null)
+            : base(p1, p2, thickness, col, null, false)
             {
                 this.p3 = p3;
                 paint(grObj);

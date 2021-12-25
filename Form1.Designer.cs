@@ -442,6 +442,7 @@ namespace oopLab6
             this.btnTrsh.TabIndex = 4;
             this.toolTip1.SetToolTip(this.btnTrsh, "Delete element");
             this.btnTrsh.UseVisualStyleBackColor = true;
+            this.btnTrsh.Click += new System.EventHandler(this.btnTrsh_Click);
             // 
             // Form1
             // 
