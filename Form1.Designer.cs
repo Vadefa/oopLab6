@@ -58,6 +58,8 @@ namespace oopLab6
             this.lvObj = new System.Windows.Forms.ListBox();
             this.btnTrsh = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label6 = new System.Windows.Forms.Label();
+            this.numThck = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
@@ -69,6 +71,7 @@ namespace oopLab6
             ((System.ComponentModel.ISupportInitialize)(this.nump2Y)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3X)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numThck)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -169,9 +172,11 @@ namespace oopLab6
             this.flowLayoutPanel2.Controls.Add(this.label5);
             this.flowLayoutPanel2.Controls.Add(this.nump3X);
             this.flowLayoutPanel2.Controls.Add(this.nump3Y);
+            this.flowLayoutPanel2.Controls.Add(this.label6);
+            this.flowLayoutPanel2.Controls.Add(this.numThck);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(58, 54);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 350);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(133, 390);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
             // label1
@@ -382,9 +387,9 @@ namespace oopLab6
             // 
             this.lvObj.FormattingEnabled = true;
             this.lvObj.ItemHeight = 20;
-            this.lvObj.Location = new System.Drawing.Point(11, 410);
+            this.lvObj.Location = new System.Drawing.Point(11, 450);
             this.lvObj.Name = "lvObj";
-            this.lvObj.Size = new System.Drawing.Size(180, 144);
+            this.lvObj.Size = new System.Drawing.Size(180, 104);
             this.lvObj.TabIndex = 3;
             this.lvObj.SelectedIndexChanged += new System.EventHandler(this.lvObj_SelectedIndexChanged);
             // 
@@ -397,6 +402,21 @@ namespace oopLab6
             this.btnTrsh.TabIndex = 4;
             this.toolTip1.SetToolTip(this.btnTrsh, "Delete element");
             this.btnTrsh.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(3, 332);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(102, 25);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Thickness:";
+            // 
+            // numThck
+            // 
+            this.numThck.Location = new System.Drawing.Point(3, 360);
+            this.numThck.Name = "numThck";
+            this.numThck.Size = new System.Drawing.Size(48, 27);
+            this.numThck.TabIndex = 5;
             // 
             // Form1
             // 
@@ -424,6 +444,7 @@ namespace oopLab6
             ((System.ComponentModel.ISupportInitialize)(this.nump2Y)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3X)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nump3Y)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numThck)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -460,6 +481,8 @@ namespace oopLab6
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown nump3X;
         private System.Windows.Forms.NumericUpDown nump3Y;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown numThck;
     }
 }
 
