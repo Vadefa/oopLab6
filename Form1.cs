@@ -15,8 +15,6 @@ namespace oopLab6
         Graphics grObj;
         StorageService storage;
         Model model;
-        Color currentColor = Color.Black;
-        string currentElement;
         Point mp1;
         Point mp2;
         Point mp3;
@@ -38,7 +36,6 @@ namespace oopLab6
 
         public class Model
         {
-            Figure obj;
             private Color color;
             private int thickness;
             private Point p1;
@@ -48,7 +45,18 @@ namespace oopLab6
             private int canvasWidth;
             private int canvasHeight;
 
+            private bool selected = false;
+
             public System.EventHandler observers;
+
+            public bool obj_is_selected()
+            {
+                return selected;
+            }
+            public void unselect()
+            {
+                selected = false;
+            }
 
             public bool is_CorrectPos(Point p)
             {
@@ -108,25 +116,17 @@ namespace oopLab6
                 observers.Invoke(this, null);
             }
 
-            public void getObject(Figure obj)
+            public void setObject(Figure obj)
             {
-                if (obj != null)
-                {
-                    color = obj.getColor();
-                    thickness = obj.getThickness();
-                    p1 = obj.getP1();
-                    p2 = obj.getP2();
-                    if (obj is Triangle)
-                        p3 = (obj as Triangle).getP3();
-                    else
-                        p3 = new Point(-1, -1);
+                color = obj.getColor();
+                thickness = obj.getThickness();
+                p1 = obj.getP1();
+                p2 = obj.getP2();
+                if (obj is Triangle)
+                    p3 = (obj as Triangle).getP3();
 
-                    observers.Invoke(this, null);
-                }
-            }
-            public Figure getFigure()
-            {
-                return obj;
+                selected = true;
+                observers.Invoke(this, null);
             }
             public Color getColor()
             {
@@ -215,46 +215,56 @@ namespace oopLab6
         }
         public void UpdateFromModel(object sender, EventArgs e)
         {
-            //currentColor = model.getColor();
-            //numThck.Value = model.getThickness();
+            if (model.obj_is_selected() == false)
+                return;
 
-            //numPosX.Value = model.getP1().X;
-            //numPosY.Value = model.getP1().Y;
+            storage.unfocus();
+            storage.focus(lvObj.SelectedItem as Figure);
 
-            //nump2X.Value = model.getP2().X;
-            //nump2Y.Value = model.getP2().Y;
+            numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
+            numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
+            //numPosY.ValueChanged -= new EventHandler(nump2);
+            //nump2X.ValueChanged -= new EventHandler();
+            //nump2Y.ValueChanged -= new EventHandler();
 
-            //if (currentElement == "btnTrn")
-            //{
-            //    nump3X.Value = model.getP3().X;
-            //    nump3Y.Value = model.getP3().Y;
-            //    flpP3.Visible = true;
-            //}
-            //else
-            //{
-            //    flpP3.Visible = false;
-            //}
+            numThck.Value = model.getThickness();
+            numPosX.Value = model.getP1().X;
+            numPosY.Value = model.getP1().Y;
+            nump2X.Value = model.getP2().X;
+            nump2Y.Value = model.getP2().Y;
 
-            //if (currentElement != "btnTrn" || currentElement != "btnSctn")
-            //{
-            //    numWdt.Value = Math.Abs(model.getP2().X - model.getP1().X);
-            //    numHgh.Value = Math.Abs(model.getP2().Y - model.getP1().Y);
-            //    flpSz.Visible = true;
-            //}
-            //else
-            //{
-            //    flpSz.Visible = false;
-            //}
+            if (model.getBtn() == "btnTrn")
+            {
+                nump3X.Value = model.getP3().X;
+                nump3Y.Value = model.getP3().Y;
+                flpP3.Visible = true;
+            }
+            else
+            {
+                flpP3.Visible = false;
+            }
 
-            //if (lvObj.SelectedItem != null)
-            //{
-            //    (lvObj.SelectedItem as Figure).setColor(currentColor);
-            //    (lvObj.SelectedItem as Figure).setThickness((int)numThck.Value);
-            //    (lvObj.SelectedItem as Figure).setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
-            //    (lvObj.SelectedItem as Figure).setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
-            //    if (lvObj.SelectedItem is Triangle)
-            //        (lvObj.SelectedItem as Triangle).setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
-            //}
+            if (model.getBtn() != "btnTrn" && model.getBtn() != "btnSctn")
+            {
+                numWdt.Value = Math.Abs(model.getP2().X - model.getP1().X);
+                numHgh.Value = Math.Abs(model.getP2().Y - model.getP1().Y);
+                flpSz.Visible = true;
+            }
+            else
+            {
+                flpSz.Visible = false;
+            }
+
+            if (lvObj.SelectedItem != null)
+            {
+                (lvObj.SelectedItem as Figure).setColor(model.getColor());
+                (lvObj.SelectedItem as Figure).setThickness(model.getThickness());
+                (lvObj.SelectedItem as Figure).setP1(model.getP1());
+                (lvObj.SelectedItem as Figure).setP2(model.getP2());
+                if (lvObj.SelectedItem is Triangle)
+                    (lvObj.SelectedItem as Triangle).setP3(model.getP3());
+                storage.paint(grObj);
+            }
         }
         public void ActionsFromModel(object sender, EventArgs e)
         {
@@ -271,11 +281,11 @@ namespace oopLab6
             }
             else if (btn == "btnTrn")
             {
-                    storage.add(new Triangle(model.getP1(), model.getP2(), model.getP3(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
+                storage.add(new Triangle(model.getP1(), model.getP2(), model.getP3(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
             else if (btn == "btnRct")
             {
-                    storage.add(new Rect(model.getP1(), model.getP2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
+                storage.add(new Rect(model.getP1(), model.getP2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
             else if (btn == "btnArw")
             {
@@ -347,32 +357,26 @@ namespace oopLab6
             public void focus()
             {
                 is_focused = true;
-                ActiveForm.Invalidate();
             }
             public void unfocus()
             {
                 is_focused = false;
-                ActiveForm.Invalidate();
             }
             public void setP1(Point p)
             {
                 p1 = p;
-                ActiveForm.Invalidate();
             }
             public void setP2(Point p)
             {
                 p2 = p;
-                ActiveForm.Invalidate();
             }
             public void setThickness(int thickness)
             {
                 this.thickness = thickness;
-                ActiveForm.Invalidate();
             }
             public void setColor(Color color)
             {
                 this.color = color;
-                ActiveForm.Invalidate();
             }
             public Point getP1()
             {
@@ -421,7 +425,7 @@ namespace oopLab6
             }
 
         }
-        public class Rect: Figure
+        public class Rect : Figure
         {
             public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
                 : base(p1, p2, thickness, col, grObj, true)
@@ -481,7 +485,7 @@ namespace oopLab6
             virtual public void remove(Figure obj)
             {
                 int i = 0;
-                for ( ; i < storage.Length; i++)
+                for (; i < storage.Length; i++)
                     if (storage[i] == obj)
                         break;
 
@@ -511,7 +515,8 @@ namespace oopLab6
                 lb.Items.Add(obj);
                 lb.SelectedItem = obj;
                 focus(obj);
-                ActiveForm.Invalidate();
+                if (ActiveForm != null)
+                    ActiveForm.Invalidate();
             }
             public void remove(Figure obj, ListBox lb)
             {
@@ -558,7 +563,7 @@ namespace oopLab6
             grObj = canvas.CreateGraphics();
             storage.paint(grObj);
         }
-        
+
         private void btnSctn_Click(object sender, EventArgs e)
         {
             model.setBtn((sender as Button).Name);
@@ -616,8 +621,7 @@ namespace oopLab6
         }
         private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
         {
-            storage.unfocus();
-            model.getObject(lvObj.SelectedItem as Figure);
+            model.setObject(lvObj.SelectedItem as Figure);
             storage.focus(lvObj.SelectedItem as Figure);
         }
 
@@ -636,6 +640,21 @@ namespace oopLab6
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             storage.removeAll(lvObj);
+        }
+
+        private void numThck_ValueChanged(object sender, EventArgs e)
+        {
+            model.setThickness((int)(sender as NumericUpDown).Value);
+        }
+
+        private void numP2_ValueChanged(object sender, EventArgs e)
+        {
+            model.setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
+        }
+
+        private void numP3_ValueChanged(object sender, EventArgs e)
+        {
+            model.setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
         }
     }
 }

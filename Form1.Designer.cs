@@ -281,6 +281,7 @@ namespace oopLab6
             0,
             0,
             0});
+            this.numThck.ValueChanged += new System.EventHandler(this.numThck_ValueChanged);
             // 
             // flpSz
             // 
@@ -390,6 +391,7 @@ namespace oopLab6
             this.numPosY.Name = "numPosY";
             this.numPosY.Size = new System.Drawing.Size(48, 27);
             this.numPosY.TabIndex = 8;
+            this.numPosY.ValueChanged += new System.EventHandler(this.numP1_ValueChanged);
             // 
             // flpP2
             // 
@@ -426,6 +428,7 @@ namespace oopLab6
             0,
             0,
             0});
+            this.nump2X.ValueChanged += new System.EventHandler(this.numP2_ValueChanged);
             // 
             // nump2Y
             // 
@@ -443,6 +446,7 @@ namespace oopLab6
             0,
             0,
             0});
+            this.nump2Y.ValueChanged += new System.EventHandler(this.numP2_ValueChanged);
             // 
             // flpP3
             // 
@@ -474,6 +478,7 @@ namespace oopLab6
             this.nump3X.Name = "nump3X";
             this.nump3X.Size = new System.Drawing.Size(48, 27);
             this.nump3X.TabIndex = 5;
+            this.nump3X.ValueChanged += new System.EventHandler(this.numP3_ValueChanged);
             // 
             // nump3Y
             // 
@@ -486,6 +491,7 @@ namespace oopLab6
             this.nump3Y.Name = "nump3Y";
             this.nump3Y.Size = new System.Drawing.Size(48, 27);
             this.nump3Y.TabIndex = 5;
+            this.nump3Y.ValueChanged += new System.EventHandler(this.numP3_ValueChanged);
             // 
             // lvObj
             // 
