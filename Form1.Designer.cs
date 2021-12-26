@@ -164,7 +164,7 @@ namespace oopLab6
             this.canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.canvas.Location = new System.Drawing.Point(197, 54);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(500, 536);
+            this.canvas.Size = new System.Drawing.Size(536, 536);
             this.canvas.TabIndex = 1;
             this.canvas.Click += new System.EventHandler(this.canvas_Click);
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
@@ -305,11 +305,6 @@ namespace oopLab6
             // numWdt
             // 
             this.numWdt.Location = new System.Drawing.Point(3, 43);
-            this.numWdt.Maximum = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
             this.numWdt.Name = "numWdt";
             this.numWdt.Size = new System.Drawing.Size(48, 27);
             this.numWdt.TabIndex = 3;

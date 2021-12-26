@@ -543,6 +543,15 @@ namespace oopLab6
 
         public void UpdateFromModel(object sender, EventArgs e)
         {
+            numPosX.Maximum = model.getCanvWidth();
+            nump2X.Maximum = model.getCanvWidth();
+            nump3X.Maximum = model.getCanvWidth();
+            numWdt.Maximum = model.getCanvWidth();
+            numPosY.Maximum = model.getCanvHeight();
+            nump2Y.Maximum = model.getCanvHeight();
+            nump3Y.Maximum = model.getCanvHeight();
+            numHgh.Maximum = model.getCanvHeight();
+
             numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
             numThck.Value = model.getThickness();
             numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
