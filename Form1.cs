@@ -31,6 +31,259 @@ namespace oopLab6
             grObj = canvas.CreateGraphics();
         }
 
+        
+        public class Figure
+        {
+            protected Point p1;
+            protected Point p2;
+            protected int thickness;
+            protected Color color;
+
+            protected bool is_focused = false;
+            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
+            {
+                this.thickness = thickness;
+                this.color = color;
+                if (allow_reverse)
+                {
+                    if (p1.X < p2.X)                            // if we don't painting as the default left-right, up-down style
+                    {
+                        if (p1.Y < p2.Y)
+                        {
+                            this.p1 = p1;
+                            this.p2 = p2;
+                        }
+                        else
+                        {
+                            this.p1 = new Point(p1.X, p2.Y);
+                            this.p2 = new Point(p2.X, p1.Y);
+                        }
+                    }
+                    else
+                    {
+                        if (p1.Y > p2.Y)
+                        {
+                            this.p1 = p2;
+                            this.p2 = p1;
+                        }
+                        else
+                        {
+                            this.p1 = new Point(p2.X, p1.Y);
+                            this.p2 = new Point(p1.X, p2.Y);
+                        }
+                    }
+                }
+                else
+                {
+                    this.p1 = p1;
+                    this.p2 = p2;
+                }
+                if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
+                    paint(grObj);
+            }
+            virtual public void paint(Graphics grObj)
+            {
+            }
+            public void focus()
+            {
+                is_focused = true;
+            }
+            public void unfocus()
+            {
+                is_focused = false;
+            }
+            public void setP1(Point p)
+            {
+                p1 = p;
+            }
+            public void setP2(Point p)
+            {
+                p2 = p;
+            }
+            public void setThickness(int thickness)
+            {
+                this.thickness = thickness;
+            }
+            public void setColor(Color color)
+            {
+                this.color = color;
+            }
+            public Point getP1()
+            {
+                return p1;
+            }
+            public Point getP2()
+            {
+                return p2;
+            }
+            public int getThickness()
+            {
+                return thickness;
+            }
+            public Color getColor()
+            {
+                return color;
+            }
+
+        }
+        public class Section : Figure
+        {
+            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
+                : base(p1, p2, thickness, color, grObj, false)
+            {
+            }
+            public override void paint(Graphics grObj)
+            {
+                if (is_focused)
+                    grObj.DrawLine(new Pen(Color.Violet, thickness), p1, p2);
+                else
+                    grObj.DrawLine(new Pen(color, thickness), p1, p2);
+            }
+        }
+        public class Ellipse : Figure
+        {
+            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
+                : base(p1, p2, thickness, col, grObj, true)
+            {
+            }
+            public override void paint(Graphics grObj)
+            {
+                if (is_focused)
+                    grObj.DrawEllipse(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                else
+                    grObj.DrawEllipse(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+            }
+
+        }
+        public class Rect : Figure
+        {
+            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
+                : base(p1, p2, thickness, col, grObj, true)
+            {
+            }
+            public override void paint(Graphics grObj)
+            {
+                if (is_focused)
+                    grObj.DrawRectangle(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                else
+                    grObj.DrawRectangle(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+            }
+        }
+        public class Triangle : Figure
+        {
+            Point p3;
+            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
+            : base(p1, p2, thickness, col, null, false)
+            {
+                this.p3 = p3;
+                paint(grObj);
+            }
+            public override void paint(Graphics grObj)
+            {
+                if (is_focused)
+                    grObj.DrawPolygon(new Pen(Color.Violet, thickness), new Point[] { p1, p2, p3 });
+                else
+                    grObj.DrawPolygon(new Pen(color, thickness), new Point[] { p1, p2, p3 });
+            }
+
+            public Point getP3()
+            {
+                return p3;
+            }
+            public void setP3(Point p3)
+            {
+                this.p3 = p3;
+                ActiveForm.Invalidate();
+            }
+        }
+
+        public class Storage
+        {
+            protected Figure[] storage = new Figure[0];
+            public void add(Figure obj)
+            {
+                Figure[] temp = new Figure[storage.Length];
+                for (int i = 0; i < temp.Length; i++)
+                    temp[i] = storage[i];
+
+                storage = new Figure[temp.Length + 1];
+                for (int i = 0; i < temp.Length; i++)
+                    storage[i] = temp[i];
+
+                storage[storage.Length - 1] = obj;
+            }
+            virtual public void remove(Figure obj)
+            {
+                int i = 0;
+                for (; i < storage.Length; i++)
+                    if (storage[i] == obj)
+                        break;
+
+                Figure[] temp = new Figure[storage.Length - 1];
+                int j = 0;
+                while (j != i)
+                {
+                    temp[j] = storage[j];
+                    j++;
+                }
+                j = j + 1;
+                for (; j < storage.Length; j++)
+                    temp[j - 1] = storage[j];
+
+                storage = new Figure[temp.Length];
+                for (i = 0; i < temp.Length; i++)
+                    storage[i] = temp[i];
+            }
+        }
+        public class StorageService : Storage
+        {
+            Figure selected;
+            public void add(Figure obj, Graphics gtObj, ListBox lb)
+            {
+                unfocus();
+                base.add(obj);
+                lb.Items.Add(obj);
+                lb.SelectedItem = obj;
+                focus(obj);
+                if (ActiveForm != null)
+                    ActiveForm.Invalidate();
+            }
+            public void remove(Figure obj, ListBox lb)
+            {
+                lb.Items.Remove(obj);
+                base.remove(obj);
+                ActiveForm.Invalidate();
+            }
+            public void removeAll(ListBox lb)
+            {
+                storage = new Figure[0];
+                lb.Items.Clear();
+                ActiveForm.Invalidate();
+            }
+            public void paint(Graphics grObj)
+            {
+                foreach (Figure f in storage)
+                    f.paint(grObj);
+            }
+            public void focus(Figure obj)
+            {
+                if (obj != null)
+                {
+                    obj.focus();
+                    selected = obj;
+                }
+            }
+            public void unfocus()
+            {
+                if (selected != null)
+                    selected.unfocus();
+            }
+        }
+
+        ////
+        ////objects are done
+        ////
+
         public class Model
         {
             private Color color;
@@ -273,8 +526,9 @@ namespace oopLab6
                 if (lvObj.SelectedItem is Triangle)
                     (lvObj.SelectedItem as Triangle).setP3(model.getP3());
 
-                ActiveForm.Invalidate();
             }
+            if (ActiveForm != null)
+                ActiveForm.Invalidate();
         }
         public void ActionsFromModel(object sender, EventArgs e)
         {
@@ -313,258 +567,6 @@ namespace oopLab6
             model.posReset();
         }
 
-        public class Figure
-        {
-            protected Point p1;
-            protected Point p2;
-            protected int thickness;
-            protected Color color;
-
-            protected bool is_focused = false;
-            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
-            {
-                this.thickness = thickness;
-                this.color = color;
-                if (allow_reverse)
-                {
-                    if (p1.X < p2.X)                            // if we don't painting as the default left-right, up-down style
-                    {
-                        if (p1.Y < p2.Y)
-                        {
-                            this.p1 = p1;
-                            this.p2 = p2;
-                        }
-                        else
-                        {
-                            this.p1 = new Point(p1.X, p2.Y);
-                            this.p2 = new Point(p2.X, p1.Y);
-                        }
-                    }
-                    else
-                    {
-                        if (p1.Y > p2.Y)
-                        {
-                            this.p1 = p2;
-                            this.p2 = p1;
-                        }
-                        else
-                        {
-                            this.p1 = new Point(p2.X, p1.Y);
-                            this.p2 = new Point(p1.X, p2.Y);
-                        }
-                    }
-                }
-                else
-                {
-                    this.p1 = p1;
-                    this.p2 = p2;
-                }
-                if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
-                    paint(grObj);
-            }
-            virtual public void paint(Graphics grObj)
-            {
-            }
-            public void focus()
-            {
-                is_focused = true;
-            }
-            public void unfocus()
-            {
-                is_focused = false;
-            }
-            public void setP1(Point p)
-            {
-                p1 = p;
-            }
-            public void setP2(Point p)
-            {
-                p2 = p;
-            }
-            public void setThickness(int thickness)
-            {
-                this.thickness = thickness;
-            }
-            public void setColor(Color color)
-            {
-                this.color = color;
-            }
-            public Point getP1()
-            {
-                return p1;
-            }
-            public Point getP2()
-            {
-                return p2;
-            }
-            public int getThickness()
-            {
-                return thickness;
-            }
-            public Color getColor()
-            {
-                return color;
-            }
-
-        }
-        public class Section : Figure
-        {
-            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
-                : base(p1, p2, thickness, color, grObj, false)
-            {
-            }
-            public override void paint(Graphics grObj)
-            {
-                if (is_focused)
-                    grObj.DrawLine(new Pen(Color.Violet, thickness), p1, p2);
-                else
-                    grObj.DrawLine(new Pen(color, thickness), p1, p2);
-            }
-        }
-        public class Ellipse : Figure
-        {
-            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                : base(p1, p2, thickness, col, grObj, true)
-            {
-            }
-            public override void paint(Graphics grObj)
-            {
-                if (is_focused)
-                    grObj.DrawEllipse(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
-                else
-                    grObj.DrawEllipse(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
-            }
-
-        }
-        public class Rect : Figure
-        {
-            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                : base(p1, p2, thickness, col, grObj, true)
-            {
-            }
-            public override void paint(Graphics grObj)
-            {
-                if (is_focused)
-                    grObj.DrawRectangle(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
-                else
-                    grObj.DrawRectangle(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
-            }
-        }
-        public class Triangle : Figure
-        {
-            Point p3;
-            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
-            : base(p1, p2, thickness, col, null, false)
-            {
-                this.p3 = p3;
-                paint(grObj);
-            }
-            public override void paint(Graphics grObj)
-            {
-                if (is_focused)
-                    grObj.DrawPolygon(new Pen(Color.Violet, thickness), new Point[] { p1, p2, p3 });
-                else
-                    grObj.DrawPolygon(new Pen(color, thickness), new Point[] { p1, p2, p3 });
-            }
-
-            public Point getP3()
-            {
-                return p3;
-            }
-            public void setP3(Point p3)
-            {
-                this.p3 = p3;
-                ActiveForm.Invalidate();
-            }
-        }
-
-        public class Storage
-        {
-            protected Figure[] storage = new Figure[0];
-            public void add(Figure obj)
-            {
-                Figure[] temp = new Figure[storage.Length];
-                for (int i = 0; i < temp.Length; i++)
-                    temp[i] = storage[i];
-
-                storage = new Figure[temp.Length + 1];
-                for (int i = 0; i < temp.Length; i++)
-                    storage[i] = temp[i];
-
-                storage[storage.Length - 1] = obj;
-            }
-            virtual public void remove(Figure obj)
-            {
-                int i = 0;
-                for (; i < storage.Length; i++)
-                    if (storage[i] == obj)
-                        break;
-
-                Figure[] temp = new Figure[storage.Length - 1];
-                int j = 0;
-                while (j != i)
-                {
-                    temp[j] = storage[j];
-                    j++;
-                }
-                j = j + 1;
-                for (; j < storage.Length; j++)
-                    temp[j - 1] = storage[j];
-
-                storage = new Figure[temp.Length];
-                for (i = 0; i < temp.Length; i++)
-                    storage[i] = temp[i];
-            }
-        }
-        public class StorageService : Storage
-        {
-            Figure selected;
-            public void add(Figure obj, Graphics gtObj, ListBox lb)
-            {
-                unfocus();
-                base.add(obj);
-                lb.Items.Add(obj);
-                lb.SelectedItem = obj;
-                focus(obj);
-                if (ActiveForm != null)
-                    ActiveForm.Invalidate();
-            }
-            public void remove(Figure obj, ListBox lb)
-            {
-                lb.Items.Remove(obj);
-                base.remove(obj);
-                ActiveForm.Invalidate();
-            }
-            public void removeAll(ListBox lb)
-            {
-                storage = new Figure[0];
-                lb.Items.Clear();
-                ActiveForm.Invalidate();
-            }
-            public void paint(Graphics grObj)
-            {
-                foreach (Figure f in storage)
-                    f.paint(grObj);
-            }
-            public void focus(Figure obj)
-            {
-                if (obj != null)
-                {
-                    obj.focus();
-                    selected = obj;
-
-                }
-            }
-            public void unfocus()
-            {
-                if (selected != null)
-                    selected.unfocus();
-            }
-        }
-
-        ////
-        ////classes are done
-        ////
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             canvas.Invalidate();

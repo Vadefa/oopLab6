@@ -310,11 +310,6 @@ namespace oopLab6
             0,
             0,
             0});
-            this.numHgh.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
             this.numHgh.Name = "numHgh";
             this.numHgh.Size = new System.Drawing.Size(48, 27);
             this.numHgh.TabIndex = 4;
@@ -330,11 +325,6 @@ namespace oopLab6
             this.numWdt.Location = new System.Drawing.Point(57, 43);
             this.numWdt.Maximum = new decimal(new int[] {
             500,
-            0,
-            0,
-            0});
-            this.numWdt.Minimum = new decimal(new int[] {
-            10,
             0,
             0,
             0});
