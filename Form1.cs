@@ -25,6 +25,7 @@ namespace oopLab6
             model = new Model();
             model.observers += new EventHandler(UpdateFromModel);
             model.actions += new EventHandler(ActionsFromModel);
+            model.moving += new EventHandler(MovingsFromModel);
             model.observers.Invoke(this, null);
 
 
@@ -424,7 +425,7 @@ namespace oopLab6
             }
 
 
-            ////// clicked buttons & creating/deleting
+            ////// clicked mousebuttons: creating/deleting
 
             public EventHandler actions;
             string btnName = "";
@@ -486,6 +487,40 @@ namespace oopLab6
             {
                 btnName = "deleteAll";
                 actions.Invoke(this, null);
+            }
+
+            ////// pressed keybuttons: moving
+
+            public EventHandler moving;
+            private string direction = "";
+
+            public string getDirection()
+            {
+                return direction;
+            }
+            public void move(Keys code)
+            {
+                if (code == Keys.Left)
+                    direction = "left";
+                else if (code == Keys.Right)
+                    direction = "right";
+                else if (code == Keys.Up)
+                    direction = "up";
+                else if (code == Keys.Down)
+                    direction = "down";
+
+                moving.Invoke(this, null);
+            }
+            public void setPos(Point p1, Point p2, Point p3)
+            {
+                if (is_CorrectPos(p1))
+                    this.p1 = p1;
+                if (is_CorrectPos(p2))
+                    this.p2 = p2;
+                if (is_CorrectPos(p3))
+                    this.p3 = p3;
+
+                observers.Invoke(this, null);
             }
             public void destructor()
             {
@@ -629,7 +664,48 @@ namespace oopLab6
             }
             model.mPosReset();
         }
+        public void MovingsFromModel(object sender, EventArgs e)
+        {
+            string direction = model.getDirection();
 
+            if (direction == "")
+                return;
+
+            Point p1 = model.getP1();
+            Point p2 = model.getP2();
+            Point p3 = model.getP3();
+
+            if (direction == "left")
+            {
+                p1.X = p1.X - 1;
+                p2.X = p2.X - 1;
+                if (lvObj.SelectedItem is Triangle)
+                    p3.X = p3.X - 1;
+            }
+            else if (direction == "right")
+            {
+                p1.X = p1.X + 1;
+                p2.X = p2.X + 1;
+                if (lvObj.SelectedItem is Triangle)
+                    p3.X = p3.X + 1;
+            }
+            else if (direction == "up")
+            {
+                p1.Y = p1.Y - 1;
+                p2.Y = p2.Y - 1;
+                if (lvObj.SelectedItem is Triangle)
+                    p3.Y = p3.Y - 1;
+            }
+            else if (direction == "down")
+            {
+                p1.Y = p1.Y + 1;
+                p2.Y = p2.Y + 1;
+                if (lvObj.SelectedItem is Triangle)
+                    p3.Y = p3.Y + 1;
+            }
+
+            model.setPos(p1, p2, p3);
+        }
 
         //model is done
 
@@ -732,5 +808,11 @@ namespace oopLab6
             model.deleteAll();
         }
 
+
+
+        private void lvObj_KeyDown(object sender, KeyEventArgs e)
+        {
+            model.move(e.KeyCode);
+        }
     }
 }

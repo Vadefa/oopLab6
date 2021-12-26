@@ -49,8 +49,8 @@ namespace oopLab6
             this.numThck = new System.Windows.Forms.NumericUpDown();
             this.flpSz = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
-            this.numHgh = new System.Windows.Forms.NumericUpDown();
             this.numWdt = new System.Windows.Forms.NumericUpDown();
+            this.numHgh = new System.Windows.Forms.NumericUpDown();
             this.flpP1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
@@ -75,8 +75,8 @@ namespace oopLab6
             this.flpThck.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numThck)).BeginInit();
             this.flpSz.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numHgh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWdt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHgh)).BeginInit();
             this.flpP1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
@@ -302,24 +302,6 @@ namespace oopLab6
             this.label2.TabIndex = 2;
             this.label2.Text = "Size (width; height):";
             // 
-            // numHgh
-            // 
-            this.numHgh.Location = new System.Drawing.Point(57, 43);
-            this.numHgh.Maximum = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            this.numHgh.Name = "numHgh";
-            this.numHgh.Size = new System.Drawing.Size(48, 27);
-            this.numHgh.TabIndex = 4;
-            this.numHgh.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numHgh.ValueChanged += new System.EventHandler(this.size_ValueChanged);
-            // 
             // numWdt
             // 
             this.numWdt.Location = new System.Drawing.Point(3, 43);
@@ -337,6 +319,24 @@ namespace oopLab6
             0,
             0});
             this.numWdt.ValueChanged += new System.EventHandler(this.size_ValueChanged);
+            // 
+            // numHgh
+            // 
+            this.numHgh.Location = new System.Drawing.Point(57, 43);
+            this.numHgh.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numHgh.Name = "numHgh";
+            this.numHgh.Size = new System.Drawing.Size(48, 27);
+            this.numHgh.TabIndex = 4;
+            this.numHgh.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numHgh.ValueChanged += new System.EventHandler(this.size_ValueChanged);
             // 
             // flpP1
             // 
@@ -492,6 +492,7 @@ namespace oopLab6
             this.lvObj.Size = new System.Drawing.Size(180, 104);
             this.lvObj.TabIndex = 3;
             this.lvObj.SelectedIndexChanged += new System.EventHandler(this.lvObj_SelectedIndexChanged);
+            this.lvObj.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
             // 
             // btnTrsh
             // 
@@ -548,8 +549,8 @@ namespace oopLab6
             ((System.ComponentModel.ISupportInitialize)(this.numThck)).EndInit();
             this.flpSz.ResumeLayout(false);
             this.flpSz.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numHgh)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWdt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numHgh)).EndInit();
             this.flpP1.ResumeLayout(false);
             this.flpP1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
