@@ -240,16 +240,17 @@ namespace oopLab6
             Figure selected;
             public void add(Figure obj, Graphics gtObj, ListBox lb)
             {
-                unfocus();
                 base.add(obj);
-                lb.Items.Add(obj);
-                lb.SelectedItem = obj;
+                unfocus();
                 focus(obj);
+                lb.Items.Add(obj);
                 if (ActiveForm != null)
                     ActiveForm.Invalidate();
+                lb.SelectedItem = obj;
             }
             public void remove(Figure obj, ListBox lb)
             {
+                lb.ClearSelected();
                 lb.Items.Remove(obj);
                 base.remove(obj);
                 ActiveForm.Invalidate();
@@ -269,14 +270,18 @@ namespace oopLab6
             {
                 if (obj != null)
                 {
-                    obj.focus();
                     selected = obj;
+                    selected.focus();
+                    ActiveForm.Invalidate();
                 }
             }
             public void unfocus()
             {
                 if (selected != null)
+                {
                     selected.unfocus();
+                    ActiveForm.Invalidate();
+                }
             }
         }
 
@@ -306,6 +311,8 @@ namespace oopLab6
             public void unselect()
             {
                 selected = false;
+                mPosReset();
+                observers.Invoke(this, null);
             }
 
             public bool is_CorrectPos(Point p)
@@ -318,11 +325,13 @@ namespace oopLab6
             public void setColor(Color color)
             {
                 this.color = color;
+                observers.Invoke(this, null);
             }
             public void setThickness(int thickness)
             {
                 if (thickness > 0 && thickness <= 20)
                     this.thickness = thickness;
+                observers.Invoke(this, null);
             }
             public void setP1(Point p)
             {
@@ -412,36 +421,52 @@ namespace oopLab6
 
             public EventHandler actions;
             string btnName = "";
+            Point mp1 = new Point(-1, -1);
+            Point mp2 = new Point(-1, -1);
+            Point mp3 = new Point(-1, -1);
 
             public void setBtn(string btnName)
             {
+                unselect();
                 this.btnName = btnName;
+            }
+            public Point getMp1()
+            {
+                return mp1;
+            }
+            public Point getMp2()
+            {
+                return mp2;
+            }
+            public Point getMp3()
+            {
+                return mp3;
             }
             public string getBtn()
             {
                 return btnName;
             }
-            public void posReset()
+            public void mPosReset()
             {
-                p1 = new Point(-1, -1);
-                p2 = p1;
-                p3 = p1;
+                mp1 = new Point(-1, -1);
+                mp2 = mp1;
+                mp3 = mp1;
             }
             public void createObj(Point mouseP)
             {
-                if (p1.X == -1)
+                if (mp1.X == -1)
                 {
-                    p1 = mouseP;
+                    mp1 = mouseP;
                 }
-                else if (p2.X == -1)
+                else if (mp2.X == -1)
                 {
-                    p2 = mouseP;
+                    mp2 = mouseP;
                     if (btnName != "btnTrn")
                         actions.Invoke(this, null);
                 }
                 else
                 {
-                    p3 = mouseP;
+                    mp3 = mouseP;
                     actions.Invoke(this, null);
                 }
             }
@@ -463,27 +488,43 @@ namespace oopLab6
                 p3 = new Point(-1, -1);
             }
         }
+
         public void UpdateFromModel(object sender, EventArgs e)
         {
+            numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
+            numThck.Value = model.getThickness();
+            numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
+
+
             if (model.obj_is_selected() == false)
+            {
+                flpSz.Visible = false;
+                flpP1.Visible = false;
+                flpP2.Visible = false;
+                flpP3.Visible = false;
+                storage.unfocus();
+                lvObj.ClearSelected();
                 return;
+            }
+            else
+            {
+                flpP1.Visible = true;
+                flpP2.Visible = true;
+            }
 
             storage.unfocus();
             storage.focus(lvObj.SelectedItem as Figure);
 
-            numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
             numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
             numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
             nump2X.ValueChanged -= new EventHandler(numP2_ValueChanged);
             nump2Y.ValueChanged -= new EventHandler(numP2_ValueChanged);
 
-            numThck.Value = model.getThickness();
             numPosX.Value = model.getP1().X;
             numPosY.Value = model.getP1().Y;
             nump2X.Value = model.getP2().X;
             nump2Y.Value = model.getP2().Y;
 
-            numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
             numPosX.ValueChanged += new EventHandler(numP1_ValueChanged);
             numPosY.ValueChanged += new EventHandler(numP1_ValueChanged);
             nump2X.ValueChanged += new EventHandler(numP2_ValueChanged);
@@ -534,38 +575,35 @@ namespace oopLab6
         {
             string btn = model.getBtn();
 
+            if (btn == "")
+                return;
 
             if (btn == "btnSctn")
             {
-                storage.add(new Section(model.getP1(), model.getP2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
+                storage.add(new Section(model.getMp1(), model.getMp2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
             else if (btn == "btnElps")
             {
-                storage.add(new Ellipse(model.getP1(), model.getP2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
+                storage.add(new Ellipse(model.getMp1(), model.getMp2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
             else if (btn == "btnTrn")
             {
-                storage.add(new Triangle(model.getP1(), model.getP2(), model.getP3(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
+                storage.add(new Triangle(model.getMp1(), model.getMp2(), model.getMp3(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
             else if (btn == "btnRct")
             {
-                storage.add(new Rect(model.getP1(), model.getP2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
-            }
-            else if (btn == "btnArw")
-            {
-                if (lvObj.SelectedItem != null)
-                {
-                    storage.unfocus();
-                    lvObj.SetSelected(lvObj.SelectedIndex, false);
-                }
+                storage.add(new Rect(model.getMp1(), model.getMp2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
             }
             else if (btn == "btnTrsh")
             {
                 storage.remove(lvObj.SelectedItem as Figure, lvObj);
                 model.unselect();
             }
-            model.posReset();
+            model.mPosReset();
         }
+
+
+        //model is done
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
@@ -584,7 +622,7 @@ namespace oopLab6
 
         private void btnArw_Click(object sender, EventArgs e)
         {
-            model.setBtn((sender as Button).Name);
+            model.unselect(); 
         }
 
         private void btnElps_Click(object sender, EventArgs e)
@@ -636,7 +674,6 @@ namespace oopLab6
         {
             if (lvObj.SelectedItem != null)
             {
-                model.unselect();
                 model.setObject(lvObj.SelectedItem as Figure);
                 storage.focus(lvObj.SelectedItem as Figure);
             }
