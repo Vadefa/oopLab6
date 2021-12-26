@@ -354,6 +354,13 @@ namespace oopLab6
 
                 observers.Invoke(this, null);
             }
+            public void setSize(int width, int height)
+            {
+                Point p = new Point(p1.X + width, p1.Y + height);
+                if (is_CorrectPos(p))
+                    p2 = p;
+                observers.Invoke(this, null);
+            }
             public void setcanvWidth(int width)
             {
                 if (ActiveForm != null)
@@ -417,7 +424,7 @@ namespace oopLab6
             }
 
 
-            ////// clicked buttons & actions
+            ////// clicked buttons & creating/deleting
 
             public EventHandler actions;
             string btnName = "";
@@ -559,8 +566,14 @@ namespace oopLab6
 
             if (model.getBtn() != "btnTrn" && model.getBtn() != "btnSctn")
             {
+                numWdt.ValueChanged -= new EventHandler(size_ValueChanged);
+                numHgh.ValueChanged -= new EventHandler(size_ValueChanged);
+
                 numWdt.Value = Math.Abs(model.getP2().X - model.getP1().X);
                 numHgh.Value = Math.Abs(model.getP2().Y - model.getP1().Y);
+
+                numWdt.ValueChanged += new EventHandler(size_ValueChanged);
+                numHgh.ValueChanged += new EventHandler(size_ValueChanged);
                 flpSz.Visible = true;
             }
             else
@@ -684,7 +697,7 @@ namespace oopLab6
 
         private void size_ValueChanged(object sender, EventArgs e)
         {
-            //model.setSize(new Size((int)numWdt.Value, (int)numHgh.Value));
+            model.setSize((int)numWdt.Value, (int)numHgh.Value);
         }
         private void numP1_ValueChanged(object sender, EventArgs e)
         {

@@ -286,8 +286,8 @@ namespace oopLab6
             // flpSz
             // 
             this.flpSz.Controls.Add(this.label2);
-            this.flpSz.Controls.Add(this.numHgh);
             this.flpSz.Controls.Add(this.numWdt);
+            this.flpSz.Controls.Add(this.numHgh);
             this.flpSz.Location = new System.Drawing.Point(3, 136);
             this.flpSz.Name = "flpSz";
             this.flpSz.Size = new System.Drawing.Size(129, 70);
@@ -304,7 +304,7 @@ namespace oopLab6
             // 
             // numHgh
             // 
-            this.numHgh.Location = new System.Drawing.Point(3, 43);
+            this.numHgh.Location = new System.Drawing.Point(57, 43);
             this.numHgh.Maximum = new decimal(new int[] {
             500,
             0,
@@ -322,7 +322,7 @@ namespace oopLab6
             // 
             // numWdt
             // 
-            this.numWdt.Location = new System.Drawing.Point(57, 43);
+            this.numWdt.Location = new System.Drawing.Point(3, 43);
             this.numWdt.Maximum = new decimal(new int[] {
             500,
             0,
