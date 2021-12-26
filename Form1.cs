@@ -475,6 +475,11 @@ namespace oopLab6
                 btnName = "btnTrsh";
                 actions.Invoke(this, null);
             }
+            public void deleteAll()
+            {
+                btnName = "deleteAll";
+                actions.Invoke(this, null);
+            }
             public void destructor()
             {
                 Properties.Settings.Default.thickness = thickness;
@@ -604,12 +609,21 @@ namespace oopLab6
                 storage.remove(lvObj.SelectedItem as Figure, lvObj);
                 model.unselect();
             }
+            else if (btn == "deleteAll")
+            {
+                storage.removeAll(lvObj);
+                model.unselect();
+            }
             model.mPosReset();
         }
 
 
         //model is done
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            model.destructor();
+        }
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             canvas.Invalidate();
@@ -619,61 +633,73 @@ namespace oopLab6
             grObj = canvas.CreateGraphics();
             storage.paint(grObj);
         }
+        private void canvas_Click(object sender, EventArgs e)
+        {
+            Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
+            model.createObj(mousePos);
+        }
 
+
+        private void btnArw_Click(object sender, EventArgs e)
+        {
+            model.unselect();
+        }
         private void btnSctn_Click(object sender, EventArgs e)
         {
             model.setBtn((sender as Button).Name);
         }
-
-        private void btnArw_Click(object sender, EventArgs e)
-        {
-            model.unselect(); 
-        }
-
         private void btnElps_Click(object sender, EventArgs e)
         {
             model.setBtn((sender as Button).Name);
         }
-
         private void btnTrn_Click(object sender, EventArgs e)
         {
             model.setBtn((sender as Button).Name);
         }
-
         private void btnRct_Click(object sender, EventArgs e)
         {
             model.setBtn((sender as Button).Name);
         }
 
 
+
         private void btnBlck_Click(object sender, EventArgs e)
         {
             model.setColor((sender as Button).BackColor);
         }
-
         private void btnBlue_Click(object sender, EventArgs e)
         {
             model.setColor((sender as Button).BackColor);
         }
-
         private void btnGrn_Click(object sender, EventArgs e)
         {
             model.setColor((sender as Button).BackColor);
         }
-        private void btnTrsh_Click(object sender, EventArgs e)
+        private void numThck_ValueChanged(object sender, EventArgs e)
         {
-            model.deleteObj();
+            model.setThickness((int)(sender as NumericUpDown).Value);
         }
+
+
 
         private void size_ValueChanged(object sender, EventArgs e)
         {
             //model.setSize(new Size((int)numWdt.Value, (int)numHgh.Value));
         }
-
         private void numP1_ValueChanged(object sender, EventArgs e)
         {
             model.setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
         }
+        private void numP2_ValueChanged(object sender, EventArgs e)
+        {
+            model.setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
+        }
+        private void numP3_ValueChanged(object sender, EventArgs e)
+        {
+            model.setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
+        }
+
+
         private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lvObj.SelectedItem != null)
@@ -682,37 +708,16 @@ namespace oopLab6
                 storage.focus(lvObj.SelectedItem as Figure);
             }
         }
-
-        private void canvas_Click(object sender, EventArgs e)
+        private void btnTrsh_Click(object sender, EventArgs e)
         {
-            Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
-            model.createObj(mousePos);
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            model.destructor();
+            model.deleteObj();
         }
 
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            storage.removeAll(lvObj);
+            model.deleteAll();
         }
 
-        private void numThck_ValueChanged(object sender, EventArgs e)
-        {
-            model.setThickness((int)(sender as NumericUpDown).Value);
-        }
-
-        private void numP2_ValueChanged(object sender, EventArgs e)
-        {
-            model.setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
-        }
-
-        private void numP3_ValueChanged(object sender, EventArgs e)
-        {
-            model.setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
-        }
     }
 }
