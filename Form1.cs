@@ -250,9 +250,9 @@ namespace oopLab6
             }
             public void remove(Figure obj, ListBox lb)
             {
-                lb.ClearSelected();
-                lb.Items.Remove(obj);
                 base.remove(obj);
+                lb.Items.Remove(obj);
+                lb.ClearSelected();
                 ActiveForm.Invalidate();
             }
             public void removeAll(ListBox lb)
@@ -470,6 +470,11 @@ namespace oopLab6
                     actions.Invoke(this, null);
                 }
             }
+            public void deleteObj()
+            {
+                btnName = "btnTrsh";
+                actions.Invoke(this, null);
+            }
             public void destructor()
             {
                 Properties.Settings.Default.thickness = thickness;
@@ -657,8 +662,7 @@ namespace oopLab6
         }
         private void btnTrsh_Click(object sender, EventArgs e)
         {
-            model.setBtn((sender as Button).Name);
-            model.actions.Invoke(this, null);
+            model.deleteObj();
         }
 
         private void size_ValueChanged(object sender, EventArgs e)
