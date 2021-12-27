@@ -318,7 +318,7 @@ namespace oopLab6
 
             public bool is_CorrectPos(Point p)
             {
-                if (p.X >= 0 && p.X <= canvasWidth && p.Y >= 0 && p.Y <= canvasHeight)
+                if (p.X >= 0 && p.X + thickness <= canvasWidth && p.Y >= 0 && p.Y + thickness <= canvasHeight)
                     return true;
                 else
                     return false;
@@ -489,6 +489,7 @@ namespace oopLab6
                 actions.Invoke(this, null);
             }
 
+
             ////// pressed keybuttons: moving
 
             public EventHandler moving;
@@ -518,13 +519,18 @@ namespace oopLab6
             }
             public void setPos(Point p1, Point p2, Point p3)
             {
-                if (is_CorrectPos(p1))
+                if (is_CorrectPos(p1) && is_CorrectPos(p2) && btnName != "btnTrn")
+                {
                     this.p1 = p1;
-                if (is_CorrectPos(p2))
                     this.p2 = p2;
-                if (is_CorrectPos(p3))
+                }
+                
+                if (is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3) && btnName == "btnTrn")
+                {
+                    this.p1 = p1;
+                    this.p2 = p2;
                     this.p3 = p3;
-
+                }
                 observers.Invoke(this, null);
             }
             public void destructor()
@@ -572,48 +578,48 @@ namespace oopLab6
                 lvObj.ClearSelected();
                 return;
             }
-            else
-            {
-                flpP1.Visible = true;
-                flpP2.Visible = true;
-            }
 
             storage.unfocus();
             storage.focus(lvObj.SelectedItem as Figure);
 
-            numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
-            numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
-            nump2X.ValueChanged -= new EventHandler(numP2_ValueChanged);
-            nump2Y.ValueChanged -= new EventHandler(numP2_ValueChanged);
 
-            numPosX.Value = model.getP1().X;
-            numPosY.Value = model.getP1().Y;
-            nump2X.Value = model.getP2().X;
-            nump2Y.Value = model.getP2().Y;
-
-            numPosX.ValueChanged += new EventHandler(numP1_ValueChanged);
-            numPosY.ValueChanged += new EventHandler(numP1_ValueChanged);
-            nump2X.ValueChanged += new EventHandler(numP2_ValueChanged);
-            nump2Y.ValueChanged += new EventHandler(numP2_ValueChanged);
-
-            if (model.getBtn() == "btnTrn")
+            if (model.getBtn() == "btnSctn" || model.getBtn() == "btnTrn")
             {
-                nump3X.ValueChanged -= new EventHandler(numP3_ValueChanged);
-                nump3Y.ValueChanged -= new EventHandler(numP3_ValueChanged);
+                numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
+                numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
+                nump2X.ValueChanged -= new EventHandler(numP2_ValueChanged);
+                nump2Y.ValueChanged -= new EventHandler(numP2_ValueChanged);
 
-                nump3X.Value = model.getP3().X;
-                nump3Y.Value = model.getP3().Y;
-                flpP3.Visible = true;
+                numPosX.Value = model.getP1().X;
+                numPosY.Value = model.getP1().Y;
+                nump2X.Value = model.getP2().X;
+                nump2Y.Value = model.getP2().Y;
 
-                nump3X.ValueChanged += new EventHandler(numP3_ValueChanged);
-                nump3Y.ValueChanged += new EventHandler(numP3_ValueChanged);
+                nump2X.ValueChanged += new EventHandler(numP2_ValueChanged);
+                nump2Y.ValueChanged += new EventHandler(numP2_ValueChanged);
+                numPosX.ValueChanged += new EventHandler(numP1_ValueChanged);
+                numPosY.ValueChanged += new EventHandler(numP1_ValueChanged);
+
+                flpP1.Visible = true;
+                flpP2.Visible = true;
+                flpSz.Visible = false;
+
+                if (model.getBtn() == "btnTrn")
+                {
+                    nump3X.ValueChanged -= new EventHandler(numP3_ValueChanged);
+                    nump3Y.ValueChanged -= new EventHandler(numP3_ValueChanged);
+
+                    nump3X.Value = model.getP3().X;
+                    nump3Y.Value = model.getP3().Y;
+                    flpP3.Visible = true;
+
+                    nump3X.ValueChanged += new EventHandler(numP3_ValueChanged);
+                    nump3Y.ValueChanged += new EventHandler(numP3_ValueChanged);
+                }
+                else
+                    flpP3.Visible = false;
             }
             else
-            {
-                flpP3.Visible = false;
-            }
-
-            if (model.getBtn() != "btnTrn" && model.getBtn() != "btnSctn")
             {
                 numWdt.ValueChanged -= new EventHandler(size_ValueChanged);
                 numHgh.ValueChanged -= new EventHandler(size_ValueChanged);
@@ -623,11 +629,11 @@ namespace oopLab6
 
                 numWdt.ValueChanged += new EventHandler(size_ValueChanged);
                 numHgh.ValueChanged += new EventHandler(size_ValueChanged);
+
+                flpP1.Visible = false;
+                flpP2.Visible = false;
+                flpP3.Visible = false;
                 flpSz.Visible = true;
-            }
-            else
-            {
-                flpSz.Visible = false;
             }
 
             if (lvObj.SelectedItem != null)
@@ -640,8 +646,7 @@ namespace oopLab6
                     (lvObj.SelectedItem as Triangle).setP3(model.getP3());
 
             }
-            if (ActiveForm != null)
-                ActiveForm.Invalidate();
+            this.Invalidate();
         }
         public void ActionsFromModel(object sender, EventArgs e)
         {
