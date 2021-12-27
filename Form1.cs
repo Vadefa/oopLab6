@@ -318,7 +318,7 @@ namespace oopLab6
 
             public bool is_CorrectPos(Point p)
             {
-                if (p.X >= 1 && p.X <= canvasWidth && p.Y >= 1 && p.Y <= canvasHeight)
+                if (p.X >= 0 && p.X <= canvasWidth && p.Y >= 0 && p.Y <= canvasHeight)
                     return true;
                 else
                     return false;
@@ -510,9 +510,9 @@ namespace oopLab6
                     direction = "down";
 
                 else if (code == Keys.Oemplus)
-                    direction = "sizeUp";
+                    direction = "expand";
                 else if (code == Keys.OemMinus)
-                    direction = "sizeDown";
+                    direction = "narrow";
 
                 moving.Invoke(this, null);
             }
@@ -695,6 +695,7 @@ namespace oopLab6
                 p2.X = p2.X - 1;
                 if (lvObj.SelectedItem is Triangle)
                     p3.X = p3.X - 1;
+                model.setPos(p1, p2, p3);
             }
             else if (direction == "right")
             {
@@ -702,6 +703,7 @@ namespace oopLab6
                 p2.X = p2.X + 1;
                 if (lvObj.SelectedItem is Triangle)
                     p3.X = p3.X + 1;
+                model.setPos(p1, p2, p3);
             }
             else if (direction == "up")
             {
@@ -709,6 +711,7 @@ namespace oopLab6
                 p2.Y = p2.Y - 1;
                 if (lvObj.SelectedItem is Triangle)
                     p3.Y = p3.Y - 1;
+                model.setPos(p1, p2, p3);
             }
             else if (direction == "down")
             {
@@ -716,25 +719,31 @@ namespace oopLab6
                 p2.Y = p2.Y + 1;
                 if (lvObj.SelectedItem is Triangle)
                     p3.Y = p3.Y + 1;
+                model.setPos(p1, p2, p3);
             }
-            else if (direction == "sizeUp")
+            else if (direction == "expand")
             {
                 if (!(lvObj.SelectedItem is Triangle) && !(lvObj.SelectedItem is Section))
                 {
+                    p2.X = (int)numWdt.Value;
+                    p2.Y = (int)numHgh.Value;
                     p2.X = p2.X + 1;
                     p2.Y = p2.Y + 1;
+                    model.setSize(p2.X, p2.Y);
                 }
             }
-            else if (direction == "sizeDown")
+            else if (direction == "narrow")
             {
                 if (!(lvObj.SelectedItem is Triangle) && !(lvObj.SelectedItem is Section))
                 {
+                    p2.X = (int)numWdt.Value;
+                    p2.Y = (int)numHgh.Value;
                     p2.X = p2.X - 1;
                     p2.Y = p2.Y - 1;
+                    model.setSize(p2.X, p2.Y);
                 }
             }
 
-            model.setPos(p1, p2, p3);
         }
 
         //model is done
