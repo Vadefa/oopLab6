@@ -844,7 +844,6 @@ namespace oopLab6
             if (lvObj.SelectedItem != null)
             {
                 model.setObject(lvObj.SelectedItem as Figure);
-                storage.focus(lvObj.SelectedItem as Figure);
             }
         }
         private void btnTrsh_Click(object sender, EventArgs e)
