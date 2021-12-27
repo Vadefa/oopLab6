@@ -447,7 +447,6 @@ namespace oopLab6
 
             ////// clicked mousebuttons: creating/deleting
 
-            public EventHandler actions;
             string btnName = "";
             Point mp1 = new Point(-1, -1);
             Point mp2 = new Point(-1, -1);
@@ -489,8 +488,6 @@ namespace oopLab6
                 else if (mp2.X == -1)
                 {
                     mp2 = mouseP;
-                    //if (btnName != "btnTrn")
-                    //    actions.Invoke(this, null);
                     if (btnName != "btnTrn")
                     {
                         if (btnName == "btnSctn")
@@ -517,16 +514,12 @@ namespace oopLab6
                         storage.add(new Triangle(mp1, mp2, mp3, thickness, color, grObj));
                         mPosReset();
                     }
-                    //actions.Invoke(this, null);
                 }
             }
             public void deleteObj()
             {
                 if (selected)
-                    //btnName = "btnTrsh";
                     storage.remove();
-
-                //actions.Invoke(this, null);
             }
             public void deleteAll()
             {
@@ -537,13 +530,7 @@ namespace oopLab6
 
             ////// pressed keybuttons: moving
 
-            public EventHandler moving;
-            private string direction = "";
-
-            public string getDirection()
-            {
-                return direction;
-            }
+            
             public void move(Keys code)
             {
                 Point p1 = this.p1;
@@ -552,7 +539,6 @@ namespace oopLab6
 
                 if (code == Keys.Left)
                 {
-                    direction = "left";
                     p1.X = p1.X - 1;
                     p2.X = p2.X - 1;
                     if (obj is Triangle)
@@ -561,7 +547,6 @@ namespace oopLab6
                 }
                 else if (code == Keys.Right)
                 {
-                    direction = "right";
                     p1.X = p1.X + 1;
                     p2.X = p2.X + 1;
                     if (obj is Triangle)
@@ -570,7 +555,6 @@ namespace oopLab6
                 }
                 else if (code == Keys.Up)
                 {
-                    direction = "up";
                     p1.Y = p1.Y - 1;
                     p2.Y = p2.Y - 1;
                     if (obj is Triangle)
@@ -580,7 +564,6 @@ namespace oopLab6
                 }
                 else if (code == Keys.Down)
                 {
-                    direction = "down";
                     p1.Y = p1.Y + 1;
                     p2.Y = p2.Y + 1;
                     if (obj is Triangle)
@@ -590,24 +573,18 @@ namespace oopLab6
 
                 else if (code == Keys.Oemplus && !(obj is Triangle) && !(obj is Section))
                 {
-                    direction = "expand";
                     p2.X = p1.X + Math.Abs(p2.X - p1.X) + 1;
                     p2.Y = p1.Y + Math.Abs(p2.Y - p1.Y) + 1;
                     setP2(p2);
-                    //setSize(p2.X, p2.Y);
                 }
                 else if (code == Keys.OemMinus && !(obj is Triangle) && !(obj is Section))
                 {
-                    direction = "narrow";
                     p2.X = p1.X + Math.Abs(p2.X - p1.X) - 1;
                     p2.Y = p1.Y + Math.Abs(p2.Y - p1.Y) - 1;
                     setP2(p2);
-                    //setSize(p2.X, p2.Y);
                 }
                 else if (code == Keys.Delete)
                     deleteObj();
-
-                //moving.Invoke(this, null);
             }
             public void setPos(Point p1, Point p2, Point p3)
             {
