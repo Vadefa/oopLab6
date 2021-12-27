@@ -312,6 +312,7 @@ namespace oopLab6
             public void unselect()
             {
                 selected = false;
+                btnName = "";
                 mPosReset();
                 observers.Invoke(this, null);
             }
@@ -480,7 +481,9 @@ namespace oopLab6
             }
             public void deleteObj()
             {
-                btnName = "btnTrsh";
+                if (selected)
+                    btnName = "btnTrsh";
+
                 actions.Invoke(this, null);
             }
             public void deleteAll()
@@ -514,6 +517,9 @@ namespace oopLab6
                     direction = "expand";
                 else if (code == Keys.OemMinus)
                     direction = "narrow";
+
+                else if (code == Keys.Delete)
+                    deleteObj();
 
                 moving.Invoke(this, null);
             }

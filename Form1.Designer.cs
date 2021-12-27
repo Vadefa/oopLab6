@@ -113,6 +113,7 @@ namespace oopLab6
             this.btnArw.Name = "btnArw";
             this.btnArw.Size = new System.Drawing.Size(32, 32);
             this.btnArw.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.btnArw, "Click here to unselect the element");
             this.btnArw.UseVisualStyleBackColor = true;
             this.btnArw.Click += new System.EventHandler(this.btnArw_Click);
             // 
@@ -123,7 +124,7 @@ namespace oopLab6
             this.btnSctn.Name = "btnSctn";
             this.btnSctn.Size = new System.Drawing.Size(32, 32);
             this.btnSctn.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.btnSctn, "Tap 2 times on the easel");
+            this.toolTip1.SetToolTip(this.btnSctn, "1st click - 1st point, 2nd - 2nd");
             this.btnSctn.UseVisualStyleBackColor = true;
             this.btnSctn.Click += new System.EventHandler(this.btnSctn_Click);
             // 
@@ -134,6 +135,7 @@ namespace oopLab6
             this.btnElps.Name = "btnElps";
             this.btnElps.Size = new System.Drawing.Size(32, 32);
             this.btnElps.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.btnElps, "1st click - left upper corner, 2nd click - right downer corner");
             this.btnElps.UseVisualStyleBackColor = true;
             this.btnElps.Click += new System.EventHandler(this.btnElps_Click);
             // 
@@ -144,7 +146,7 @@ namespace oopLab6
             this.btnTrn.Name = "btnTrn";
             this.btnTrn.Size = new System.Drawing.Size(32, 32);
             this.btnTrn.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.btnTrn, "Tap 3 times on the easel");
+            this.toolTip1.SetToolTip(this.btnTrn, "1st click - 1st point, 2nd click - 2nd point, 3rd click - 3rd point");
             this.btnTrn.UseVisualStyleBackColor = true;
             this.btnTrn.Click += new System.EventHandler(this.btnTrn_Click);
             // 
@@ -155,6 +157,7 @@ namespace oopLab6
             this.btnRct.Name = "btnRct";
             this.btnRct.Size = new System.Drawing.Size(32, 32);
             this.btnRct.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.btnRct, "1st click - left upper corner, 2nd click - right downer corner");
             this.btnRct.UseVisualStyleBackColor = true;
             this.btnRct.Click += new System.EventHandler(this.btnRct_Click);
             // 
@@ -348,9 +351,9 @@ namespace oopLab6
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(101, 20);
+            this.label3.Size = new System.Drawing.Size(89, 20);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Location (x; y)";
+            this.label3.Text = "Point 1 (x; y)";
             // 
             // numPosX
             // 
@@ -385,7 +388,7 @@ namespace oopLab6
             this.flpP2.Controls.Add(this.nump2Y);
             this.flpP2.Location = new System.Drawing.Point(3, 272);
             this.flpP2.Name = "flpP2";
-            this.flpP2.Size = new System.Drawing.Size(129, 73);
+            this.flpP2.Size = new System.Drawing.Size(129, 61);
             this.flpP2.TabIndex = 15;
             // 
             // label4
@@ -393,13 +396,13 @@ namespace oopLab6
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(110, 40);
+            this.label4.Size = new System.Drawing.Size(89, 20);
             this.label4.TabIndex = 5;
-            this.label4.Text = "2nd additional point";
+            this.label4.Text = "Point 2 (x; y)";
             // 
             // nump2X
             // 
-            this.nump2X.Location = new System.Drawing.Point(3, 43);
+            this.nump2X.Location = new System.Drawing.Point(3, 23);
             this.nump2X.Maximum = new decimal(new int[] {
             500,
             0,
@@ -417,7 +420,7 @@ namespace oopLab6
             // 
             // nump2Y
             // 
-            this.nump2Y.Location = new System.Drawing.Point(57, 43);
+            this.nump2Y.Location = new System.Drawing.Point(57, 23);
             this.nump2Y.Maximum = new decimal(new int[] {
             500,
             0,
@@ -438,9 +441,9 @@ namespace oopLab6
             this.flpP3.Controls.Add(this.label5);
             this.flpP3.Controls.Add(this.nump3X);
             this.flpP3.Controls.Add(this.nump3Y);
-            this.flpP3.Location = new System.Drawing.Point(3, 351);
+            this.flpP3.Location = new System.Drawing.Point(3, 339);
             this.flpP3.Name = "flpP3";
-            this.flpP3.Size = new System.Drawing.Size(129, 68);
+            this.flpP3.Size = new System.Drawing.Size(129, 56);
             this.flpP3.TabIndex = 16;
             // 
             // label5
@@ -448,13 +451,13 @@ namespace oopLab6
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(3, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(107, 40);
+            this.label5.Size = new System.Drawing.Size(89, 20);
             this.label5.TabIndex = 5;
-            this.label5.Text = "3rd additional point";
+            this.label5.Text = "Point 3 (x; y)";
             // 
             // nump3X
             // 
-            this.nump3X.Location = new System.Drawing.Point(3, 43);
+            this.nump3X.Location = new System.Drawing.Point(3, 23);
             this.nump3X.Maximum = new decimal(new int[] {
             500,
             0,
@@ -467,7 +470,7 @@ namespace oopLab6
             // 
             // nump3Y
             // 
-            this.nump3Y.Location = new System.Drawing.Point(57, 43);
+            this.nump3Y.Location = new System.Drawing.Point(57, 23);
             this.nump3Y.Maximum = new decimal(new int[] {
             500,
             0,
@@ -496,7 +499,7 @@ namespace oopLab6
             this.btnTrsh.Name = "btnTrsh";
             this.btnTrsh.Size = new System.Drawing.Size(32, 32);
             this.btnTrsh.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.btnTrsh, "Delete element");
+            this.toolTip1.SetToolTip(this.btnTrsh, "Delete the selected element");
             this.btnTrsh.UseVisualStyleBackColor = true;
             this.btnTrsh.Click += new System.EventHandler(this.btnTrsh_Click);
             // 
