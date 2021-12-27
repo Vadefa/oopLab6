@@ -318,7 +318,7 @@ namespace oopLab6
 
             public bool is_CorrectPos(Point p)
             {
-                if (p.X >= 0 && p.X <= canvasWidth && p.Y >= 0 && p.Y <= canvasHeight)
+                if (p.X >= 1 && p.X <= canvasWidth && p.Y >= 1 && p.Y <= canvasHeight)
                     return true;
                 else
                     return false;
@@ -508,6 +508,11 @@ namespace oopLab6
                     direction = "up";
                 else if (code == Keys.Down)
                     direction = "down";
+
+                else if (code == Keys.Oemplus)
+                    direction = "sizeUp";
+                else if (code == Keys.OemMinus)
+                    direction = "sizeDown";
 
                 moving.Invoke(this, null);
             }
@@ -711,6 +716,22 @@ namespace oopLab6
                 p2.Y = p2.Y + 1;
                 if (lvObj.SelectedItem is Triangle)
                     p3.Y = p3.Y + 1;
+            }
+            else if (direction == "sizeUp")
+            {
+                if (!(lvObj.SelectedItem is Triangle) && !(lvObj.SelectedItem is Section))
+                {
+                    p2.X = p2.X + 1;
+                    p2.Y = p2.Y + 1;
+                }
+            }
+            else if (direction == "sizeDown")
+            {
+                if (!(lvObj.SelectedItem is Triangle) && !(lvObj.SelectedItem is Section))
+                {
+                    p2.X = p2.X - 1;
+                    p2.Y = p2.Y - 1;
+                }
             }
 
             model.setPos(p1, p2, p3);
