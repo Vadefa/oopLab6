@@ -32,7 +32,7 @@ namespace oopLab6
             grObj = canvas.CreateGraphics();
         }
 
-        
+
         public class Figure
         {
             protected Point p1;
@@ -816,12 +816,11 @@ namespace oopLab6
         {
             model.deleteAll();
         }
-
-
-
         private void lvObj_KeyDown(object sender, KeyEventArgs e)
         {
+            e.Handled = false;
             model.move(e.KeyCode);
+            e.Handled = true;
         }
     }
 }
