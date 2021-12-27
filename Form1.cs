@@ -19,17 +19,14 @@ namespace oopLab6
         public Form1()
         {
             InitializeComponent();
-            storage = new StorageService();
 
-
-            model = new Model();
+            grObj = canvas.CreateGraphics();
+            storage = new StorageService(lvObj, grObj);
+            model = new Model(storage, grObj);
             model.observers += new EventHandler(UpdateFromModel);
-            model.actions += new EventHandler(ActionsFromModel);
-            model.moving += new EventHandler(MovingsFromModel);
             model.observers.Invoke(this, null);
 
 
-            grObj = canvas.CreateGraphics();
         }
 
 
@@ -41,6 +38,8 @@ namespace oopLab6
             protected Color color;
 
             protected bool is_focused = false;
+
+            protected Graphics grObj;
             public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
             {
                 this.thickness = thickness;
@@ -80,7 +79,10 @@ namespace oopLab6
                     this.p2 = p2;
                 }
                 if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
+                {
+                    this.grObj = grObj;
                     paint(grObj);
+                }
             }
             virtual public void paint(Graphics grObj)
             {
@@ -177,6 +179,7 @@ namespace oopLab6
             : base(p1, p2, thickness, col, null, false)
             {
                 this.p3 = p3;
+                this.grObj = grObj;
                 paint(grObj);
             }
             public override void paint(Graphics grObj)
@@ -239,7 +242,14 @@ namespace oopLab6
         public class StorageService : Storage
         {
             Figure selected;
-            public void add(Figure obj, Graphics gtObj, ListBox lb)
+            ListBox lb;
+            Graphics grObj;
+            public StorageService(ListBox lb, Graphics grObj)
+            {
+                this.lb = lb;
+                this.grObj = grObj;
+            }
+            public void add(Figure obj)
             {
                 base.add(obj);
                 unfocus();
@@ -249,20 +259,23 @@ namespace oopLab6
                     ActiveForm.Invalidate();
                 lb.SelectedItem = obj;
             }
-            public void remove(Figure obj, ListBox lb)
+            public void remove()
             {
-                base.remove(obj);
-                lb.Items.Remove(obj);
-                lb.ClearSelected();
-                ActiveForm.Invalidate();
+                if (lb.SelectedItem != null)
+                {
+                    base.remove(selected);
+                    lb.ClearSelected();
+                    lb.Items.Remove(selected);
+                    //ActiveForm.Invalidate();
+                }
             }
-            public void removeAll(ListBox lb)
+            public void removeAll()
             {
                 storage = new Figure[0];
                 lb.Items.Clear();
                 ActiveForm.Invalidate();
             }
-            public void paint(Graphics grObj)
+            public void paint()
             {
                 foreach (Figure f in storage)
                     f.paint(grObj);
@@ -273,7 +286,8 @@ namespace oopLab6
                 {
                     selected = obj;
                     selected.focus();
-                    ActiveForm.Invalidate();
+                    if (ActiveForm != null)
+                        ActiveForm.Invalidate();
                 }
             }
             public void unfocus()
@@ -281,7 +295,8 @@ namespace oopLab6
                 if (selected != null)
                 {
                     selected.unfocus();
-                    ActiveForm.Invalidate();
+                    if (ActiveForm != null)
+                        ActiveForm.Invalidate();
                 }
             }
         }
@@ -297,6 +312,9 @@ namespace oopLab6
             private Point p1;
             private Point p2;
             private Point p3;
+            private Graphics grObj;
+            private StorageService storage;
+            private Figure obj;
 
             private int canvasWidth;
             private int canvasHeight;
@@ -386,6 +404,7 @@ namespace oopLab6
 
             public void setObject(Figure obj)
             {
+                this.obj = obj;
                 color = obj.getColor();
                 thickness = obj.getThickness();
                 p1 = obj.getP1();
@@ -470,26 +489,49 @@ namespace oopLab6
                 else if (mp2.X == -1)
                 {
                     mp2 = mouseP;
+                    //if (btnName != "btnTrn")
+                    //    actions.Invoke(this, null);
                     if (btnName != "btnTrn")
-                        actions.Invoke(this, null);
+                    {
+                        if (btnName == "btnSctn")
+                        {
+                            storage.add(new Section(mp1, mp2, thickness, color, grObj));
+                        }
+                        else if (btnName == "btnElps")
+                        {
+                            storage.add(new Ellipse(mp1, mp2, thickness, color, grObj));
+                        }
+                        else if (btnName == "btnRct")
+                        {
+                            storage.add(new Rect(mp1, mp2, thickness, color, grObj));
+                        }
+                        mPosReset();
+                    }
+
                 }
                 else
                 {
                     mp3 = mouseP;
-                    actions.Invoke(this, null);
+                    if (btnName == "btnTrn")
+                    {
+                        storage.add(new Triangle(mp1, mp2, mp3, thickness, color, grObj));
+                        mPosReset();
+                    }
+                    //actions.Invoke(this, null);
                 }
             }
             public void deleteObj()
             {
                 if (selected)
-                    btnName = "btnTrsh";
+                    //btnName = "btnTrsh";
+                    storage.remove();
 
-                actions.Invoke(this, null);
+                //actions.Invoke(this, null);
             }
             public void deleteAll()
             {
                 btnName = "deleteAll";
-                actions.Invoke(this, null);
+                storage.removeAll();
             }
 
 
@@ -504,24 +546,68 @@ namespace oopLab6
             }
             public void move(Keys code)
             {
+                Point p1 = this.p1;
+                Point p2 = this.p2;
+                Point p3 = this.p3;
+
                 if (code == Keys.Left)
+                {
                     direction = "left";
+                    p1.X = p1.X - 1;
+                    p2.X = p2.X - 1;
+                    if (obj is Triangle)
+                        p3.X = p3.X - 1;
+                    setPos(p1, p2, p3);
+                }
                 else if (code == Keys.Right)
+                {
                     direction = "right";
+                    p1.X = p1.X + 1;
+                    p2.X = p2.X + 1;
+                    if (obj is Triangle)
+                        p3.X = p3.X + 1;
+                    setPos(p1, p2, p3);
+                }
                 else if (code == Keys.Up)
+                {
                     direction = "up";
+                    p1.Y = p1.Y - 1;
+                    p2.Y = p2.Y - 1;
+                    if (obj is Triangle)
+                        p3.Y = p3.Y - 1;
+                    setPos(p1, p2, p3);
+
+                }
                 else if (code == Keys.Down)
+                {
                     direction = "down";
+                    p1.Y = p1.Y + 1;
+                    p2.Y = p2.Y + 1;
+                    if (obj is Triangle)
+                        p3.Y = p3.Y + 1;
+                    setPos(p1, p2, p3);
+                }
 
-                else if (code == Keys.Oemplus)
+                else if (code == Keys.Oemplus && !(obj is Triangle) && !(obj is Section))
+                {
                     direction = "expand";
-                else if (code == Keys.OemMinus)
+                    p2.X = p1.X + Math.Abs(p2.X - p1.X) + 1;
+                    p2.Y = p1.Y + Math.Abs(p2.Y - p1.Y) + 1;
+                    setP2(p2);
+                    //setSize(p2.X, p2.Y);
+                }
+                else if (code == Keys.OemMinus && !(obj is Triangle) && !(obj is Section))
+                {
                     direction = "narrow";
-
+                    p2.X = p1.X + Math.Abs(p2.X - p1.X) - 1;
+                    p2.Y = p1.Y + Math.Abs(p2.Y - p1.Y) - 1;
+                    setP2(p2);
+                    //setSize(p2.X, p2.Y);
+                }
                 else if (code == Keys.Delete)
                     deleteObj();
 
-                moving.Invoke(this, null);
+                //moving.Invoke(this, null);
             }
             public void setPos(Point p1, Point p2, Point p3)
             {
@@ -546,7 +632,7 @@ namespace oopLab6
                 Properties.Settings.Default.canvasHeight = canvasHeight;
                 Properties.Settings.Default.Save();
             }
-            public Model()
+            public Model(StorageService storage, Graphics grObj)
             {
                 color = Color.Black;
                 thickness = Properties.Settings.Default.thickness;
@@ -555,6 +641,8 @@ namespace oopLab6
                 p1 = new Point(-1, -1);
                 p2 = new Point(-1, -1);
                 p3 = new Point(-1, -1);
+                this.storage = storage;
+                this.grObj = grObj;
             }
         }
 
@@ -654,108 +742,6 @@ namespace oopLab6
             }
             this.Invalidate();
         }
-        public void ActionsFromModel(object sender, EventArgs e)
-        {
-            string btn = model.getBtn();
-
-            if (btn == "")
-                return;
-
-            if (btn == "btnSctn")
-            {
-                storage.add(new Section(model.getMp1(), model.getMp2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
-            }
-            else if (btn == "btnElps")
-            {
-                storage.add(new Ellipse(model.getMp1(), model.getMp2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
-            }
-            else if (btn == "btnTrn")
-            {
-                storage.add(new Triangle(model.getMp1(), model.getMp2(), model.getMp3(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
-            }
-            else if (btn == "btnRct")
-            {
-                storage.add(new Rect(model.getMp1(), model.getMp2(), model.getThickness(), model.getColor(), grObj), grObj, lvObj);
-            }
-            else if (btn == "btnTrsh")
-            {
-                storage.remove(lvObj.SelectedItem as Figure, lvObj);
-                model.unselect();
-            }
-            else if (btn == "deleteAll")
-            {
-                storage.removeAll(lvObj);
-                model.unselect();
-            }
-            model.mPosReset();
-        }
-        public void MovingsFromModel(object sender, EventArgs e)
-        {
-            string direction = model.getDirection();
-
-            if (direction == "")
-                return;
-
-            Point p1 = model.getP1();
-            Point p2 = model.getP2();
-            Point p3 = model.getP3();
-
-            if (direction == "left")
-            {
-                p1.X = p1.X - 1;
-                p2.X = p2.X - 1;
-                if (lvObj.SelectedItem is Triangle)
-                    p3.X = p3.X - 1;
-                model.setPos(p1, p2, p3);
-            }
-            else if (direction == "right")
-            {
-                p1.X = p1.X + 1;
-                p2.X = p2.X + 1;
-                if (lvObj.SelectedItem is Triangle)
-                    p3.X = p3.X + 1;
-                model.setPos(p1, p2, p3);
-            }
-            else if (direction == "up")
-            {
-                p1.Y = p1.Y - 1;
-                p2.Y = p2.Y - 1;
-                if (lvObj.SelectedItem is Triangle)
-                    p3.Y = p3.Y - 1;
-                model.setPos(p1, p2, p3);
-            }
-            else if (direction == "down")
-            {
-                p1.Y = p1.Y + 1;
-                p2.Y = p2.Y + 1;
-                if (lvObj.SelectedItem is Triangle)
-                    p3.Y = p3.Y + 1;
-                model.setPos(p1, p2, p3);
-            }
-            else if (direction == "expand")
-            {
-                if (!(lvObj.SelectedItem is Triangle) && !(lvObj.SelectedItem is Section))
-                {
-                    p2.X = (int)numWdt.Value;
-                    p2.Y = (int)numHgh.Value;
-                    p2.X = p2.X + 1;
-                    p2.Y = p2.Y + 1;
-                    model.setSize(p2.X, p2.Y);
-                }
-            }
-            else if (direction == "narrow")
-            {
-                if (!(lvObj.SelectedItem is Triangle) && !(lvObj.SelectedItem is Section))
-                {
-                    p2.X = (int)numWdt.Value;
-                    p2.Y = (int)numHgh.Value;
-                    p2.X = p2.X - 1;
-                    p2.Y = p2.Y - 1;
-                    model.setSize(p2.X, p2.Y);
-                }
-            }
-
-        }
 
         //model is done
 
@@ -770,7 +756,7 @@ namespace oopLab6
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
             grObj = canvas.CreateGraphics();
-            storage.paint(grObj);
+            storage.paint();
         }
         private void canvas_Click(object sender, EventArgs e)
         {
