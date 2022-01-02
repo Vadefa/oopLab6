@@ -266,7 +266,8 @@ namespace oopLab6
                     base.remove(selected);
                     lb.ClearSelected();
                     lb.Items.Remove(selected);
-                    //ActiveForm.Invalidate();
+                    if (ActiveForm != null)
+                        ActiveForm.Invalidate();
                 }
             }
             public void removeAll()
