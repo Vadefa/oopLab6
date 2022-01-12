@@ -630,6 +630,17 @@ namespace oopLab6
 
         public void UpdateFromModel(object sender, EventArgs e)
         {
+            if (model.obj_is_selected() == false)
+            {
+                flpSz.Visible = false;
+                flpP1.Visible = false;
+                flpP2.Visible = false;
+                flpP3.Visible = false;
+                storage.unfocus();
+                lvObj.ClearSelected();
+                return;
+            }
+
             numPosX.Maximum = model.getCanvWidth();
             nump2X.Maximum = model.getCanvWidth();
             nump3X.Maximum = model.getCanvWidth();
@@ -644,16 +655,6 @@ namespace oopLab6
             numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
 
 
-            if (model.obj_is_selected() == false)
-            {
-                flpSz.Visible = false;
-                flpP1.Visible = false;
-                flpP2.Visible = false;
-                flpP3.Visible = false;
-                storage.unfocus();
-                lvObj.ClearSelected();
-                return;
-            }
 
             storage.unfocus();
             storage.focus(lvObj.SelectedItem as Figure);
