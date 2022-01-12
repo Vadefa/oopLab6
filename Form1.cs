@@ -26,7 +26,6 @@ namespace oopLab6
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
 
-
         }
 
 
@@ -249,7 +248,7 @@ namespace oopLab6
                 this.lb = lb;
                 this.grObj = grObj;
             }
-            public void add(Figure obj)
+            public new void add(Figure obj)
             {
                 base.add(obj);
                 unfocus();
