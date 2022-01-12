@@ -321,6 +321,38 @@ namespace oopLab6
         }
 
         ////
+        public class Group: AFigure
+        {
+            private int _maxcount;
+            private int _count;
+            private AFigure []_figures;
+
+            private Graphics _grObj;
+
+            public Group(int maxcount, Graphics grObj)
+            {
+                _maxcount = maxcount;
+                _count = 0;
+                _figures = new AFigure[maxcount];       //all elements will be null thanks visual studio
+
+                _grObj = grObj;
+            }
+            public bool addFigure(AFigure figure)
+            {
+                if (_count >= _maxcount)
+                    return false;
+                else
+                {
+                    _count = _count + 1;
+                    _figures[_count - 1] = figure;
+                    return true;
+                }
+            }
+
+        }
+        ////
+
+        ////
         ////objects are done
         ////
 
