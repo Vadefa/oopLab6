@@ -28,8 +28,27 @@ namespace oopLab6
 
         }
 
+        public abstract class AFigure
+        {
+            public virtual void setP1(Point p) { }
+            public virtual void setP2(Point p) { }
+            public virtual void setThickness(int thickness) { }
+            public virtual void setColor(Color color) { }
 
-        public class Figure
+            public virtual Point getP1()
+            {
+                return new Point(-1, -1);
+            }
+            public virtual Point getP2()
+            {
+                return new Point(-1, -1);
+            }
+
+            public virtual void focus() { }
+            public virtual void unfocus() { }
+            public virtual void paint(Graphics grObj) { }
+        }
+        public class Figure: AFigure
         {
             protected Point p1;
             protected Point p2;
@@ -83,38 +102,38 @@ namespace oopLab6
                     paint(grObj);
                 }
             }
-            virtual public void paint(Graphics grObj)
+            public override void paint(Graphics grObj)
             {
             }
-            public void focus()
+            public override void focus()
             {
                 is_focused = true;
             }
-            public void unfocus()
+            public override void unfocus()
             {
                 is_focused = false;
             }
-            public void setP1(Point p)
+            public override void setP1(Point p)
             {
                 p1 = p;
             }
-            public void setP2(Point p)
+            public override void setP2(Point p)
             {
                 p2 = p;
             }
-            public void setThickness(int thickness)
+            public override void setThickness(int thickness)
             {
                 this.thickness = thickness;
             }
-            public void setColor(Color color)
+            public override void setColor(Color color)
             {
                 this.color = color;
             }
-            public Point getP1()
+            public override Point getP1()
             {
                 return p1;
             }
-            public Point getP2()
+            public override Point getP2()
             {
                 return p2;
             }
