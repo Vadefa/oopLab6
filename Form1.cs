@@ -519,12 +519,17 @@ namespace oopLab6
             public void deleteObj()
             {
                 if (selected)
+                {
                     storage.remove();
+                    selected = false;
+                    observers.Invoke(this, null);
+                }
             }
             public void deleteAll()
             {
-                btnName = "deleteAll";
                 storage.removeAll();
+                selected = false;
+                observers.Invoke(this, null);
             }
 
 
