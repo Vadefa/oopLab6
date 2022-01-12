@@ -26,6 +26,7 @@ namespace oopLab6
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
 
+
         }
 
         public abstract class AFigure
