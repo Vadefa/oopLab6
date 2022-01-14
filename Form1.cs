@@ -222,27 +222,27 @@ namespace oopLab6
 
         public class Storage
         {
-            protected Figure[] storage = new Figure[0];
-            public void add(Figure obj)
+            protected AFigure[] storage = new AFigure[0];
+            public void add(AFigure obj)
             {
-                Figure[] temp = new Figure[storage.Length];
+                AFigure[] temp = new AFigure[storage.Length];
                 for (int i = 0; i < temp.Length; i++)
                     temp[i] = storage[i];
 
-                storage = new Figure[temp.Length + 1];
+                storage = new AFigure[temp.Length + 1];
                 for (int i = 0; i < temp.Length; i++)
                     storage[i] = temp[i];
 
                 storage[storage.Length - 1] = obj;
             }
-            virtual public void remove(Figure obj)
+            virtual public void remove(AFigure obj)
             {
                 int i = 0;
                 for (; i < storage.Length; i++)
                     if (storage[i] == obj)
                         break;
 
-                Figure[] temp = new Figure[storage.Length - 1];
+                AFigure[] temp = new AFigure[storage.Length - 1];
                 int j = 0;
                 while (j != i)
                 {
@@ -253,14 +253,14 @@ namespace oopLab6
                 for (; j < storage.Length; j++)
                     temp[j - 1] = storage[j];
 
-                storage = new Figure[temp.Length];
+                storage = new AFigure[temp.Length];
                 for (i = 0; i < temp.Length; i++)
                     storage[i] = temp[i];
             }
         }
         public class StorageService : Storage
         {
-            Figure selected;
+            AFigure selected;
             ListBox lb;
             Graphics grObj;
             public StorageService(ListBox lb, Graphics grObj)
@@ -268,7 +268,7 @@ namespace oopLab6
                 this.lb = lb;
                 this.grObj = grObj;
             }
-            public new void add(Figure obj)
+            public new void add(AFigure obj)
             {
                 base.add(obj);
                 unfocus();
@@ -291,16 +291,16 @@ namespace oopLab6
             }
             public void removeAll()
             {
-                storage = new Figure[0];
+                storage = new AFigure[0];
                 lb.Items.Clear();
                 ActiveForm.Invalidate();
             }
             public void paint()
             {
-                foreach (Figure f in storage)
+                foreach (AFigure f in storage)
                     f.paint(grObj);
             }
-            public void focus(Figure obj)
+            public void focus(AFigure obj)
             {
                 if (obj != null)
                 {
