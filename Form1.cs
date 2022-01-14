@@ -16,6 +16,7 @@ namespace oopLab6
         StorageService storage;
         Model model;
 
+
         public Form1()
         {
             InitializeComponent();
