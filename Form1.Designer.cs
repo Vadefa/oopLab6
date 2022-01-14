@@ -487,6 +487,7 @@ namespace oopLab6
             this.lvObj.ItemHeight = 20;
             this.lvObj.Location = new System.Drawing.Point(11, 486);
             this.lvObj.Name = "lvObj";
+            this.lvObj.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lvObj.Size = new System.Drawing.Size(180, 164);
             this.lvObj.TabIndex = 3;
             this.lvObj.SelectedIndexChanged += new System.EventHandler(this.lvObj_SelectedIndexChanged);

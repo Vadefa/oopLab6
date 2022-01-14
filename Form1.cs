@@ -273,6 +273,8 @@ namespace oopLab6
                 base.add(obj);
                 unfocus();
                 focus(obj);
+
+                lb.ClearSelected();
                 lb.Items.Add(obj);
                 if (ActiveForm != null)
                     ActiveForm.Invalidate();
