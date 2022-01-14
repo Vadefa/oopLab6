@@ -487,7 +487,7 @@ namespace oopLab6
             this.lvObj.ItemHeight = 20;
             this.lvObj.Location = new System.Drawing.Point(11, 486);
             this.lvObj.Name = "lvObj";
-            this.lvObj.Size = new System.Drawing.Size(180, 104);
+            this.lvObj.Size = new System.Drawing.Size(180, 164);
             this.lvObj.TabIndex = 3;
             this.lvObj.SelectedIndexChanged += new System.EventHandler(this.lvObj_SelectedIndexChanged);
             this.lvObj.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
@@ -495,7 +495,7 @@ namespace oopLab6
             // btnTrsh
             // 
             this.btnTrsh.BackgroundImage = global::oopLab6.Properties.Resources.Trash_can;
-            this.btnTrsh.Location = new System.Drawing.Point(159, 558);
+            this.btnTrsh.Location = new System.Drawing.Point(159, 618);
             this.btnTrsh.Name = "btnTrsh";
             this.btnTrsh.Size = new System.Drawing.Size(32, 32);
             this.btnTrsh.TabIndex = 4;
@@ -526,7 +526,7 @@ namespace oopLab6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(948, 653);
+            this.ClientSize = new System.Drawing.Size(948, 693);
             this.Controls.Add(this.btnTrsh);
             this.Controls.Add(this.lvObj);
             this.Controls.Add(this.flowLayoutPanel2);
@@ -586,7 +586,6 @@ namespace oopLab6
         private System.Windows.Forms.NumericUpDown numPosX;
         private System.Windows.Forms.NumericUpDown numPosY;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnBlue;
         private System.Windows.Forms.Button btnGrn;
         private System.Windows.Forms.ListBox lvObj;

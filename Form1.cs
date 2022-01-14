@@ -350,6 +350,72 @@ namespace oopLab6
                 }
             }
 
+            // realization of methods
+
+            public override void setP1(Point p)
+            {
+                foreach (AFigure figure in _figures)
+                    figure.setP1(p);
+            }
+            public override void setP2(Point p)
+            {
+                foreach (AFigure figure in _figures)
+                    figure.setP2(p);
+            }
+            public override void setThickness(int thickness) {
+
+                foreach (AFigure figure in _figures)
+                    figure.setThickness(thickness);
+            }
+            public override void setColor(Color color)
+            {
+                foreach (AFigure figure in _figures)
+                    figure.setColor(color);
+            }
+
+            public override Point getP1()
+            {
+                Point p = new Point(-1, -1);
+                if (_figures[0] != null)
+                    p = _figures[0].getP1();
+                else
+                    return p;
+
+                for (int i = 1; i < _count; i++)                // making rounds searching the most left upper point
+                    if (_figures[i].getP1().X < p.X && _figures[i].getP1().Y < p.Y)
+                        p = _figures[i].getP1();
+                return p;
+            }
+            public override Point getP2()
+            {
+                Point p = new Point(-1, -1);
+                if (_figures[0] != null)
+                    p = _figures[0].getP1();
+                else
+                    return p;
+
+                for (int i = 1; i < _count; i++)                // making rounds searching the most right downer point
+                    if (_figures[i].getP2().X > p.X && _figures[i].getP2().Y > p.Y)
+                        p = _figures[i].getP2();
+                return p;
+            }
+
+            public override void focus() {
+                foreach (AFigure figure in _figures)
+                    figure.focus();
+            }
+            public override void unfocus()
+            {
+                foreach (AFigure figure in _figures)
+                    figure.unfocus();
+            }
+            public override void paint(Graphics grObj)
+            {
+                foreach (AFigure figure in _figures)
+                    figure.paint(grObj);
+            }
+
+
         }
         ////
 
