@@ -31,23 +31,19 @@ namespace oopLab6
 
         public abstract class AFigure
         {
-            public virtual void setP1(Point p) { }
-            public virtual void setP2(Point p) { }
-            public virtual void setThickness(int thickness) { }
-            public virtual void setColor(Color color) { }
+            public abstract void setP1(Point p);
+            public abstract void setP2(Point p);
+            public abstract void setThickness(int thickness);
+            public abstract void setColor(Color color);
 
-            public virtual Point getP1()
-            {
-                return new Point(-1, -1);
-            }
-            public virtual Point getP2()
-            {
-                return new Point(-1, -1);
-            }
+            public abstract Point getP1();
+            public abstract Point getP2();
+            public abstract int getThickness();
+            public abstract Color getColor();
 
-            public virtual void focus() { }
-            public virtual void unfocus() { }
-            public virtual void paint(Graphics grObj) { }
+            public abstract void focus();
+            public abstract void unfocus();
+            public abstract void paint(Graphics grObj);
         }
         public class Figure: AFigure
         {
@@ -138,11 +134,11 @@ namespace oopLab6
             {
                 return p2;
             }
-            public int getThickness()
+            public override int getThickness()
             {
                 return thickness;
             }
-            public Color getColor()
+            public override Color getColor()
             {
                 return color;
             }
@@ -401,6 +397,14 @@ namespace oopLab6
                         p = _figures[i].getP2();
                 return p;
             }
+            public override int getThickness()
+            {
+                return -1;
+            }
+            public override Color getColor()
+            {
+                return Color.White;
+            }
 
             public override void focus() {
                 foreach (AFigure figure in _figures)
@@ -434,12 +438,14 @@ namespace oopLab6
             private Point p3;
             private Graphics grObj;
             private StorageService storage;
-            private Figure obj;
+            private AFigure obj;
 
             private int canvasWidth;
             private int canvasHeight;
 
             private bool selected = false;
+
+            private int count;
 
             public System.EventHandler observers;
 
@@ -522,8 +528,9 @@ namespace oopLab6
                 observers.Invoke(this, null);
             }
 
-            public void setObject(Figure obj)
+            public void setObject(AFigure obj, int count)
             {
+                //сюда
                 this.obj = obj;
                 color = obj.getColor();
                 thickness = obj.getThickness();
@@ -932,7 +939,7 @@ namespace oopLab6
         {
             if (lvObj.SelectedItem != null)
             {
-                model.setObject(lvObj.SelectedItem as Figure);
+                model.setObject(lvObj.SelectedItem as Figure, lvObj.SelectedItems.Count);
             }
         }
         private void btnTrsh_Click(object sender, EventArgs e)
