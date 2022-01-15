@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.IO;    //for writing&reaeding files
+
 namespace oopLab6
 {
     public partial class Form1 : Form
@@ -51,6 +53,10 @@ namespace oopLab6
             public abstract void unfocus();
             public abstract void paint(Graphics grObj);
             public abstract void move(Point shift);
+
+            //for save&load:
+            public abstract void save(string path);
+            public abstract void load(string path);
         }
         public class Figure: AFigure
         {
@@ -173,6 +179,37 @@ namespace oopLab6
                 return new Point(1, 1);
             }
 
+            //for save&load:
+            public override void save(string path)
+            {
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(path, false))
+                    {
+                        sw.WriteLine(getName());
+                        sw.WriteLine(p1.X.ToString() + " " + p1.Y.ToString() + " " + p2.X.ToString() + " " + p2.Y.ToString());
+                        sw.WriteLine(color.ToString() + " " + thickness.ToString());
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("We got the problem of saving objects");
+                }
+            }
+            public override void load(string path)
+            {
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    string[] cords = sr.ReadLine().Split();
+                    p1 = new Point(int.Parse(cords[0]), int.Parse(cords[1]));
+                    p2 = new Point(int.Parse(cords[2]), int.Parse(cords[3]));
+
+                    string[] props = sr.ReadLine().Split();
+                    color = Color.FromName(props[0]);
+                    thickness = int.Parse(props[1]);
+                }
+            }
+
         }
         public class Section : Figure
         {
@@ -254,6 +291,40 @@ namespace oopLab6
                 this.p3 = p3;
                 if (ActiveForm != null)
                     ActiveForm.Invalidate();
+            }
+
+
+            // save && load:
+            public override void save(string path)
+            {
+                base.save(path);
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(path, false))
+                    {
+                        sw.WriteLine(p3.ToString() + " " + p3.Y.ToString());
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("We got the problem of saving objects");
+                }
+            }
+            public override void load(string path)
+            {
+                base.load(path);
+                try
+                {
+                    using (StreamReader sr = new StreamReader(path))
+                    {
+                        string[] cords3 = sr.ReadLine().Split();
+                        p3 = new Point(int.Parse(cords3[0]), int.Parse(cords3[1]));
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Troubles with loading the coordinate of the third point of a triangle");
+                }
             }
         }
 
@@ -379,6 +450,9 @@ namespace oopLab6
         }
 
         ////
+        ////objects are done
+        ////
+
         public class Group: AFigure
         {
             private int _maxcount;
@@ -541,12 +615,73 @@ namespace oopLab6
                     f.move(shift);
                 }
             }
+
+            //for save&load:
+            public override void save(string path) { }
+            public override void load(string path) { }
         }
 
-        ////
-        ////objects are done
-        ////
+        public class FiguresArray
+        {
+            private int _count;
+            private AFigure []_figures;
+            public virtual AFigure createFigure(string code, Graphics grObj)
+            {
+                return null;
+            }
+            private void loadFigures(string path, Graphics grObj)
+            {
+                string code;
+                try
+                {
+                    using (StreamReader sr = new StreamReader(path))
+                    {
+                        _count = int.Parse(sr.ReadLine());
+                        _figures = new AFigure[_count];
 
+                        for (int i = 0; i < _count; i++)
+                        {
+                            code = sr.ReadLine();
+                            _figures[i] = createFigure(code, grObj);
+
+                            if (_figures[i] != null)
+                                _figures[i].load(path);
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Can't get objects from the file");
+                }
+            }
+        }
+        public class MyFiguresArray: FiguresArray
+        {
+            public override AFigure createFigure(string code, Graphics grObj)
+            {
+                AFigure figure = null;
+                switch(code)
+                {
+                    case "sctn":
+                        figure = new Section(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        break;
+                    case "elps":
+                        figure = new Ellipse(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        break;
+                    case "rect":
+                        figure =  new Rect(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        break;
+                    case "trn":
+                        figure = new Triangle(new Point(0, 0), new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        break;
+                    default:
+                        MessageBox.Show("Troubles with creating an object");
+                        break;
+                }
+                return figure;
+            }
+        }
+        
         public class Model
         {
             private Color color;
