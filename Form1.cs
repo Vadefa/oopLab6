@@ -355,6 +355,8 @@ namespace oopLab6
             private int _count;
             private AFigure []_figures;
             private string _name;
+            private Point p1;
+            private Point p2;
 
             public Group(int maxcount)
             {
@@ -362,6 +364,8 @@ namespace oopLab6
                 _maxcount = maxcount;
                 _count = 0;
                 _figures = new AFigure[maxcount];       //all elements will be null thanks visual studio
+                p1 = new Point(-1, -1);
+                p2 = new Point(-1, -1);
             }
             public bool addFigure(AFigure figure)
             {
@@ -371,6 +375,21 @@ namespace oopLab6
                 {
                     _count = _count + 1;
                     _figures[_count - 1] = figure;
+
+
+                    if (figure.getP1().X < p1.X || p1.X == -1)
+                        p1.X = figure.getP1().X;
+
+                    if (figure.getP1().Y < p1.Y || p1.Y == -1)
+                        p1.Y = figure.getP1().Y;
+
+
+                    if (figure.getP2().X > p2.X)
+                        p2.X = figure.getP2().X;
+
+                    if (figure.getP2().Y > p2.Y)
+                        p2.Y = figure.getP2().Y;
+
                     return true;
                 }
             }
@@ -387,13 +406,31 @@ namespace oopLab6
 
             public override void setP1(Point p)
             {
-                foreach (AFigure figure in _figures)
-                    figure.setP1(p);
+                Point shift = new Point(p.X - p1.X, p.Y - p1.Y);
+
+                Point tempP = new Point();
+
+                for (int i = 0; i < _count; i++)
+                {
+                    tempP = _figures[i].getP1();
+                    tempP.X = tempP.X + shift.X;
+                    tempP.Y = tempP.Y + shift.Y;
+                    _figures[i].setP1(tempP);
+                }
             }
             public override void setP2(Point p)
             {
-                foreach (AFigure figure in _figures)
-                    figure.setP2(p);
+                Point shift = new Point(p.X - p2.X, p.Y - p2.Y);
+
+                Point tempP = new Point();
+
+                for (int i = 0; i < _count; i++)
+                {
+                    tempP = _figures[i].getP2();
+                    tempP.X = tempP.X + shift.X;
+                    tempP.Y = tempP.Y + shift.Y;
+                    _figures[i].setP2(tempP);
+                }
             }
             public override void setThickness(int thickness) {
 
@@ -408,29 +445,11 @@ namespace oopLab6
 
             public override Point getP1()
             {
-                Point p = new Point(-1, -1);
-                if (_figures[0] != null)
-                    p = _figures[0].getP1();
-                else
-                    return p;
-
-                for (int i = 1; i < _count; i++)                // making rounds searching the most left upper point
-                    if (_figures[i].getP1().X < p.X && _figures[i].getP1().Y < p.Y)
-                        p = _figures[i].getP1();
-                return p;
+                return p1;
             }
             public override Point getP2()
             {
-                Point p = new Point(-1, -1);
-                if (_figures[0] != null)
-                    p = _figures[0].getP1();
-                else
-                    return p;
-
-                for (int i = 1; i < _count; i++)                // making rounds searching the most right downer point
-                    if (_figures[i].getP2().X > p.X && _figures[i].getP2().Y > p.Y)
-                        p = _figures[i].getP2();
-                return p;
+                return p2;
             }
             public override int getThickness()
             {
@@ -574,14 +593,14 @@ namespace oopLab6
                 if (count > 1)
                 {
                     Group g = new Group(count);
-                    foreach (object o in lb.Items)
+                    foreach (object o in lb.SelectedItems)
                     {
                         g.addFigure(o as AFigure);
                     }
-                    storage.remove();                                           // removed all sected object from storage
                     lb.SelectedIndexChanged -= new EventHandler(handler);
+                    storage.remove();                                           // removed all sected object from storage
                     storage.add(g);                                             // and added them as a group
-                    lb.SelectedIndexChanged -= new EventHandler(handler);       /* handlers are calling when we using storage.add, but we
+                    lb.SelectedIndexChanged += new EventHandler(handler);       /* handlers are calling when we using storage.add, but we
                                                                                    don't need it */ 
                     this.obj = g;
                     color = g.getColor();
@@ -851,7 +870,7 @@ namespace oopLab6
             storage.focus(lvObj.SelectedItem as AFigure);
 
 
-            if (model.getObjName() == "sctn" || model.getObjName() == "trn" || model.getObjName() == "btnGroup")
+            if (model.getObjName() == "sctn" || model.getObjName() == "trn" || model.getObjName() == "group")
             {
                 numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
                 numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
