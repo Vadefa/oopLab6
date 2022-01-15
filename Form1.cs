@@ -393,6 +393,11 @@ namespace oopLab6
                     lb.SelectedItem = obj;
                 }
             }
+            public void load(AFigure obj)
+            {
+                base.add(obj);
+                lb.Items.Add(obj);
+            }
             public void remove()
             {
                 if (lb.SelectedItem != null)
@@ -655,7 +660,7 @@ namespace oopLab6
             {
                 return null;
             }
-            public void loadFigures(StreamReader sr, Graphics grObj)
+            public void loadFigures(StreamReader sr, Graphics grObj, StorageService storage)
             {
                 string[] code;
                 try
@@ -669,7 +674,10 @@ namespace oopLab6
                         _figures[i] = createFigure(code, grObj);
 
                         if (_figures[i] != null)
+                        {
                             _figures[i].load(sr);
+                            storage.load(_figures[i]);
+                        }
                     }
                 }
                 catch
@@ -704,7 +712,7 @@ namespace oopLab6
                 return figure;
             }
         }
-        
+
         public class Model
         {
             private Color color;
@@ -819,7 +827,7 @@ namespace oopLab6
                     storage.remove();                                           // removed all sected object from storage
                     storage.add(g);                                             // and added them as a group
                     lb.SelectedIndexChanged += new EventHandler(handler);       /* handlers are calling when we using storage.add, but we
-                                                                                   don't need it */ 
+                                                                                   don't need it */
                     this.obj = g;
                     color = g.getColor();
                     thickness = g.getThickness();
@@ -1050,6 +1058,21 @@ namespace oopLab6
                 p3 = new Point(-1, -1);
                 this.storage = storage;
                 this.grObj = grObj;
+
+                //loading objects:
+                MyFiguresArray figuresArray = new MyFiguresArray();
+                string path = @"‪C:\\Users\пк\source\repos\oopLab6\storage.txt";
+                try
+                {
+                    using (StreamReader sr = new StreamReader(path))
+                    {
+                        figuresArray.loadFigures(sr, grObj, storage);
+                    }
+                }
+                catch
+                {
+                    //MessageBox.Show("We could not load objects from file");
+                }
             }
         }
 
