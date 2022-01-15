@@ -32,10 +32,10 @@ namespace oopLab6
             this.components = new System.ComponentModel.Container();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnArw = new System.Windows.Forms.Button();
-            this.btnSctn = new System.Windows.Forms.Button();
-            this.btnElps = new System.Windows.Forms.Button();
-            this.btnTrn = new System.Windows.Forms.Button();
-            this.btnRct = new System.Windows.Forms.Button();
+            this.sctn = new System.Windows.Forms.Button();
+            this.elps = new System.Windows.Forms.Button();
+            this.trn = new System.Windows.Forms.Button();
+            this.rect = new System.Windows.Forms.Button();
             this.canvas = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.flpCol = new System.Windows.Forms.FlowLayoutPanel();
@@ -96,10 +96,10 @@ namespace oopLab6
             this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel1.Controls.Add(this.btnArw);
-            this.flowLayoutPanel1.Controls.Add(this.btnSctn);
-            this.flowLayoutPanel1.Controls.Add(this.btnElps);
-            this.flowLayoutPanel1.Controls.Add(this.btnTrn);
-            this.flowLayoutPanel1.Controls.Add(this.btnRct);
+            this.flowLayoutPanel1.Controls.Add(this.sctn);
+            this.flowLayoutPanel1.Controls.Add(this.elps);
+            this.flowLayoutPanel1.Controls.Add(this.trn);
+            this.flowLayoutPanel1.Controls.Add(this.rect);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 54);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -117,49 +117,49 @@ namespace oopLab6
             this.btnArw.UseVisualStyleBackColor = true;
             this.btnArw.Click += new System.EventHandler(this.btnArw_Click);
             // 
-            // btnSctn
+            // sctn
             // 
-            this.btnSctn.Image = global::oopLab6.Properties.Resources.Section;
-            this.btnSctn.Location = new System.Drawing.Point(3, 41);
-            this.btnSctn.Name = "btnSctn";
-            this.btnSctn.Size = new System.Drawing.Size(32, 32);
-            this.btnSctn.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.btnSctn, "1st click - 1st point, 2nd - 2nd");
-            this.btnSctn.UseVisualStyleBackColor = true;
-            this.btnSctn.Click += new System.EventHandler(this.btnSctn_Click);
+            this.sctn.Image = global::oopLab6.Properties.Resources.Section;
+            this.sctn.Location = new System.Drawing.Point(3, 41);
+            this.sctn.Name = "sctn";
+            this.sctn.Size = new System.Drawing.Size(32, 32);
+            this.sctn.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.sctn, "1st click - 1st point, 2nd - 2nd");
+            this.sctn.UseVisualStyleBackColor = true;
+            this.sctn.Click += new System.EventHandler(this.btnSctn_Click);
             // 
-            // btnElps
+            // elps
             // 
-            this.btnElps.Image = global::oopLab6.Properties.Resources.Circle;
-            this.btnElps.Location = new System.Drawing.Point(3, 79);
-            this.btnElps.Name = "btnElps";
-            this.btnElps.Size = new System.Drawing.Size(32, 32);
-            this.btnElps.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.btnElps, "1st click - left upper corner, 2nd click - right downer corner");
-            this.btnElps.UseVisualStyleBackColor = true;
-            this.btnElps.Click += new System.EventHandler(this.btnElps_Click);
+            this.elps.Image = global::oopLab6.Properties.Resources.Circle;
+            this.elps.Location = new System.Drawing.Point(3, 79);
+            this.elps.Name = "elps";
+            this.elps.Size = new System.Drawing.Size(32, 32);
+            this.elps.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.elps, "1st click - left upper corner, 2nd click - right downer corner");
+            this.elps.UseVisualStyleBackColor = true;
+            this.elps.Click += new System.EventHandler(this.btnElps_Click);
             // 
-            // btnTrn
+            // trn
             // 
-            this.btnTrn.Image = global::oopLab6.Properties.Resources.Triangle;
-            this.btnTrn.Location = new System.Drawing.Point(3, 117);
-            this.btnTrn.Name = "btnTrn";
-            this.btnTrn.Size = new System.Drawing.Size(32, 32);
-            this.btnTrn.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.btnTrn, "1st click - 1st point, 2nd click - 2nd point, 3rd click - 3rd point");
-            this.btnTrn.UseVisualStyleBackColor = true;
-            this.btnTrn.Click += new System.EventHandler(this.btnTrn_Click);
+            this.trn.Image = global::oopLab6.Properties.Resources.Triangle;
+            this.trn.Location = new System.Drawing.Point(3, 117);
+            this.trn.Name = "trn";
+            this.trn.Size = new System.Drawing.Size(32, 32);
+            this.trn.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.trn, "1st click - 1st point, 2nd click - 2nd point, 3rd click - 3rd point");
+            this.trn.UseVisualStyleBackColor = true;
+            this.trn.Click += new System.EventHandler(this.btnTrn_Click);
             // 
-            // btnRct
+            // rect
             // 
-            this.btnRct.Image = global::oopLab6.Properties.Resources.Rectangle;
-            this.btnRct.Location = new System.Drawing.Point(3, 155);
-            this.btnRct.Name = "btnRct";
-            this.btnRct.Size = new System.Drawing.Size(32, 32);
-            this.btnRct.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.btnRct, "1st click - left upper corner, 2nd click - right downer corner");
-            this.btnRct.UseVisualStyleBackColor = true;
-            this.btnRct.Click += new System.EventHandler(this.btnRct_Click);
+            this.rect.Image = global::oopLab6.Properties.Resources.Rectangle;
+            this.rect.Location = new System.Drawing.Point(3, 155);
+            this.rect.Name = "rect";
+            this.rect.Size = new System.Drawing.Size(32, 32);
+            this.rect.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.rect, "1st click - left upper corner, 2nd click - right downer corner");
+            this.rect.UseVisualStyleBackColor = true;
+            this.rect.Click += new System.EventHandler(this.btnRct_Click);
             // 
             // canvas
             // 
@@ -572,10 +572,10 @@ namespace oopLab6
         #endregion
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button btnSctn;
-        private System.Windows.Forms.Button btnElps;
-        private System.Windows.Forms.Button btnTrn;
-        private System.Windows.Forms.Button btnRct;
+        private System.Windows.Forms.Button sctn;
+        private System.Windows.Forms.Button elps;
+        private System.Windows.Forms.Button trn;
+        private System.Windows.Forms.Button rect;
         private System.Windows.Forms.Button btnArw;
         private System.Windows.Forms.Panel canvas;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;

@@ -39,6 +39,7 @@ namespace oopLab6
             public abstract Point getP2();
             public abstract int getThickness();
             public abstract Color getColor();
+            public abstract string getName();
 
             public abstract void focus();
             public abstract void unfocus();
@@ -46,6 +47,7 @@ namespace oopLab6
         }
         public class Figure: AFigure
         {
+            protected string name;
             protected Point p1;
             protected Point p2;
             protected int thickness;
@@ -56,6 +58,7 @@ namespace oopLab6
             protected Graphics grObj;
             public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
             {
+                name = "figure";
                 this.thickness = thickness;
                 this.color = color;
                 if (allow_reverse)
@@ -141,6 +144,10 @@ namespace oopLab6
             {
                 return color;
             }
+            public override string getName()
+            {
+                return name;
+            }
 
         }
         public class Section : Figure
@@ -148,6 +155,7 @@ namespace oopLab6
             public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
                 : base(p1, p2, thickness, color, grObj, false)
             {
+                name = "sctn";
             }
             public override void paint(Graphics grObj)
             {
@@ -162,6 +170,7 @@ namespace oopLab6
             public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
                 : base(p1, p2, thickness, col, grObj, true)
             {
+                name = "elps";
             }
             public override void paint(Graphics grObj)
             {
@@ -177,6 +186,7 @@ namespace oopLab6
             public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
                 : base(p1, p2, thickness, col, grObj, true)
             {
+                name = "rect";
             }
             public override void paint(Graphics grObj)
             {
@@ -192,6 +202,7 @@ namespace oopLab6
             public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
             : base(p1, p2, thickness, col, null, false)
             {
+                name = "trn";
                 this.p3 = p3;
                 this.grObj = grObj;
                 paint(grObj);
@@ -211,7 +222,8 @@ namespace oopLab6
             public void setP3(Point p3)
             {
                 this.p3 = p3;
-                ActiveForm.Invalidate();
+                if (ActiveForm != null)
+                    ActiveForm.Invalidate();
             }
         }
 
@@ -268,25 +280,38 @@ namespace oopLab6
                 if (obj is Group)
                 {
                     remove();                   // deleting all selected objects from the storage, now they're in the group
+                    base.add(obj);
+                    lb.Items.Add(obj);
+                    lb.SelectedItem = obj;
                 }
+                else
+                {
+                    base.add(obj);
+                    unfocus();
+                    focus(obj);
 
-                base.add(obj);
-                unfocus();
-                focus(obj);
-
-                lb.ClearSelected();
-                lb.Items.Add(obj);
-                if (ActiveForm != null)
-                    ActiveForm.Invalidate();
-                lb.SelectedItem = obj;
+                    lb.ClearSelected();
+                    lb.Items.Add(obj);
+                    if (ActiveForm != null)
+                        ActiveForm.Invalidate();
+                    lb.SelectedItem = obj;
+                }
             }
             public void remove()
             {
                 if (lb.SelectedItem != null)
                 {
-                    base.remove(selected);
-                    lb.ClearSelected();
-                    lb.Items.Remove(selected);
+                    //getting the collection of selected elements for deleting them from both storage and listbox
+                    ListBox.SelectedObjectCollection selectedItems = new ListBox.SelectedObjectCollection(lb);
+                    selectedItems = lb.SelectedItems;
+                    
+                    //using reverge step allows to delete them all, because after deleting sI.count reduces by 1
+                    for(int i = selectedItems.Count - 1; i >= 0; i--)
+                    {
+                        remove(selectedItems[i] as AFigure);
+                        lb.Items.Remove(selectedItems[i]);
+                    }
+                    //lb.ClearSelected();
                     if (ActiveForm != null)
                         ActiveForm.Invalidate();
                 }
@@ -329,9 +354,11 @@ namespace oopLab6
             private int _maxcount;
             private int _count;
             private AFigure []_figures;
+            private string _name;
 
             public Group(int maxcount)
             {
+                _name = "group";
                 _maxcount = maxcount;
                 _count = 0;
                 _figures = new AFigure[maxcount];       //all elements will be null thanks visual studio
@@ -413,6 +440,10 @@ namespace oopLab6
             {
                 return _figures[0].getColor();
             }
+            public override string getName()
+            {
+                return _name;
+            }
 
             public override void focus() {
                 foreach (AFigure figure in _figures)
@@ -464,7 +495,7 @@ namespace oopLab6
             public void unselect()
             {
                 selected = false;
-                btnName = "";
+                objName = "";
                 mPosReset();
                 observers.Invoke(this, null);
             }
@@ -536,20 +567,22 @@ namespace oopLab6
                 observers.Invoke(this, null);
             }
 
-            public void setObject(AFigure obj, int count, ListBox lb)
+            public void setObject(AFigure obj, int count, ListBox lb, EventHandler handler)
             {
-                //сюда
                 this.count = count;
+                setObjName(obj.getName());
                 if (count > 1)
                 {
                     Group g = new Group(count);
                     foreach (object o in lb.Items)
                     {
-                        if (o is AFigure)
-                            g.addFigure(o as AFigure);
+                        g.addFigure(o as AFigure);
                     }
-                    storage.add(g);
-
+                    storage.remove();                                           // removed all sected object from storage
+                    lb.SelectedIndexChanged -= new EventHandler(handler);
+                    storage.add(g);                                             // and added them as a group
+                    lb.SelectedIndexChanged -= new EventHandler(handler);       /* handlers are calling when we using storage.add, but we
+                                                                                   don't need it */ 
                     this.obj = g;
                     color = g.getColor();
                     thickness = obj.getThickness();
@@ -601,15 +634,19 @@ namespace oopLab6
 
             ////// clicked mousebuttons: creating/deleting
 
-            string btnName = "";
+            string objName = "";
             Point mp1 = new Point(-1, -1);
             Point mp2 = new Point(-1, -1);
             Point mp3 = new Point(-1, -1);
 
-            public void setBtn(string btnName)
+            public void setObjName(string objName)
+            {
+                this.objName = objName;
+            }
+            public void setNameFromBtn(string btnName)
             {
                 unselect();
-                this.btnName = btnName;
+                objName = btnName;
             }
             public Point getMp1()
             {
@@ -623,9 +660,9 @@ namespace oopLab6
             {
                 return mp3;
             }
-            public string getBtn()
+            public string getObjName()
             {
-                return btnName;
+                return objName;
             }
             public void mPosReset()
             {
@@ -642,17 +679,17 @@ namespace oopLab6
                 else if (mp2.X == -1)
                 {
                     mp2 = mouseP;
-                    if (btnName != "btnTrn")
+                    if (objName != "trn")
                     {
-                        if (btnName == "btnSctn")
+                        if (objName == "sctn")
                         {
                             storage.add(new Section(mp1, mp2, thickness, color, grObj));
                         }
-                        else if (btnName == "btnElps")
+                        else if (objName == "elps")
                         {
                             storage.add(new Ellipse(mp1, mp2, thickness, color, grObj));
                         }
-                        else if (btnName == "btnRct")
+                        else if (objName == "rect")
                         {
                             storage.add(new Rect(mp1, mp2, thickness, color, grObj));
                         }
@@ -663,7 +700,7 @@ namespace oopLab6
                 else
                 {
                     mp3 = mouseP;
-                    if (btnName == "btnTrn")
+                    if (objName == "trn")
                     {
                         storage.add(new Triangle(mp1, mp2, mp3, thickness, color, grObj));
                         mPosReset();
@@ -747,13 +784,13 @@ namespace oopLab6
             }
             public void setPos(Point p1, Point p2, Point p3)
             {
-                if (is_CorrectPos(p1) && is_CorrectPos(p2) && btnName != "btnTrn")
+                if (is_CorrectPos(p1) && is_CorrectPos(p2) && objName != "trn")
                 {
                     this.p1 = p1;
                     this.p2 = p2;
                 }
                 
-                if (is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3) && btnName == "btnTrn")
+                if (is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3) && objName == "trn")
                 {
                     this.p1 = p1;
                     this.p2 = p2;
@@ -814,7 +851,7 @@ namespace oopLab6
             storage.focus(lvObj.SelectedItem as AFigure);
 
 
-            if (model.getBtn() == "btnSctn" || model.getBtn() == "btnTrn")
+            if (model.getObjName() == "sctn" || model.getObjName() == "trn" || model.getObjName() == "btnGroup")
             {
                 numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
                 numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
@@ -835,7 +872,7 @@ namespace oopLab6
                 flpP2.Visible = true;
                 flpSz.Visible = false;
 
-                if (model.getBtn() == "btnTrn")
+                if (model.getObjName() == "trn")
                 {
                     nump3X.ValueChanged -= new EventHandler(numP3_ValueChanged);
                     nump3Y.ValueChanged -= new EventHandler(numP3_ValueChanged);
@@ -908,19 +945,19 @@ namespace oopLab6
         }
         private void btnSctn_Click(object sender, EventArgs e)
         {
-            model.setBtn((sender as Button).Name);
+            model.setNameFromBtn((sender as Button).Name);
         }
         private void btnElps_Click(object sender, EventArgs e)
         {
-            model.setBtn((sender as Button).Name);
+            model.setNameFromBtn((sender as Button).Name);
         }
         private void btnTrn_Click(object sender, EventArgs e)
         {
-            model.setBtn((sender as Button).Name);
+            model.setNameFromBtn((sender as Button).Name);
         }
         private void btnRct_Click(object sender, EventArgs e)
         {
-            model.setBtn((sender as Button).Name);
+            model.setNameFromBtn((sender as Button).Name);
         }
 
 
@@ -966,7 +1003,7 @@ namespace oopLab6
         {
             if (lvObj.SelectedItem != null)
             {
-                model.setObject(lvObj.SelectedItem as AFigure, lvObj.SelectedItems.Count, sender as ListBox);
+                model.setObject(lvObj.SelectedItem as AFigure, lvObj.SelectedItems.Count, sender as ListBox, lvObj_SelectedIndexChanged);
             }
         }
         private void btnTrsh_Click(object sender, EventArgs e)
