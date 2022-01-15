@@ -897,12 +897,13 @@ namespace oopLab6
 
         public void UpdateFromModel(object sender, EventArgs e)
         {
+            flpSz.Visible = false;
+            flpP1.Visible = false;
+            flpP2.Visible = false;
+            flpP3.Visible = false;
+
             if (model.obj_is_selected() == false)
             {
-                flpSz.Visible = false;
-                flpP1.Visible = false;
-                flpP2.Visible = false;
-                flpP3.Visible = false;
                 storage.unfocus();
                 lvObj.ClearSelected();
                 return;
@@ -946,7 +947,6 @@ namespace oopLab6
 
                 flpP1.Visible = true;
                 flpP2.Visible = true;
-                flpSz.Visible = false;
 
                 if (model.getObjName() == "trn")
                 {
@@ -960,8 +960,6 @@ namespace oopLab6
                     nump3X.ValueChanged += new EventHandler(numP3_ValueChanged);
                     nump3Y.ValueChanged += new EventHandler(numP3_ValueChanged);
                 }
-                else
-                    flpP3.Visible = false;
             }
             else if (model.getObjName() != "group")
             {
@@ -974,17 +972,7 @@ namespace oopLab6
                 numWdt.ValueChanged += new EventHandler(size_ValueChanged);
                 numHgh.ValueChanged += new EventHandler(size_ValueChanged);
 
-                flpP1.Visible = false;
-                flpP2.Visible = false;
-                flpP3.Visible = false;
                 flpSz.Visible = true;
-            }
-            else                                        // if it is group
-            {
-                flpP1.Visible = false;
-                flpP2.Visible = false;
-                flpP3.Visible = false;
-                flpSz.Visible = false;
             }
 
             if (lvObj.SelectedItem != null)
