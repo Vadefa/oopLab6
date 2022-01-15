@@ -170,7 +170,7 @@ namespace oopLab6
             public override void setP3(Point p) { }
             public override Point getP3()
             {
-                return new Point(-1, -1);
+                return new Point(1, 1);
             }
 
         }
@@ -719,8 +719,7 @@ namespace oopLab6
                     thickness = obj.getThickness();
                     p1 = obj.getP1();
                     p2 = obj.getP2();
-                    if (obj is Triangle)
-                        p3 = (obj as Triangle).getP3();
+                    p3 = obj.getP3();
                 }
                 selected = true;
                 observers.Invoke(this, null);
@@ -912,7 +911,7 @@ namespace oopLab6
                     obj.move(shift);
                     observers.Invoke(this, null);
                 }
-                else if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3))
+                else if (objName == "trn" && is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3))
                 {
                     this.p1 = p1;
                     this.p2 = p2;
