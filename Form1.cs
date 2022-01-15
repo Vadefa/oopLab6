@@ -26,7 +26,6 @@ namespace oopLab6
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
 
-
         }
 
         public abstract class AFigure
@@ -266,6 +265,11 @@ namespace oopLab6
             }
             public new void add(AFigure obj)
             {
+                if (obj is Group)
+                {
+                    remove();                   // deleting all selected objects from the storage, now they're in the group
+                }
+
                 base.add(obj);
                 unfocus();
                 focus(obj);
@@ -326,15 +330,11 @@ namespace oopLab6
             private int _count;
             private AFigure []_figures;
 
-            private Graphics _grObj;
-
-            public Group(int maxcount, Graphics grObj)
+            public Group(int maxcount)
             {
                 _maxcount = maxcount;
                 _count = 0;
                 _figures = new AFigure[maxcount];       //all elements will be null thanks visual studio
-
-                _grObj = grObj;
             }
             public bool addFigure(AFigure figure)
             {
@@ -346,6 +346,14 @@ namespace oopLab6
                     _figures[_count - 1] = figure;
                     return true;
                 }
+            }
+            public int getCount()
+            {
+                return _count;
+            }
+            public AFigure getFigure(int iter)
+            {
+                return _figures[iter];
             }
 
             // realization of methods
@@ -399,11 +407,11 @@ namespace oopLab6
             }
             public override int getThickness()
             {
-                return -1;
+                return _figures[0].getThickness();
             }
             public override Color getColor()
             {
-                return Color.White;
+                return _figures[0].getColor();
             }
 
             public override void focus() {
@@ -528,17 +536,36 @@ namespace oopLab6
                 observers.Invoke(this, null);
             }
 
-            public void setObject(AFigure obj, int count)
+            public void setObject(AFigure obj, int count, ListBox lb)
             {
                 //сюда
-                this.obj = obj;
-                color = obj.getColor();
-                thickness = obj.getThickness();
-                p1 = obj.getP1();
-                p2 = obj.getP2();
-                if (obj is Triangle)
-                    p3 = (obj as Triangle).getP3();
+                this.count = count;
+                if (count > 1)
+                {
+                    Group g = new Group(count);
+                    foreach (object o in lb.Items)
+                    {
+                        if (o is AFigure)
+                            g.addFigure(o as AFigure);
+                    }
+                    storage.add(g);
 
+                    this.obj = g;
+                    color = g.getColor();
+                    thickness = obj.getThickness();
+                    p1 = obj.getP1();
+                    p2 = obj.getP2();
+                }
+                else
+                {
+                    this.obj = obj;
+                    color = obj.getColor();
+                    thickness = obj.getThickness();
+                    p1 = obj.getP1();
+                    p2 = obj.getP2();
+                    if (obj is Triangle)
+                        p3 = (obj as Triangle).getP3();
+                }
                 selected = true;
                 observers.Invoke(this, null);
             }
@@ -784,7 +811,7 @@ namespace oopLab6
 
 
             storage.unfocus();
-            storage.focus(lvObj.SelectedItem as Figure);
+            storage.focus(lvObj.SelectedItem as AFigure);
 
 
             if (model.getBtn() == "btnSctn" || model.getBtn() == "btnTrn")
@@ -842,10 +869,10 @@ namespace oopLab6
 
             if (lvObj.SelectedItem != null)
             {
-                (lvObj.SelectedItem as Figure).setColor(model.getColor());
-                (lvObj.SelectedItem as Figure).setThickness(model.getThickness());
-                (lvObj.SelectedItem as Figure).setP1(model.getP1());
-                (lvObj.SelectedItem as Figure).setP2(model.getP2());
+                (lvObj.SelectedItem as AFigure).setColor(model.getColor());
+                (lvObj.SelectedItem as AFigure).setThickness(model.getThickness());
+                (lvObj.SelectedItem as AFigure).setP1(model.getP1());
+                (lvObj.SelectedItem as AFigure).setP2(model.getP2());
                 if (lvObj.SelectedItem is Triangle)
                     (lvObj.SelectedItem as Triangle).setP3(model.getP3());
 
@@ -939,7 +966,7 @@ namespace oopLab6
         {
             if (lvObj.SelectedItem != null)
             {
-                model.setObject(lvObj.SelectedItem as Figure, lvObj.SelectedItems.Count);
+                model.setObject(lvObj.SelectedItem as AFigure, lvObj.SelectedItems.Count, sender as ListBox);
             }
         }
         private void btnTrsh_Click(object sender, EventArgs e)
