@@ -604,9 +604,9 @@ namespace oopLab6
                                                                                    don't need it */ 
                     this.obj = g;
                     color = g.getColor();
-                    thickness = obj.getThickness();
-                    p1 = obj.getP1();
-                    p2 = obj.getP2();
+                    thickness = g.getThickness();
+                    p1 = g.getP1();
+                    p2 = g.getP2();
                 }
                 else
                 {
