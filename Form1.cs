@@ -41,9 +41,16 @@ namespace oopLab6
             public abstract Color getColor();
             public abstract string getName();
 
+
+            //for triangle:
+            public abstract void setP3(Point p);
+            public abstract Point getP3();
+
+            //for opeartions:
             public abstract void focus();
             public abstract void unfocus();
             public abstract void paint(Graphics grObj);
+            public abstract void move(Point shift);
         }
         public class Figure: AFigure
         {
@@ -54,8 +61,9 @@ namespace oopLab6
             protected Color color;
 
             protected bool is_focused = false;
-
             protected Graphics grObj;
+
+
             public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
             {
                 name = "figure";
@@ -104,6 +112,14 @@ namespace oopLab6
             public override void paint(Graphics grObj)
             {
             }
+            public override void move(Point shift)
+            {
+                p1.X = p1.X + shift.X;
+                p1.Y = p1.Y + shift.Y;
+
+                p2.X = p2.X + shift.X;
+                p2.Y = p2.Y + shift.Y;
+            }
             public override void focus()
             {
                 is_focused = true;
@@ -147,6 +163,14 @@ namespace oopLab6
             public override string getName()
             {
                 return name;
+            }
+
+
+            //for triangle:
+            public override void setP3(Point p) { }
+            public override Point getP3()
+            {
+                return new Point(-1, -1);
             }
 
         }
@@ -214,12 +238,18 @@ namespace oopLab6
                 else
                     grObj.DrawPolygon(new Pen(color, thickness), new Point[] { p1, p2, p3 });
             }
+            public override void move(Point shift)
+            {
+                base.move(shift);
+                p3.X = p3.X + shift.X;
+                p3.Y = p3.Y + shift.Y;
+            }
 
-            public Point getP3()
+            public override Point getP3()
             {
                 return p3;
             }
-            public void setP3(Point p3)
+            public override void setP3(Point p3)
             {
                 this.p3 = p3;
                 if (ActiveForm != null)
@@ -358,6 +388,8 @@ namespace oopLab6
             private Point p1;
             private Point p2;
 
+            private bool _hasTriangles;
+
             public Group(int maxcount)
             {
                 _name = "group";
@@ -366,6 +398,7 @@ namespace oopLab6
                 _figures = new AFigure[maxcount];       //all elements will be null thanks visual studio
                 p1 = new Point(-1, -1);
                 p2 = new Point(-1, -1);
+                _hasTriangles = false;
             }
             public bool addFigure(AFigure figure)
             {
@@ -398,6 +431,23 @@ namespace oopLab6
                     if (figure.getP1().Y > p2.Y)
                         p2.Y = figure.getP1().Y;
 
+                    if (figure is Triangle)
+                    {
+                        _hasTriangles = true;
+
+                        if (figure.getP3().X < p1.X)
+                            p1.X = figure.getP3().X;
+
+                        if (figure.getP3().Y < p1.Y)
+                            p1.Y = figure.getP3().Y;
+
+                        if (figure.getP3().X > p2.X)
+                            p2.X = figure.getP3().X;
+
+                        if (figure.getP3().Y > p2.Y)
+                            p2.Y = figure.getP3().Y;
+                    }
+
                     return true;
                 }
             }
@@ -408,6 +458,10 @@ namespace oopLab6
             public AFigure getFigure(int iter)
             {
                 return _figures[iter];
+            }
+            public bool contTrn()
+            {
+                return _hasTriangles;
             }
 
             // realization of methods
@@ -476,6 +530,14 @@ namespace oopLab6
                 return _name;
             }
 
+            //for triangle:
+            public override void setP3(Point p) { }
+            public override Point getP3()
+            {
+                return new Point(-1, -1);
+            }
+
+            //operations:
             public override void focus() {
                 foreach (AFigure figure in _figures)
                     figure.focus();
@@ -489,6 +551,36 @@ namespace oopLab6
             {
                 foreach (AFigure figure in _figures)
                     figure.paint(grObj);
+            }
+            public override void move(Point shift)
+            {
+                p1.X = p1.X + shift.X;
+                p1.Y = p1.Y + shift.Y;
+
+                p2.X = p2.X + shift.X;
+                p2.Y = p2.Y + shift.Y;
+
+                Point tempP = new Point();
+                foreach (AFigure f in _figures)
+                {
+                    tempP = f.getP1();
+                    tempP.X = tempP.X + shift.X;
+                    tempP.Y = tempP.Y + shift.Y;
+                    f.setP1(tempP);
+
+                    tempP = f.getP2();
+                    tempP.X = tempP.X + shift.X;
+                    tempP.Y = tempP.Y + shift.Y;
+                    f.setP2(tempP);
+
+                    if (f is Triangle)
+                    {
+                        tempP = f.getP3();
+                        tempP.X = tempP.X + shift.X;
+                        tempP.Y = tempP.Y + shift.Y;
+                        f.setP3(tempP);
+                    }
+                }
             }
 
 
@@ -770,6 +862,9 @@ namespace oopLab6
                     p2.X = p2.X - 1;
                     if (obj is Triangle)
                         p3.X = p3.X - 1;
+                    if (obj is Group)
+                        if ((obj as Group).contTrn())
+                            p3.X = p3.X - 1;
                     setPos(p1, p2, p3);
                 }
                 else if (code == Keys.Right)
@@ -778,6 +873,9 @@ namespace oopLab6
                     p2.X = p2.X + 1;
                     if (obj is Triangle)
                         p3.X = p3.X + 1;
+                    if (obj is Group)
+                        if ((obj as Group).contTrn())
+                            p3.X = p3.X + 1;
                     setPos(p1, p2, p3);
                 }
                 else if (code == Keys.Up)
@@ -786,6 +884,9 @@ namespace oopLab6
                     p2.Y = p2.Y - 1;
                     if (obj is Triangle)
                         p3.Y = p3.Y - 1;
+                    if (obj is Group)
+                        if ((obj as Group).contTrn())
+                            p3.Y = p3.Y - 1;
                     setPos(p1, p2, p3);
 
                 }
@@ -795,6 +896,9 @@ namespace oopLab6
                     p2.Y = p2.Y + 1;
                     if (obj is Triangle)
                         p3.Y = p3.Y + 1;
+                    if (obj is Group)
+                        if ((obj as Group).contTrn())
+                            p3.Y = p3.Y + 1;
                     setPos(p1, p2, p3);
                 }
 
@@ -821,7 +925,7 @@ namespace oopLab6
                     this.p2 = p2;
                 }
                 
-                if (is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3) && objName == "trn")
+                if (is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3) && (objName == "trn" || (obj is Group && (obj as Group).contTrn())))
                 {
                     this.p1 = p1;
                     this.p2 = p2;
@@ -934,7 +1038,7 @@ namespace oopLab6
                 flpP3.Visible = false;
                 flpSz.Visible = true;
             }
-            else
+            else                                        // if it is group
             {
                 flpP1.Visible = false;
                 flpP2.Visible = false;
