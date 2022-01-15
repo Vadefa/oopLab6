@@ -186,7 +186,10 @@ namespace oopLab6
                 {
                     sw.WriteLine(getName());
                     sw.WriteLine(p1.X.ToString() + " " + p1.Y.ToString() + " " + p2.X.ToString() + " " + p2.Y.ToString());
-                    sw.WriteLine(color.ToString() + " " + thickness.ToString());
+                    string col = color.ToString();
+                    col = col.Remove(0, 7);
+                    col = col.Remove(col.LastIndexOf(']'));
+                    sw.WriteLine(col + " " + thickness.ToString());
                 }
                 catch
                 {
@@ -398,6 +401,12 @@ namespace oopLab6
                 base.add(obj);
                 lb.Items.Add(obj);
             }
+            public void save(StreamWriter sw)
+            {
+                sw.WriteLine(storage.Length.ToString());
+                foreach (AFigure f in storage)
+                    f.save(sw);
+            }
             public void remove()
             {
                 if (lb.SelectedItem != null)
@@ -601,8 +610,9 @@ namespace oopLab6
             }
             public override void paint(Graphics grObj)
             {
-                foreach (AFigure figure in _figures)
-                    figure.paint(grObj);
+                if (_figures[0] != null)
+                    foreach (AFigure figure in _figures)
+                        figure.paint(grObj);
             }
             public override void move(Point shift)
             {
@@ -623,7 +633,7 @@ namespace oopLab6
             {
                 try
                 {
-                    sw.WriteLine("group" + _count.ToString());
+                    sw.WriteLine("group" + " " + _count.ToString());
                     foreach (AFigure f in _figures)
                         f.save(sw);
                 }
@@ -637,13 +647,17 @@ namespace oopLab6
                 {
                     MyFiguresArray tempArr = new MyFiguresArray();
                     string[] code;
-                    for (int i = 0; i < _count; i++)
+                    for (int i = 0; i < _maxcount; i++)
                     {
                         code = sr.ReadLine().Split();
                         AFigure f = tempArr.createFigure(code, grObj);
-                        f.load(sr);
-                        addFigure(f);
+                        if (f != null)
+                        {
+                            f.load(sr);
+                            addFigure(f);
+                        }
                     }
+                    
                 }
                 catch
                 {
@@ -706,7 +720,7 @@ namespace oopLab6
                         figure = new Triangle(new Point(0, 0), new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
                         break;
                     default:            // if it is a group
-                        figure = new Group(int.Parse(code[1]), grObj);
+                        figure = new Group(int.Parse(code[1].ToString()), grObj);
                         break;
                 }
                 return figure;
@@ -1046,6 +1060,19 @@ namespace oopLab6
                 Properties.Settings.Default.canvasWidth = canvasWidth;
                 Properties.Settings.Default.canvasHeight = canvasHeight;
                 Properties.Settings.Default.Save();
+
+                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(path, false))
+                    {
+                        storage.save(sw);
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("We could not load objects from file");
+                }
             }
             public Model(StorageService storage, Graphics grObj)
             {
@@ -1061,17 +1088,17 @@ namespace oopLab6
 
                 //loading objects:
                 MyFiguresArray figuresArray = new MyFiguresArray();
-                string path = @"‪C:\\Users\пк\source\repos\oopLab6\storage.txt";
+                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
                 try
                 {
-                    using (StreamReader sr = new StreamReader(path))
-                    {
-                        figuresArray.loadFigures(sr, grObj, storage);
-                    }
+                using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
+                {
+                    figuresArray.loadFigures(sr, grObj, storage);
+                }
                 }
                 catch
                 {
-                    //MessageBox.Show("We could not load objects from file");
+                    MessageBox.Show("We could not load objects from file");
                 }
             }
         }
