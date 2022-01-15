@@ -849,59 +849,33 @@ namespace oopLab6
 
             ////// pressed keybuttons: moving
 
-            
+
             public void move(Keys code)
             {
                 Point p1 = this.p1;
                 Point p2 = this.p2;
-                Point p3 = this.p3;
 
+                Point shift = new Point(0, 0);
                 if (code == Keys.Left)
                 {
-                    p1.X = p1.X - 1;
-                    p2.X = p2.X - 1;
-                    if (obj is Triangle)
-                        p3.X = p3.X - 1;
-                    if (obj is Group)
-                        if ((obj as Group).contTrn())
-                            p3.X = p3.X - 1;
-                    setPos(p1, p2, p3);
+                    shift.X = -1;
+                    setPos(shift);
                 }
                 else if (code == Keys.Right)
                 {
-                    p1.X = p1.X + 1;
-                    p2.X = p2.X + 1;
-                    if (obj is Triangle)
-                        p3.X = p3.X + 1;
-                    if (obj is Group)
-                        if ((obj as Group).contTrn())
-                            p3.X = p3.X + 1;
-                    setPos(p1, p2, p3);
+                    shift.X = 1;
+                    setPos(shift);
                 }
                 else if (code == Keys.Up)
                 {
-                    p1.Y = p1.Y - 1;
-                    p2.Y = p2.Y - 1;
-                    if (obj is Triangle)
-                        p3.Y = p3.Y - 1;
-                    if (obj is Group)
-                        if ((obj as Group).contTrn())
-                            p3.Y = p3.Y - 1;
-                    setPos(p1, p2, p3);
-
+                    shift.Y = -1;
+                    setPos(shift);
                 }
                 else if (code == Keys.Down)
                 {
-                    p1.Y = p1.Y + 1;
-                    p2.Y = p2.Y + 1;
-                    if (obj is Triangle)
-                        p3.Y = p3.Y + 1;
-                    if (obj is Group)
-                        if ((obj as Group).contTrn())
-                            p3.Y = p3.Y + 1;
-                    setPos(p1, p2, p3);
+                    shift.Y = 1;
+                    setPos(shift);
                 }
-
                 else if (code == Keys.Oemplus && !(obj is Triangle) && !(obj is Section))
                 {
                     p2.X = p1.X + Math.Abs(p2.X - p1.X) + 1;
@@ -917,21 +891,35 @@ namespace oopLab6
                 else if (code == Keys.Delete)
                     deleteObj();
             }
-            public void setPos(Point p1, Point p2, Point p3)
+            public void setPos(Point shift)
             {
-                if (is_CorrectPos(p1) && is_CorrectPos(p2) && objName != "trn")
+
+                Point p1 = this.p1;
+                Point p2 = this.p2;
+                Point p3 = this.p3;
+
+                p1.X = p1.X + shift.X;
+                p2.X = p2.X + shift.X;
+                p3.X = p3.X + shift.X;
+                p1.Y = p1.Y + shift.Y;
+                p2.Y = p2.Y + shift.Y;
+                p3.Y = p3.Y + shift.Y;
+
+                if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2))
                 {
                     this.p1 = p1;
                     this.p2 = p2;
+                    obj.move(shift);
+                    observers.Invoke(this, null);
                 }
-                
-                if (is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3) && (objName == "trn" || (obj is Group && (obj as Group).contTrn())))
+                else if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3))
                 {
                     this.p1 = p1;
                     this.p2 = p2;
                     this.p3 = p3;
+                    obj.move(shift);
+                    observers.Invoke(this, null);
                 }
-                observers.Invoke(this, null);
             }
             public void destructor()
             {
