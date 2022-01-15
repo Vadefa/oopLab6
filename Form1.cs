@@ -875,13 +875,13 @@ namespace oopLab6
                     shift.Y = 1;
                     setPos(shift);
                 }
-                else if (code == Keys.Oemplus && !(obj is Triangle) && !(obj is Section))
+                else if (code == Keys.Oemplus && !(obj is Triangle) && !(obj is Section) && !(obj is Group))
                 {
                     p2.X = p1.X + Math.Abs(p2.X - p1.X) + 1;
                     p2.Y = p1.Y + Math.Abs(p2.Y - p1.Y) + 1;
                     setP2(p2);
                 }
-                else if (code == Keys.OemMinus && !(obj is Triangle) && !(obj is Section))
+                else if (code == Keys.OemMinus && !(obj is Triangle) && !(obj is Section) && !(obj is Group))
                 {
                     p2.X = p1.X + Math.Abs(p2.X - p1.X) - 1;
                     p2.Y = p1.Y + Math.Abs(p2.Y - p1.Y) - 1;
