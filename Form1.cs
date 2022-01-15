@@ -379,16 +379,24 @@ namespace oopLab6
 
                     if (figure.getP1().X < p1.X || p1.X == -1)
                         p1.X = figure.getP1().X;
+                    if (figure.getP2().X < p1.X)
+                        p1.X = figure.getP2().X;
 
                     if (figure.getP1().Y < p1.Y || p1.Y == -1)
                         p1.Y = figure.getP1().Y;
+                    if (figure.getP2().Y < p1.Y)
+                        p1.Y = figure.getP2().Y;
 
 
                     if (figure.getP2().X > p2.X)
                         p2.X = figure.getP2().X;
+                    if (figure.getP1().X > p2.X)
+                        p2.X = figure.getP1().X;
 
                     if (figure.getP2().Y > p2.Y)
                         p2.Y = figure.getP2().Y;
+                    if (figure.getP1().Y > p2.Y)
+                        p2.Y = figure.getP1().Y;
 
                     return true;
                 }
@@ -407,6 +415,8 @@ namespace oopLab6
             public override void setP1(Point p)
             {
                 Point shift = new Point(p.X - p1.X, p.Y - p1.Y);
+                p1.X = p1.X + shift.X;
+                p1.Y = p1.Y + shift.Y;
 
                 Point tempP = new Point();
 
@@ -421,6 +431,8 @@ namespace oopLab6
             public override void setP2(Point p)
             {
                 Point shift = new Point(p.X - p2.X, p.Y - p2.Y);
+                p2.X = p2.X + shift.X;
+                p2.Y = p2.Y + shift.Y;
 
                 Point tempP = new Point();
 
@@ -870,7 +882,7 @@ namespace oopLab6
             storage.focus(lvObj.SelectedItem as AFigure);
 
 
-            if (model.getObjName() == "sctn" || model.getObjName() == "trn" || model.getObjName() == "group")
+            if (model.getObjName() == "sctn" || model.getObjName() == "trn")
             {
                 numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
                 numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
@@ -906,7 +918,7 @@ namespace oopLab6
                 else
                     flpP3.Visible = false;
             }
-            else
+            else if (model.getObjName() != "group")
             {
                 numWdt.ValueChanged -= new EventHandler(size_ValueChanged);
                 numHgh.ValueChanged -= new EventHandler(size_ValueChanged);
@@ -921,6 +933,13 @@ namespace oopLab6
                 flpP2.Visible = false;
                 flpP3.Visible = false;
                 flpSz.Visible = true;
+            }
+            else
+            {
+                flpP1.Visible = false;
+                flpP2.Visible = false;
+                flpP3.Visible = false;
+                flpSz.Visible = false;
             }
 
             if (lvObj.SelectedItem != null)
