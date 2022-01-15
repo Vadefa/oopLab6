@@ -55,8 +55,8 @@ namespace oopLab6
             public abstract void move(Point shift);
 
             //for save&load:
-            public abstract void save(string path);
-            public abstract void load(string path);
+            public abstract void save(StreamWriter sw);
+            public abstract void load(StreamReader sr);
         }
         public class Figure: AFigure
         {
@@ -180,25 +180,22 @@ namespace oopLab6
             }
 
             //for save&load:
-            public override void save(string path)
+            public override void save(StreamWriter sw)
             {
                 try
                 {
-                    using (StreamWriter sw = new StreamWriter(path, false))
-                    {
-                        sw.WriteLine(getName());
-                        sw.WriteLine(p1.X.ToString() + " " + p1.Y.ToString() + " " + p2.X.ToString() + " " + p2.Y.ToString());
-                        sw.WriteLine(color.ToString() + " " + thickness.ToString());
-                    }
+                    sw.WriteLine(getName());
+                    sw.WriteLine(p1.X.ToString() + " " + p1.Y.ToString() + " " + p2.X.ToString() + " " + p2.Y.ToString());
+                    sw.WriteLine(color.ToString() + " " + thickness.ToString());
                 }
                 catch
                 {
                     MessageBox.Show("We got the problem of saving objects");
                 }
             }
-            public override void load(string path)
+            public override void load(StreamReader sr)
             {
-                using (StreamReader sr = new StreamReader(path))
+                try
                 {
                     string[] cords = sr.ReadLine().Split();
                     p1 = new Point(int.Parse(cords[0]), int.Parse(cords[1]));
@@ -207,9 +204,13 @@ namespace oopLab6
                     string[] props = sr.ReadLine().Split();
                     color = Color.FromName(props[0]);
                     thickness = int.Parse(props[1]);
+
+                }
+                catch
+                {
+                    MessageBox.Show("Troubles with loading an object");
                 }
             }
-
         }
         public class Section : Figure
         {
@@ -295,31 +296,25 @@ namespace oopLab6
 
 
             // save && load:
-            public override void save(string path)
+            public override void save(StreamWriter sw)
             {
-                base.save(path);
+                base.save(sw);
                 try
                 {
-                    using (StreamWriter sw = new StreamWriter(path, false))
-                    {
-                        sw.WriteLine(p3.ToString() + " " + p3.Y.ToString());
-                    }
+                    sw.WriteLine(p3.ToString() + " " + p3.Y.ToString());
                 }
                 catch
                 {
                     MessageBox.Show("We got the problem of saving objects");
                 }
             }
-            public override void load(string path)
+            public override void load(StreamReader sr)
             {
-                base.load(path);
+                base.load(sr);
                 try
                 {
-                    using (StreamReader sr = new StreamReader(path))
-                    {
-                        string[] cords3 = sr.ReadLine().Split();
-                        p3 = new Point(int.Parse(cords3[0]), int.Parse(cords3[1]));
-                    }
+                    string[] cords3 = sr.ReadLine().Split();
+                    p3 = new Point(int.Parse(cords3[0]), int.Parse(cords3[1]));
                 }
                 catch
                 {
@@ -461,8 +456,9 @@ namespace oopLab6
             private string _name;
             private Point p1;
             private Point p2;
+            Graphics grObj;
 
-            public Group(int maxcount)
+            public Group(int maxcount, Graphics grObj)
             {
                 _name = "group";
                 _maxcount = maxcount;
@@ -470,6 +466,7 @@ namespace oopLab6
                 _figures = new AFigure[maxcount];       //all elements will be null thanks visual studio
                 p1 = new Point(-1, -1);
                 p2 = new Point(-1, -1);
+                this.grObj = grObj;
             }
             public bool addFigure(AFigure figure)
             {
@@ -617,36 +614,62 @@ namespace oopLab6
             }
 
             //for save&load:
-            public override void save(string path) { }
-            public override void load(string path) { }
+            public override void save(StreamWriter sw)
+            {
+                try
+                {
+                    sw.WriteLine("group" + _count.ToString());
+                    foreach (AFigure f in _figures)
+                        f.save(sw);
+                }
+                catch
+                {
+                    MessageBox.Show("We got the problem of saving a group of objects");
+                }
+            }
+            public override void load(StreamReader sr) {
+                try
+                {
+                    MyFiguresArray tempArr = new MyFiguresArray();
+                    string[] code;
+                    for (int i = 0; i < _count; i++)
+                    {
+                        code = sr.ReadLine().Split();
+                        AFigure f = tempArr.createFigure(code, grObj);
+                        f.load(sr);
+                        addFigure(f);
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Troubles with loading objects from a group");
+                }
+            }
         }
 
         public class FiguresArray
         {
             private int _count;
             private AFigure []_figures;
-            public virtual AFigure createFigure(string code, Graphics grObj)
+            public virtual AFigure createFigure(string[] code, Graphics grObj)
             {
                 return null;
             }
-            private void loadFigures(string path, Graphics grObj)
+            public void loadFigures(StreamReader sr, Graphics grObj)
             {
-                string code;
+                string[] code;
                 try
                 {
-                    using (StreamReader sr = new StreamReader(path))
+                    _count = int.Parse(sr.ReadLine());
+                    _figures = new AFigure[_count];
+
+                    for (int i = 0; i < _count; i++)
                     {
-                        _count = int.Parse(sr.ReadLine());
-                        _figures = new AFigure[_count];
+                        code = sr.ReadLine().Split();
+                        _figures[i] = createFigure(code, grObj);
 
-                        for (int i = 0; i < _count; i++)
-                        {
-                            code = sr.ReadLine();
-                            _figures[i] = createFigure(code, grObj);
-
-                            if (_figures[i] != null)
-                                _figures[i].load(path);
-                        }
+                        if (_figures[i] != null)
+                            _figures[i].load(sr);
                     }
                 }
                 catch
@@ -657,10 +680,10 @@ namespace oopLab6
         }
         public class MyFiguresArray: FiguresArray
         {
-            public override AFigure createFigure(string code, Graphics grObj)
+            public override AFigure createFigure(string[] code, Graphics grObj)
             {
                 AFigure figure = null;
-                switch(code)
+                switch(code[0])
                 {
                     case "sctn":
                         figure = new Section(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
@@ -674,8 +697,8 @@ namespace oopLab6
                     case "trn":
                         figure = new Triangle(new Point(0, 0), new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
                         break;
-                    default:
-                        MessageBox.Show("Troubles with creating an object");
+                    default:            // if it is a group
+                        figure = new Group(int.Parse(code[1]), grObj);
                         break;
                 }
                 return figure;
@@ -787,7 +810,7 @@ namespace oopLab6
                 setObjName(obj.getName());
                 if (count > 1)
                 {
-                    Group g = new Group(count);
+                    Group g = new Group(count, grObj);
                     foreach (object o in lb.SelectedItems)
                     {
                         g.addFigure(o as AFigure);
