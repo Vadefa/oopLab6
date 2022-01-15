@@ -459,36 +459,21 @@ namespace oopLab6
 
             public override void setP1(Point p)
             {
-                Point shift = new Point(p.X - p1.X, p.Y - p1.Y);
-                p1.X = p1.X + shift.X;
-                p1.Y = p1.Y + shift.Y;
+                //Point shift = new Point(p.X - p1.X, p.Y - p1.Y);
+                //p1.X = p1.X + shift.X;
+                //p1.Y = p1.Y + shift.Y;
 
-                Point tempP = new Point();
+                //Point tempP = new Point();
 
-                for (int i = 0; i < _count; i++)
-                {
-                    tempP = _figures[i].getP1();
-                    tempP.X = tempP.X + shift.X;
-                    tempP.Y = tempP.Y + shift.Y;
-                    _figures[i].setP1(tempP);
-                }
+                //for (int i = 0; i < _count; i++)
+                //{
+                //    tempP = _figures[i].getP1();
+                //    tempP.X = tempP.X + shift.X;
+                //    tempP.Y = tempP.Y + shift.Y;
+                //    _figures[i].setP1(tempP);
+                //}
             }
-            public override void setP2(Point p)
-            {
-                Point shift = new Point(p.X - p2.X, p.Y - p2.Y);
-                p2.X = p2.X + shift.X;
-                p2.Y = p2.Y + shift.Y;
-
-                Point tempP = new Point();
-
-                for (int i = 0; i < _count; i++)
-                {
-                    tempP = _figures[i].getP2();
-                    tempP.X = tempP.X + shift.X;
-                    tempP.Y = tempP.Y + shift.Y;
-                    _figures[i].setP2(tempP);
-                }
-            }
+            public override void setP2(Point p) { }
             public override void setThickness(int thickness) {
 
                 foreach (AFigure figure in _figures)
@@ -557,7 +542,6 @@ namespace oopLab6
                 }
             }
         }
-        ////
 
         ////
         ////objects are done
@@ -789,7 +773,6 @@ namespace oopLab6
                         }
                         mPosReset();
                     }
-
                 }
                 else
                 {
@@ -818,10 +801,9 @@ namespace oopLab6
             }
 
 
-            ////// pressed keybuttons: moving
+            ////// pressed keybuttons: moving, scaling
 
-
-            public void move(Keys code)
+            public void keysProcess(Keys code)
             {
                 Point p1 = this.p1;
                 Point p2 = this.p2;
@@ -1120,7 +1102,7 @@ namespace oopLab6
         private void lvObj_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = false;
-            model.move(e.KeyCode);
+            model.keysProcess(e.KeyCode);
             e.Handled = true;
         }
     }
