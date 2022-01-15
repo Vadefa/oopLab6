@@ -388,8 +388,6 @@ namespace oopLab6
             private Point p1;
             private Point p2;
 
-            private bool _hasTriangles;
-
             public Group(int maxcount)
             {
                 _name = "group";
@@ -398,7 +396,6 @@ namespace oopLab6
                 _figures = new AFigure[maxcount];       //all elements will be null thanks visual studio
                 p1 = new Point(-1, -1);
                 p2 = new Point(-1, -1);
-                _hasTriangles = false;
             }
             public bool addFigure(AFigure figure)
             {
@@ -433,8 +430,6 @@ namespace oopLab6
 
                     if (figure is Triangle)
                     {
-                        _hasTriangles = true;
-
                         if (figure.getP3().X < p1.X)
                             p1.X = figure.getP3().X;
 
@@ -458,10 +453,6 @@ namespace oopLab6
             public AFigure getFigure(int iter)
             {
                 return _figures[iter];
-            }
-            public bool contTrn()
-            {
-                return _hasTriangles;
             }
 
             // realization of methods
@@ -560,30 +551,11 @@ namespace oopLab6
                 p2.X = p2.X + shift.X;
                 p2.Y = p2.Y + shift.Y;
 
-                Point tempP = new Point();
                 foreach (AFigure f in _figures)
                 {
-                    tempP = f.getP1();
-                    tempP.X = tempP.X + shift.X;
-                    tempP.Y = tempP.Y + shift.Y;
-                    f.setP1(tempP);
-
-                    tempP = f.getP2();
-                    tempP.X = tempP.X + shift.X;
-                    tempP.Y = tempP.Y + shift.Y;
-                    f.setP2(tempP);
-
-                    if (f is Triangle)
-                    {
-                        tempP = f.getP3();
-                        tempP.X = tempP.X + shift.X;
-                        tempP.Y = tempP.Y + shift.Y;
-                        f.setP3(tempP);
-                    }
+                    f.move(shift);
                 }
             }
-
-
         }
         ////
 
