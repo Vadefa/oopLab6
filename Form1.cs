@@ -304,7 +304,7 @@ namespace oopLab6
                 base.save(sw);
                 try
                 {
-                    sw.WriteLine(p3.ToString() + " " + p3.Y.ToString());
+                    sw.WriteLine(p3.X.ToString() + " " + p3.Y.ToString());
                 }
                 catch
                 {
