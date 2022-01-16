@@ -66,12 +66,11 @@ namespace oopLab6
             //for save&load:
             public abstract void save(StreamWriter sw);
             public abstract void load(StreamReader sr);
+
+            //all figures should observe for sticky figures so I thought I can put this method in there
+            public abstract bool onSubjectIntersects(AFigure sticky);
         }
 
-        public abstract class Observer
-        {
-            public abstract void onSubjectChanged(AFigure figure);
-        }
         public abstract class SingleObserver
         {
             public abstract void onSubjectChanged();
@@ -246,6 +245,18 @@ namespace oopLab6
                     MessageBox.Show("Troubles with loading an object");
                 }
             }
+
+            //as observer:
+            public override bool onSubjectIntersects(AFigure sticky)
+            {
+                RectangleF borders = grPath.GetBounds();
+                if (borders.IntersectsWith((sticky as Sticky).getGtPath().GetBounds()))
+                {
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
         public class Section : Figure
         {
@@ -388,6 +399,7 @@ namespace oopLab6
 
         public class Sticky: Figure
         {
+            private List<AFigure> _observers;
             public Sticky(Point p1, Point p2, int thickness, Color col, Graphics grObj)
                             : base(p1, p2, thickness, col, grObj, true)
             {
@@ -408,6 +420,48 @@ namespace oopLab6
                     grObj.DrawPath(new Pen(Color.Black, thickness), grPath);
                     grObj.FillPath(new SolidBrush(color), grPath);
                 }
+            }
+            public GraphicsPath getGtPath()
+            {
+                return grPath;
+            }
+            public void addObserver(AFigure figure)
+            {
+                _observers.Add(figure);
+            }
+            public void removeObserver(AFigure figure)
+            {
+                _observers.Remove(figure);
+            }
+            public bool contains_Observer(AFigure figure)
+            {
+                if (_observers.Contains(figure))
+                    return true;
+                else
+                    return false;
+            }
+            public AFigure getObserver(int index)
+            {
+                return (_observers[index]);
+            }
+            public int getObsCount()
+            {
+                return _observers.Count;
+            }
+            public bool observersCheck()
+            {
+                bool shift_isPossible = true;              // if our sticky object moves, his friends can move outside the working area
+                int i = 0;
+                while (i < _observers.Count && shift_isPossible == true)
+                    if (_observers[i].onSubjectIntersects(this) == false)
+                        shift_isPossible = false;
+                return shift_isPossible;
+            }
+            public void observersInvoke(Point shift)
+            {
+                move(shift);
+                foreach (AFigure observer in _observers)
+                    observer.move(shift);
             }
         }
 
@@ -471,6 +525,11 @@ namespace oopLab6
             }
             public override void remove(AFigure obj)
             {
+                foreach (AFigure figure in storage)
+                    if (figure is Sticky && figure != obj)
+                        if ((figure as Sticky).contains_Observer(figure))
+                            (figure as Sticky).removeObserver(figure);
+                        
                 base.remove(obj);
                 selectedIndex = -1;
                 observersInvoke();
@@ -800,6 +859,23 @@ namespace oopLab6
                 {
                     MessageBox.Show("Troubles with loading objects from a group");
                 }
+            }
+
+            //as observer:
+            public override bool onSubjectIntersects(AFigure sticky)
+            {
+                bool collides = false;
+                int i = 0;
+                while (i < _maxcount && collides == false)
+                    if (_figures[i].onSubjectIntersects(sticky))
+                    collides = true;
+                else
+                    i++;
+
+                if (collides)
+                    return true;
+                else
+                    return false;
             }
         }
 
@@ -1306,7 +1382,26 @@ namespace oopLab6
                 p2.Y = p2.Y + shift.Y;
                 p3.Y = p3.Y + shift.Y;
 
-                if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2))
+                if (objName == "sticky" && is_CorrectPos(p1) && is_CorrectPos(p2))
+                {
+                    if ((obj as Sticky).observersCheck() == true)
+                    {
+                        int count = (obj as Sticky).getObsCount();
+                        int i = 0;
+                        bool all_areMovable = true;
+                        
+                        while(i < count && all_areMovable == true)
+                        {
+                            if (checkShift((obj as Sticky).getObserver(i), shift) == false)
+                                all_areMovable = false;
+                            else
+                                i++;
+                        }
+                        if (all_areMovable)
+                            (obj as Sticky).observersInvoke(shift);
+                    }
+                }
+                else if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2))
                 {
                     obj.move(shift);
                     observers.Invoke(this, null);
@@ -1316,6 +1411,30 @@ namespace oopLab6
                     obj.move(shift);
                     observers.Invoke(this, null);
                 }
+            }
+            public bool checkShift(AFigure figure, Point shift)
+            {
+                Point p1 = figure.getP1();
+                Point p2 = figure.getP2();
+                Point p3 = figure.getP3();
+
+                p1.X = p1.X + shift.X;
+                p2.X = p2.X + shift.X;
+                p3.X = p3.X + shift.X;
+                p1.Y = p1.Y + shift.Y;
+                p2.Y = p2.Y + shift.Y;
+                p3.Y = p3.Y + shift.Y;
+
+                if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2))
+                {
+                    return true;
+                }
+                else if (objName == "trn" && is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3))
+                {
+                    return true;
+                }
+                else
+                    return false;
             }
             public void destructor()
             {
