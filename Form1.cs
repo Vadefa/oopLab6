@@ -28,7 +28,6 @@ namespace oopLab6
             model = new Model(storage, grObj);
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
-
         }
 
         public abstract class AFigure
@@ -1005,7 +1004,7 @@ namespace oopLab6
             }
             public void mouseProcess(Point mouseP)
             {
-                if (objName == "" && storage.check_objs_underM(mouseP) == true)
+                if (objName == "btnArw" && storage.check_objs_underM(mouseP) == true)
                 {
                     mPosReset();
                     return;
@@ -1301,7 +1300,8 @@ namespace oopLab6
 
         private void btnArw_Click(object sender, EventArgs e)
         {
-            model.unselect();
+            //model.unselect();
+            model.setNameFromBtn((sender as Button).Name);
         }
         private void btnSctn_Click(object sender, EventArgs e)
         {
@@ -1382,5 +1382,6 @@ namespace oopLab6
             model.keysProcess(e.KeyCode);
             e.Handled = true;
         }
+
     }
 }
