@@ -18,13 +18,18 @@ namespace oopLab6
         Graphics grObj;
         StorageService storage;
         Model model;
+        TreeObserver tree;
 
         public Form1()
         {
             InitializeComponent();
 
             grObj = canvas.CreateGraphics();
+
             storage = new StorageService(lvObj, grObj);
+            tree = new TreeObserver(treeView1, storage);
+            storage.addObserver(tree);
+            
             model = new Model(storage, grObj);
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
@@ -52,12 +57,22 @@ namespace oopLab6
             //for opeartions:
             public abstract void focus();
             public abstract void unfocus();
+            public abstract bool is_inFocus();
             public abstract void paint(Graphics grObj);
             public abstract void move(Point shift);
 
             //for save&load:
             public abstract void save(StreamWriter sw);
             public abstract void load(StreamReader sr);
+        }
+
+        public abstract class Observer
+        {
+            public abstract void onSubjectChanged(AFigure figure);
+        }
+        public abstract class SingleObserver
+        {
+            public abstract void onSubjectChanged();
         }
         public class Figure: AFigure
         {
@@ -136,6 +151,10 @@ namespace oopLab6
             public override void unfocus()
             {
                 is_focused = false;
+            }
+            public override bool is_inFocus()
+            {
+                return is_focused;
             }
             public override void setP1(Point p)
             {
@@ -408,6 +427,7 @@ namespace oopLab6
             AFigure selected;
             ListBox lb;
             Graphics grObj;
+            TreeObserver tree;
             public StorageService(ListBox lb, Graphics grObj)
             {
                 this.lb = lb;
@@ -434,11 +454,13 @@ namespace oopLab6
                         ActiveForm.Invalidate();
                     lb.SelectedItem = obj;
                 }
+                tree.onSubjectChanged();
             }
             public void load(AFigure obj)
             {
                 base.add(obj);
                 lb.Items.Add(obj);
+                tree.onSubjectChanged();
             }
             public void save(StreamWriter sw)
             {
@@ -460,7 +482,9 @@ namespace oopLab6
                         remove(selectedItems[i] as AFigure);
                         lb.Items.Remove(selectedItems[i]);
                     }
-                    //lb.ClearSelected();
+
+                    tree.onSubjectChanged();
+
                     if (ActiveForm != null)
                         ActiveForm.Invalidate();
                 }
@@ -469,6 +493,7 @@ namespace oopLab6
             {
                 storage = new AFigure[0];
                 lb.Items.Clear();
+                tree.onSubjectChanged();
                 ActiveForm.Invalidate();
             }
             public void paint()
@@ -482,6 +507,8 @@ namespace oopLab6
                 {
                     selected = obj;
                     selected.focus();
+
+                    tree.onSubjectChanged();
                     if (ActiveForm != null)
                         ActiveForm.Invalidate();
                 }
@@ -491,11 +518,36 @@ namespace oopLab6
                 if (selected != null)
                 {
                     selected.unfocus();
+                    tree.onSubjectChanged();
                     if (ActiveForm != null)
                         ActiveForm.Invalidate();
                 }
             }
-
+            public bool contains(AFigure obj)
+            {
+                bool is_contain = false;
+                int i = 0;
+                while (is_contain == false && i < storage.Length)
+                {
+                    if (storage[i] == obj)
+                        is_contain = true;
+                    else
+                        i++;
+                }
+                return is_contain;
+            }
+            public int getCount()
+            {
+                return storage.Length;
+            }
+            public AFigure getFigure(int iter)
+            {
+                return storage[iter];
+            }
+            public void addObserver(TreeObserver tree)
+            {
+                this.tree = tree;
+            }
             public bool check_objs_underM(Point mouseP)
             {
                 bool is_underM = false;
@@ -511,6 +563,7 @@ namespace oopLab6
                 if (is_underM)
                 {
                     lb.SetSelected(lb.Items.IndexOf(storage[i]), true);
+                    tree.onSubjectChanged();
                     return true;
                 }
                 else
@@ -531,6 +584,8 @@ namespace oopLab6
             private Point p1;
             private Point p2;
             Graphics grObj;
+
+            private bool is_focused;
 
             public Group(int maxcount, Graphics grObj)
             {
@@ -676,11 +731,17 @@ namespace oopLab6
             public override void focus() {
                 foreach (AFigure figure in _figures)
                     figure.focus();
+                is_focused = true;
             }
             public override void unfocus()
             {
                 foreach (AFigure figure in _figures)
                     figure.unfocus();
+                is_focused = false;
+            }
+            public override bool is_inFocus()
+            {
+                return is_focused;
             }
             public override void paint(Graphics grObj)
             {
@@ -800,7 +861,57 @@ namespace oopLab6
                 return figure;
             }
         }
+        public class TreeObserver: SingleObserver
+        {
+            private TreeView tree;
+            private StorageService storage;        //this is the model of an observer from the book, so it has the single object to observe
 
+            public TreeObserver(TreeView tree, StorageService storage)
+            {
+                this.tree = tree;
+                this.storage = storage;
+            }
+            public override void onSubjectChanged()
+            {
+                for (int n = tree.Nodes.Count - 1; n >= 0; n--)
+                    tree.Nodes.RemoveAt(n);
+
+                try
+                {
+                    tree.Nodes.Add("root");
+                    
+                    int count = storage.getCount();
+                    for (int i = 0; i < count; i++)
+                    {
+                        addNode(tree.Nodes[0], storage.getFigure(i), i);
+                    }
+
+                    tree.ExpandAll();
+                }
+                catch
+                {
+                    MessageBox.Show("Error. Can't refresh the tree");
+                }
+            }
+            public void addNode(TreeNode node, AFigure figure, int index)
+            {
+                node.Nodes.Add(figure.getName());
+
+                if (figure.is_inFocus())
+                    //node.SelectedImageIndex = index;
+                    node.TreeView.SelectedNode = node.Nodes[index];
+
+                if (figure is Group)
+                {
+                    int gCount = (figure as Group).getCount();
+                    for (int j = 0; j < gCount; j++)
+                    {
+                        addNode(node.Nodes[index], (figure as Group).getFigure(j), j);
+                    }
+                }
+            }
+
+        }
         public class Model
         {
             private Color color;
@@ -1283,8 +1394,11 @@ namespace oopLab6
             this.Invalidate();
         }
 
-        //model is done
-
+        //
+        //
+        /////////////////////model is done///////////////////////
+        //
+        //
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             model.destructor();

@@ -68,6 +68,7 @@ namespace oopLab6
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flpCol.SuspendLayout();
@@ -511,7 +512,7 @@ namespace oopLab6
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(948, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1046, 28);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             this.toolTip1.SetToolTip(this.menuStrip1, "Clear the easel");
@@ -523,11 +524,20 @@ namespace oopLab6
             this.toolStripMenuItem1.Text = "Clear everything";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
+            // treeView1
+            // 
+            this.treeView1.HideSelection = false;
+            this.treeView1.Location = new System.Drawing.Point(739, 54);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(271, 177);
+            this.treeView1.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(948, 693);
+            this.ClientSize = new System.Drawing.Size(1046, 693);
+            this.Controls.Add(this.treeView1);
             this.Controls.Add(this.btnTrsh);
             this.Controls.Add(this.lvObj);
             this.Controls.Add(this.flowLayoutPanel2);
@@ -609,6 +619,7 @@ namespace oopLab6
         private System.Windows.Forms.FlowLayoutPanel flpP1;
         private System.Windows.Forms.FlowLayoutPanel flpP2;
         private System.Windows.Forms.FlowLayoutPanel flpP3;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }
 
