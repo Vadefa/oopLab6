@@ -1445,7 +1445,6 @@ namespace oopLab6
 
         private void btnArw_Click(object sender, EventArgs e)
         {
-            //model.unselect();
             model.setNameFromBtn((sender as Button).Name);
         }
         private void btnSctn_Click(object sender, EventArgs e)
