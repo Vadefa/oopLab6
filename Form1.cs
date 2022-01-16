@@ -966,6 +966,7 @@ namespace oopLab6
 
             ////// clicked mousebuttons: creating/deleting
 
+            string btnName = "";
             string objName = "";
             Point mp1 = new Point(-1, -1);
             Point mp2 = new Point(-1, -1);
@@ -978,6 +979,7 @@ namespace oopLab6
             public void setNameFromBtn(string btnName)
             {
                 unselect();
+                this.btnName = btnName;
                 objName = btnName;
             }
             public Point getMp1()
@@ -1004,11 +1006,16 @@ namespace oopLab6
             }
             public void mouseProcess(Point mouseP)
             {
-                if (objName == "btnArw" && storage.check_objs_underM(mouseP) == true)
-                {
-                    mPosReset();
-                    return;
-                }
+                if (btnName == "btnArw")
+                    if (storage.check_objs_underM(mouseP) == true)
+                    {
+                        mPosReset();
+                        return;
+                    }
+                    else
+                    {
+                        unselect();
+                    }
 
                 if (mp1.X == -1)
                 {

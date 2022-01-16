@@ -1,13 +1,1 @@
-4
-elps
-178 138 252 337
-Black 11
-sctn
-300 88 411 264
-Black 11
-sctn
-479 203 302 482
-Black 11
-sctn
-183 65 50 150
-Black 11
+0
