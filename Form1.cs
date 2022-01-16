@@ -873,20 +873,34 @@ namespace oopLab6
             }
             public override void onSubjectChanged()
             {
+                // we are refreshing the treeView so initially we should delete the old tree
                 for (int n = tree.Nodes.Count - 1; n >= 0; n--)
                     tree.Nodes.RemoveAt(n);
 
                 try
                 {
                     tree.Nodes.Add("root");
-                    
+
+                    //adding figures by using the reversive method addNode
                     int count = storage.getCount();
                     for (int i = 0; i < count; i++)
-                    {
                         addNode(tree.Nodes[0], storage.getFigure(i), i);
-                    }
 
                     tree.ExpandAll();
+
+                    //focusing
+                    bool has_focused = false;
+                    int j = 0;
+                    while (j < count && has_focused == false)
+                    {
+                        if (storage.getFigure(j).is_inFocus())
+                        {
+                            tree.SelectedNode = tree.Nodes[0].Nodes[j];
+                            has_focused = true;
+                        }
+                        else
+                            j++;
+                    }
                 }
                 catch
                 {
@@ -896,10 +910,6 @@ namespace oopLab6
             public void addNode(TreeNode node, AFigure figure, int index)
             {
                 node.Nodes.Add(figure.getName());
-
-                if (figure.is_inFocus())
-                    //node.SelectedImageIndex = index;
-                    node.TreeView.SelectedNode = node.Nodes[index];
 
                 if (figure is Group)
                 {
