@@ -20,6 +20,8 @@ namespace oopLab6
         Model model;
         TreeObserver tree;
 
+        Keys pressedKey;
+
         public Form1()
         {
             InitializeComponent();
@@ -441,27 +443,27 @@ namespace oopLab6
                 else
                 {
                     base.add(obj);
-                    unfocus();
-                    focus(obj);
-
                 }
-
-                tree.onSubjectChanged();
-                if (ActiveForm != null)
-                    ActiveForm.Invalidate();
+                observersInvoke();
             }
             public override void remove(AFigure obj)
             {
                 base.remove(obj);
 
-                tree.onSubjectChanged();
-                if (ActiveForm != null)
-                    ActiveForm.Invalidate();
+                observersInvoke();
+            }
+            public void focus(AFigure obj)
+            {
+                selected = obj;
+            }
+            public void unfocus()
+            {
+                selected = null;
             }
             public void removeAll()
             {
                 storage = new AFigure[0];
-                tree.onSubjectChanged();
+                observersInvoke();
                 ActiveForm.Invalidate();
             }
             public void paint()
@@ -469,40 +471,7 @@ namespace oopLab6
                 foreach (AFigure f in storage)
                     f.paint(grObj);
             }
-            public void focus(AFigure obj)
-            {
-                if (obj != null)
-                {
-                    selected = obj;
-                    selected.focus();
 
-                    tree.onSubjectChanged();
-                    if (ActiveForm != null)
-                        ActiveForm.Invalidate();
-                }
-            }
-            public void focus(int index)
-            {
-                if (storage[index] != null)
-                {
-                    selected = storage[index];
-                    selected.focus();
-
-                    tree.onSubjectChanged();
-                    if (ActiveForm != null)
-                        ActiveForm.Invalidate();
-                }
-            }
-            public void unfocus()
-            {
-                if (selected != null)
-                {
-                    selected.unfocus();
-                    tree.onSubjectChanged();
-                    if (ActiveForm != null)
-                        ActiveForm.Invalidate();
-                }
-            }
             public bool contains(AFigure obj)
             {
                 bool is_contain = false;
@@ -528,7 +497,7 @@ namespace oopLab6
             {
                 this.tree = tree;
             }
-            public bool check_objs_underM(Point mouseP)
+            public AFigure get_obj_underM(Point mouseP)
             {
                 bool is_underM = false;
                 int i = storage.Length - 1;
@@ -541,19 +510,21 @@ namespace oopLab6
                 }
 
                 if (is_underM)
-                {
-                    tree.onSubjectChanged();
-                    return true;
-                }
+                    return storage[i];
                 else
-                    return false;
+                    return null;
+            }
+
+            public void observersInvoke()
+            {
+                tree.onSubjectChanged();
             }
 
             //save & load
             public void load(AFigure obj)
             {
                 base.add(obj);
-                tree.onSubjectChanged();
+                observersInvoke();
             }
             public void save(StreamWriter sw)
             {
@@ -946,10 +917,18 @@ namespace oopLab6
             }
             public void unselect()
             {
-                selected = false;
-                objName = "";
-                mPosReset();
-                observers.Invoke(this, null);
+                if (obj == null)
+                    return;
+                else
+                {
+                    selected = false;
+                    objName = "";
+                    obj.unfocus();
+                    obj = null;
+                    storage.unfocus();
+                    mPosReset();
+                    observers.Invoke(this, null);
+                }
             }
 
             public bool is_CorrectPos(Point p)
@@ -1018,47 +997,11 @@ namespace oopLab6
                     }
                 observers.Invoke(this, null);
             }
-
-            public void setObject(AFigure obj, int count, ListBox lb, EventHandler handler)
+            public void setObject(AFigure obj)
             {
-                setObjName(obj.getName());
+                unselect();
 
-                if (count > 1)
-                {
-                    Group g = new Group(count, grObj);
-                    foreach (object o in lb.SelectedItems)
-                    {
-                        g.addFigure(o as AFigure);
-                    }
-                    lb.SelectedIndexChanged -= new EventHandler(handler);
-                    storage.remove(obj);                                        // removed the sected object from storage
-                    storage.add(g);                                             // and added them as a group
-                    lb.SelectedIndexChanged += new EventHandler(handler);       /* handlers are calling when we using storage.add, but we
-                                                                                   don't need it */
-                    this.obj = g;
-                    color = g.getColor();
-                    thickness = g.getThickness();
-                    p1 = g.getP1();
-                    p2 = g.getP2();
-                }
-                else
-                {
-                    this.obj = obj;
-                    color = obj.getColor();
-                    thickness = obj.getThickness();
-                    p1 = obj.getP1();
-                    p2 = obj.getP2();
-                    p3 = obj.getP3();
-                }
-                selected = true;
-                observers.Invoke(this, null);
-            }
-            public void setObjectFromTree(int index, TreeView tree, TreeViewEventHandler handler)
-            {
-                tree.AfterCheck -= new TreeViewEventHandler(handler);
-                this.obj = storage.getFigure(index);
-                tree.AfterCheck -= new TreeViewEventHandler(handler);
-
+                this.obj = obj;
                 setObjName(obj.getName());
                 color = obj.getColor();
                 thickness = obj.getThickness();
@@ -1066,7 +1009,18 @@ namespace oopLab6
                 p2 = obj.getP2();
                 p3 = obj.getP3();
                 selected = true;
+                
+                obj.focus();
+                storage.focus(obj);
+
                 observers.Invoke(this, null);
+            }
+            public void setObjectFromTree(int index)
+            {
+                unselect();
+
+                this.obj = storage.getFigure(index);
+                setObject(this.obj);
             }
             public AFigure getObject()
             {
@@ -1145,38 +1099,38 @@ namespace oopLab6
             public void mouseProcess(Point mouseP)
             {
                 if (btnName == "btnArw")
-                    if (storage.check_objs_underM(mouseP) == true)
+                {
+                    AFigure figure = storage.get_obj_underM(mouseP);
+                    if (figure != null)
                     {
+                        setObject(figure);
                         mPosReset();
                         return;
                     }
                     else
-                    {
                         unselect();
-                    }
+                }
 
                 if (mp1.X == -1)
-                {
                     mp1 = mouseP;
-                }
+                
                 else if (mp2.X == -1)
                 {
                     mp2 = mouseP;
                     if (objName != "trn")
                     {
                         if (objName == "sctn")
-                        {
-                            storage.add(new Section(mp1, mp2, thickness, color, grObj));
-                        }
+                            obj = new Section(mp1, mp2, thickness, color, grObj);
+                        
                         else if (objName == "elps")
-                        {
-                            storage.add(new Ellipse(mp1, mp2, thickness, color, grObj));
-                        }
+                            obj = new Ellipse(mp1, mp2, thickness, color, grObj);
+                        
                         else if (objName == "rect")
-                        {
-                            storage.add(new Rect(mp1, mp2, thickness, color, grObj));
-                        }
+                            obj = new Rect(mp1, mp2, thickness, color, grObj);
+                        
+                        storage.add(obj);
                         mPosReset();
+                        setObject(obj);
                     }
                 }
                 else
@@ -1184,18 +1138,20 @@ namespace oopLab6
                     mp3 = mouseP;
                     if (objName == "trn")
                     {
-                        storage.add(new Triangle(mp1, mp2, mp3, thickness, color, grObj));
+                        obj = new Triangle(mp1, mp2, mp3, thickness, color, grObj);
+
+                        storage.add(obj);
                         mPosReset();
+                        setObject(obj);
                     }
                 }
             }
-            public void deleteObj(int index)
+            public void deleteObj()
             {
                 if (selected)
                 {
-                    if (storage.getFigure(index) != null)
-                    storage.remove(storage.getFigure(index));
-                    selected = false;
+                    storage.remove(obj);
+                    unselect();
                     observers.Invoke(this, null);
                 }
             }
@@ -1224,7 +1180,7 @@ namespace oopLab6
                 Point p2 = this.p2;
 
                 Point shift = new Point(0, 0);
-                if (code == Keys.Left)
+                if (code == Keys.NumPad4)
                 {
                     shift.X = -1;
                     setPos(shift);
@@ -1348,7 +1304,7 @@ namespace oopLab6
 
             if (model.obj_is_selected() == false)
             {
-                storage.unfocus();
+                //storage.unfocus();
                 //lvObj.ClearSelected();
                 treeView1.SelectedNode = null;
                 return;
@@ -1369,11 +1325,11 @@ namespace oopLab6
 
 
 
-            storage.unfocus();
+            //storage.unfocus();
 
             treeView1.AfterSelect -= new TreeViewEventHandler(treeView1_AfterSelect);
             AFigure obj = model.getObject();
-            storage.focus(obj);
+            //storage.focus(obj);
             //storage.focus(lvObj.SelectedItem as AFigure);
             treeView1.AfterSelect += new TreeViewEventHandler(treeView1_AfterSelect);
 
@@ -1433,16 +1389,6 @@ namespace oopLab6
                 if (obj is Triangle)
                     (obj as Triangle).setP3(model.getP3());
 
-                //if (lvObj.SelectedItem != null)
-                //{
-                //    (lvObj.SelectedItem as AFigure).setColor(model.getColor());
-                //    (lvObj.SelectedItem as AFigure).setThickness(model.getThickness());
-                //    (lvObj.SelectedItem as AFigure).setP1(model.getP1());
-                //    (lvObj.SelectedItem as AFigure).setP2(model.getP2());
-                //    if (lvObj.SelectedItem is Triangle)
-                //        (lvObj.SelectedItem as Triangle).setP3(model.getP3());
-
-                //}
                 this.Invalidate();
             }
         }
@@ -1531,20 +1477,11 @@ namespace oopLab6
         {
             model.setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
         }
-
-
-        private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //if (lvObj.SelectedItem != null)
-            //{
-            //    model.setObject(lvObj.SelectedItem as AFigure, lvObj.SelectedItems.Count, sender as ListBox, lvObj_SelectedIndexChanged);
-            //}
-        }
         private void btnTrsh_Click(object sender, EventArgs e)
         {
             try
             {
-                model.deleteObj(treeView1.SelectedNode.Index);
+                model.deleteObj();
             }
             catch
             {
@@ -1556,16 +1493,26 @@ namespace oopLab6
         {
             model.deleteAll();
         }
-        private void lvObj_KeyDown(object sender, KeyEventArgs e)
-        {
-            e.Handled = false;
-            model.keysProcess(e.KeyCode);
-            e.Handled = true;
-        }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            model.setObjectFromTree(treeView1.SelectedNode.Index, sender as TreeView, treeView1_AfterSelect);
+            model.setObjectFromTree(treeView1.SelectedNode.Index);
+        }
+
+        private void treeView1_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = false;
+            pressedKey = e.KeyCode;
+        }
+
+        private void treeView1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            model.keysProcess(pressedKey);
+        }
+
+        private void treeView1_KeyUp(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }
