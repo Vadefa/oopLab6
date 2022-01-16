@@ -1,0 +1,56 @@
+7
+elps
+36 49 74 142
+Black 11
+elps
+104 54 137 147
+Black 11
+group 2
+sctn
+175 144 176 53
+Black 11
+elps
+172 55 205 97
+Black 11
+group 2
+sctn
+52 192 48 282
+Black 11
+sctn
+51 275 101 279
+Black 11
+group 2
+sctn
+147 238 176 251
+Black 11
+group 2
+sctn
+136 277 163 196
+Black 11
+sctn
+182 279 165 204
+Black 11
+group 2
+trn
+224 244 257 257
+Black 11
+217 279
+group 2
+sctn
+220 279 217 202
+Black 11
+trn
+216 207 238 216
+Black 11
+223 240
+group 2
+sctn
+318 243 377 242
+Black 11
+group 2
+sctn
+313 204 369 206
+Black 11
+sctn
+360 208 320 270
+Black 11
