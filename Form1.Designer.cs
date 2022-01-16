@@ -68,6 +68,7 @@ namespace oopLab6
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.sticky = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flpCol.SuspendLayout();
@@ -100,11 +101,12 @@ namespace oopLab6
             this.flowLayoutPanel1.Controls.Add(this.elps);
             this.flowLayoutPanel1.Controls.Add(this.trn);
             this.flowLayoutPanel1.Controls.Add(this.rect);
+            this.flowLayoutPanel1.Controls.Add(this.sticky);
             this.flowLayoutPanel1.Controls.Add(this.btnTrsh);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 54);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(40, 230);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(40, 268);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // btnArw
@@ -165,7 +167,7 @@ namespace oopLab6
             // btnTrsh
             // 
             this.btnTrsh.BackgroundImage = global::oopLab6.Properties.Resources.Trash_can;
-            this.btnTrsh.Location = new System.Drawing.Point(3, 193);
+            this.btnTrsh.Location = new System.Drawing.Point(3, 231);
             this.btnTrsh.Name = "btnTrsh";
             this.btnTrsh.Size = new System.Drawing.Size(32, 32);
             this.btnTrsh.TabIndex = 4;
@@ -538,6 +540,16 @@ namespace oopLab6
             this.treeView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             // 
+            // sticky
+            // 
+            this.sticky.BackgroundImage = global::oopLab6.Properties.Resources.Sticky;
+            this.sticky.Location = new System.Drawing.Point(3, 193);
+            this.sticky.Name = "sticky";
+            this.sticky.Size = new System.Drawing.Size(32, 32);
+            this.sticky.TabIndex = 4;
+            this.sticky.UseVisualStyleBackColor = true;
+            this.sticky.Click += new System.EventHandler(this.btnTrsh_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -626,6 +638,7 @@ namespace oopLab6
         private System.Windows.Forms.FlowLayoutPanel flpP2;
         private System.Windows.Forms.FlowLayoutPanel flpP3;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.Button sticky;
     }
 }
 

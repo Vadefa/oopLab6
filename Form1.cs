@@ -386,6 +386,25 @@ namespace oopLab6
             }
         }
 
+        public class Sticky: Figure
+        {
+            public Sticky(Point p1, Point p2, int thickness, Color col, Graphics grObj)
+                            : base(p1, p2, thickness, col, grObj, true)
+            {
+                name = "sticky";
+            }
+            public override void paint(Graphics grObj)
+            {
+                grPath.Dispose();
+                grPath = new GraphicsPath();
+                grPath.AddRectangle(new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                if (is_focused)
+                    grObj.DrawPath(new Pen(Color.Violet, thickness), grPath);
+                else
+                    grObj.DrawPath(new Pen(color, thickness), grPath);
+            }
+        }
+
         public class Storage
         {
             protected AFigure[] storage = new AFigure[0];
@@ -476,6 +495,7 @@ namespace oopLab6
             {
                 storage = new AFigure[0];
                 selectedIndex = -1;
+                observersInvoke();
                 ActiveForm.Invalidate();
             }
             public void paint()
