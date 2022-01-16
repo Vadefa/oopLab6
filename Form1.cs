@@ -1051,6 +1051,7 @@ namespace oopLab6
                     storage.add(g);
                     
                     this.obj = g;
+                    setObjName(g.getName());
                     color = g.getColor();
                     thickness = g.getThickness();
 
@@ -1175,14 +1176,6 @@ namespace oopLab6
                     observers.Invoke(this, null);
                 }
             }
-            public void deleteObj(AFigure obj)
-            {
-                if (obj != null)
-                {
-                    storage.remove(obj);
-                    observers.Invoke(this, null);
-                }
-            }
             public void deleteAll()
             {
                 storage.removeAll();
@@ -1255,7 +1248,7 @@ namespace oopLab6
                 else if (code == Keys.Delete)
                 {
                     refreshAllow();
-                    deleteObj(obj);
+                    deleteObj();
                 }
                 allow_treeRefresh = true;
             }
@@ -1536,11 +1529,6 @@ namespace oopLab6
             e.Handled = false;
             pressedKey = e.KeyCode;
             model.keysProcess(pressedKey);
-        }
-
-        private void treeView1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            //model.keysProcess(pressedKey);
         }
 
         private void treeView1_KeyUp(object sender, KeyEventArgs e)
