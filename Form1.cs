@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,10 +41,12 @@ namespace oopLab6
             protected bool is_focused = false;
 
             protected Graphics grObj;
+            protected GraphicsPath grPath;
             public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
             {
                 this.thickness = thickness;
                 this.color = color;
+                grPath = new GraphicsPath();
                 if (allow_reverse)
                 {
                     if (p1.X < p2.X)                            // if we don't painting as the default left-right, up-down style
@@ -128,6 +131,14 @@ namespace oopLab6
                 return color;
             }
 
+            public bool is_undermouse(Point mouseP)
+            {
+                if (grPath.IsOutlineVisible(mouseP, new Pen(color, thickness)) || grPath.IsVisible(mouseP))
+                    return true;
+                else
+                    return false;
+            }
+
         }
         public class Section : Figure
         {
@@ -137,10 +148,17 @@ namespace oopLab6
             }
             public override void paint(Graphics grObj)
             {
+                //if (is_focused)
+                //    grObj.DrawLine(new Pen(Color.Violet, thickness), p1, p2);
+                //else
+                //    grObj.DrawLine(new Pen(color, thickness), p1, p2);
+                grPath.Dispose();
+                grPath = new GraphicsPath();
+                grPath.AddLine(p1, p2);
                 if (is_focused)
-                    grObj.DrawLine(new Pen(Color.Violet, thickness), p1, p2);
+                    grObj.DrawPath(new Pen(Color.Violet, thickness), grPath);
                 else
-                    grObj.DrawLine(new Pen(color, thickness), p1, p2);
+                    grObj.DrawPath(new Pen(color, thickness), grPath);
             }
         }
         public class Ellipse : Figure
@@ -151,10 +169,17 @@ namespace oopLab6
             }
             public override void paint(Graphics grObj)
             {
+                //if (is_focused)
+                //    grObj.DrawEllipse(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                //else
+                //    grObj.DrawEllipse(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                grPath.Dispose();
+                grPath = new GraphicsPath();
+                grPath.AddEllipse(new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
                 if (is_focused)
-                    grObj.DrawEllipse(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                    grObj.DrawPath(new Pen(Color.Violet, thickness), grPath);
                 else
-                    grObj.DrawEllipse(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                    grObj.DrawPath(new Pen(color, thickness), grPath);
             }
 
         }
@@ -166,10 +191,17 @@ namespace oopLab6
             }
             public override void paint(Graphics grObj)
             {
+                //if (is_focused)
+                //    grObj.DrawRectangle(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                //else
+                //    grObj.DrawRectangle(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                grPath.Dispose();
+                grPath = new GraphicsPath();
+                grPath.AddRectangle(new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
                 if (is_focused)
-                    grObj.DrawRectangle(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                    grObj.DrawPath(new Pen(Color.Violet, thickness), grPath);
                 else
-                    grObj.DrawRectangle(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
+                    grObj.DrawPath(new Pen(color, thickness), grPath);
             }
         }
         public class Triangle : Figure
@@ -184,10 +216,17 @@ namespace oopLab6
             }
             public override void paint(Graphics grObj)
             {
+                //if (is_focused)
+                //    grObj.DrawPolygon(new Pen(Color.Violet, thickness), new Point[] { p1, p2, p3 });
+                //else
+                //    grObj.DrawPolygon(new Pen(color, thickness), new Point[] { p1, p2, p3 });
+                grPath.Dispose();
+                grPath = new GraphicsPath();
+                grPath.AddPolygon(new Point[] { p1, p2, p3 });
                 if (is_focused)
-                    grObj.DrawPolygon(new Pen(Color.Violet, thickness), new Point[] { p1, p2, p3 });
+                    grObj.DrawPath(new Pen(Color.Violet, thickness), grPath);
                 else
-                    grObj.DrawPolygon(new Pen(color, thickness), new Point[] { p1, p2, p3 });
+                    grObj.DrawPath(new Pen(color, thickness), grPath);
             }
 
             public Point getP3()
@@ -287,6 +326,7 @@ namespace oopLab6
                 {
                     selected = obj;
                     selected.focus();
+
                     if (ActiveForm != null)
                         ActiveForm.Invalidate();
                 }
@@ -299,6 +339,27 @@ namespace oopLab6
                     if (ActiveForm != null)
                         ActiveForm.Invalidate();
                 }
+            }
+
+            public bool check_objs_underM(Point mouseP)
+            {
+                bool is_underM = false;
+                int i = storage.Length - 1;
+                while (is_underM == false && i >= 0)
+                {
+                    if (storage[i].is_undermouse(mouseP))
+                        is_underM = true;
+                    else
+                        i--;
+                }
+
+                if (is_underM)
+                {
+                    lb.SetSelected(lb.Items.IndexOf(storage[i]), true);
+                    return true;
+                }
+                else
+                    return false;
             }
         }
 
@@ -482,6 +543,14 @@ namespace oopLab6
             }
             public void createObj(Point mouseP)
             {
+                if (btnName == "" && storage.check_objs_underM(mouseP) == true)
+                {
+                    mPosReset();
+                    return;
+                }
+                else if (btnName == "" && selected == true)
+                    unselect();
+
                 if (mp1.X == -1)
                 {
                     mp1 = mouseP;
