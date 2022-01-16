@@ -513,6 +513,18 @@ namespace oopLab6
                         ActiveForm.Invalidate();
                 }
             }
+            public void focus(int index)
+            {
+                if (storage[index] != null)
+                {
+                    selected = storage[index];
+                    selected.focus();
+
+                    tree.onSubjectChanged();
+                    if (ActiveForm != null)
+                        ActiveForm.Invalidate();
+                }
+            }
             public void unfocus()
             {
                 if (selected != null)
@@ -879,6 +891,7 @@ namespace oopLab6
 
                 try
                 {
+
                     tree.Nodes.Add("root");
 
                     //adding figures by using the reversive method addNode
@@ -886,7 +899,6 @@ namespace oopLab6
                     for (int i = 0; i < count; i++)
                         addNode(tree.Nodes[0], storage.getFigure(i), i);
 
-                    tree.ExpandAll();
 
                     //focusing
                     bool has_focused = false;
@@ -901,6 +913,13 @@ namespace oopLab6
                         else
                             j++;
                     }
+
+                    tree.ExpandAll();
+
+                    //groups can be long enough so let's make them collapsed
+                    for (int i = 0; i < tree.Nodes[0].Nodes.Count; i++)
+                        if (tree.Nodes[0].Nodes[i].Text == "group")
+                            tree.Nodes[0].Nodes[i].Collapse();
                 }
                 catch
                 {
@@ -938,7 +957,6 @@ namespace oopLab6
 
             private bool selected = false;
 
-            private int count;
 
             public System.EventHandler observers;
 
@@ -1023,8 +1041,8 @@ namespace oopLab6
 
             public void setObject(AFigure obj, int count, ListBox lb, EventHandler handler)
             {
-                this.count = count;
                 setObjName(obj.getName());
+
                 if (count > 1)
                 {
                     Group g = new Group(count, grObj);
@@ -1054,6 +1072,25 @@ namespace oopLab6
                 }
                 selected = true;
                 observers.Invoke(this, null);
+            }
+            public void setObjectFromTree(int index, TreeView tree, TreeViewEventHandler handler)
+            {
+                tree.AfterCheck -= new TreeViewEventHandler(handler);
+                this.obj = storage.getFigure(index);
+                tree.AfterCheck -= new TreeViewEventHandler(handler);
+
+                setObjName(obj.getName());
+                color = obj.getColor();
+                thickness = obj.getThickness();
+                p1 = obj.getP1();
+                p2 = obj.getP2();
+                p3 = obj.getP3();
+                selected = true;
+                observers.Invoke(this, null);
+            }
+            public AFigure getObject()
+            {
+                return obj;
             }
             public Color getColor()
             {
@@ -1293,6 +1330,7 @@ namespace oopLab6
                 p3 = new Point(-1, -1);
                 this.storage = storage;
                 this.grObj = grObj;
+                btnName = "btnArw";
 
                 //loading objects:
                 MyFiguresArray figuresArray = new MyFiguresArray();
@@ -1341,8 +1379,11 @@ namespace oopLab6
 
 
             storage.unfocus();
-            storage.focus(lvObj.SelectedItem as AFigure);
 
+            treeView1.AfterSelect -= new TreeViewEventHandler(treeView1_AfterSelect);
+            storage.focus(model.getObject());
+            //storage.focus(lvObj.SelectedItem as AFigure);
+            treeView1.AfterSelect += new TreeViewEventHandler(treeView1_AfterSelect);
 
             if (model.getObjName() == "sctn" || model.getObjName() == "trn")
             {
@@ -1492,10 +1533,10 @@ namespace oopLab6
 
         private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lvObj.SelectedItem != null)
-            {
-                model.setObject(lvObj.SelectedItem as AFigure, lvObj.SelectedItems.Count, sender as ListBox, lvObj_SelectedIndexChanged);
-            }
+            //if (lvObj.SelectedItem != null)
+            //{
+            //    model.setObject(lvObj.SelectedItem as AFigure, lvObj.SelectedItems.Count, sender as ListBox, lvObj_SelectedIndexChanged);
+            //}
         }
         private void btnTrsh_Click(object sender, EventArgs e)
         {
@@ -1514,5 +1555,9 @@ namespace oopLab6
             e.Handled = true;
         }
 
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            model.setObjectFromTree(treeView1.SelectedNode.Index, sender as TreeView, treeView1_AfterSelect);
+        }
     }
 }
