@@ -63,7 +63,6 @@ namespace oopLab6
             this.label5 = new System.Windows.Forms.Label();
             this.nump3X = new System.Windows.Forms.NumericUpDown();
             this.nump3Y = new System.Windows.Forms.NumericUpDown();
-            this.lvObj = new System.Windows.Forms.ListBox();
             this.btnTrsh = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -482,22 +481,10 @@ namespace oopLab6
             this.nump3Y.TabIndex = 5;
             this.nump3Y.ValueChanged += new System.EventHandler(this.numP3_ValueChanged);
             // 
-            // lvObj
-            // 
-            this.lvObj.FormattingEnabled = true;
-            this.lvObj.ItemHeight = 20;
-            this.lvObj.Location = new System.Drawing.Point(11, 486);
-            this.lvObj.Name = "lvObj";
-            this.lvObj.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lvObj.Size = new System.Drawing.Size(180, 164);
-            this.lvObj.TabIndex = 3;
-            this.lvObj.SelectedIndexChanged += new System.EventHandler(this.lvObj_SelectedIndexChanged);
-            this.lvObj.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
-            // 
             // btnTrsh
             // 
             this.btnTrsh.BackgroundImage = global::oopLab6.Properties.Resources.Trash_can;
-            this.btnTrsh.Location = new System.Drawing.Point(159, 618);
+            this.btnTrsh.Location = new System.Drawing.Point(16, 248);
             this.btnTrsh.Name = "btnTrsh";
             this.btnTrsh.Size = new System.Drawing.Size(32, 32);
             this.btnTrsh.TabIndex = 4;
@@ -540,7 +527,6 @@ namespace oopLab6
             this.ClientSize = new System.Drawing.Size(1046, 693);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.btnTrsh);
-            this.Controls.Add(this.lvObj);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.canvas);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -600,7 +586,6 @@ namespace oopLab6
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button btnBlue;
         private System.Windows.Forms.Button btnGrn;
-        private System.Windows.Forms.ListBox lvObj;
         private System.Windows.Forms.Button btnBlck;
         private System.Windows.Forms.Button btnTrsh;
         private System.Windows.Forms.ToolTip toolTip1;

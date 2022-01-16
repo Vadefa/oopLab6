@@ -26,7 +26,7 @@ namespace oopLab6
 
             grObj = canvas.CreateGraphics();
 
-            storage = new StorageService(lvObj, grObj);
+            storage = new StorageService(grObj);
             tree = new TreeObserver(treeView1, storage);
             storage.addObserver(tree);
             
@@ -387,7 +387,7 @@ namespace oopLab6
         public class Storage
         {
             protected AFigure[] storage = new AFigure[0];
-            public void add(AFigure obj)
+            virtual public void add(AFigure obj)
             {
                 AFigure[] temp = new AFigure[storage.Length];
                 for (int i = 0; i < temp.Length; i++)
@@ -425,22 +425,18 @@ namespace oopLab6
         public class StorageService : Storage
         {
             AFigure selected;
-            ListBox lb;
             Graphics grObj;
             TreeObserver tree;
-            public StorageService(ListBox lb, Graphics grObj)
+            public StorageService(Graphics grObj)
             {
-                this.lb = lb;
                 this.grObj = grObj;
             }
-            public new void add(AFigure obj)
+            public override void add(AFigure obj)
             {
                 if (obj is Group)
                 {
-                    remove();                   // deleting all selected objects from the storage, now they're in the group
+                    remove(obj);                   // deleting selected object from the storage, now it is in the group
                     base.add(obj);
-                    lb.Items.Add(obj);
-                    lb.SelectedItem = obj;
                 }
                 else
                 {
@@ -448,51 +444,23 @@ namespace oopLab6
                     unfocus();
                     focus(obj);
 
-                    lb.ClearSelected();
-                    lb.Items.Add(obj);
-                    if (ActiveForm != null)
-                        ActiveForm.Invalidate();
-                    lb.SelectedItem = obj;
                 }
-                tree.onSubjectChanged();
-            }
-            public void load(AFigure obj)
-            {
-                base.add(obj);
-                lb.Items.Add(obj);
-                tree.onSubjectChanged();
-            }
-            public void save(StreamWriter sw)
-            {
-                sw.WriteLine(storage.Length.ToString());
-                foreach (AFigure f in storage)
-                    f.save(sw);
-            }
-            public void remove()
-            {
-                if (lb.SelectedItem != null)
-                {
-                    //getting the collection of selected elements for deleting them from both storage and listbox
-                    ListBox.SelectedObjectCollection selectedItems = new ListBox.SelectedObjectCollection(lb);
-                    selectedItems = lb.SelectedItems;
-                    
-                    //using reverge step allows to delete them all, because after deleting sI.count reduces by 1
-                    for(int i = selectedItems.Count - 1; i >= 0; i--)
-                    {
-                        remove(selectedItems[i] as AFigure);
-                        lb.Items.Remove(selectedItems[i]);
-                    }
 
-                    tree.onSubjectChanged();
+                tree.onSubjectChanged();
+                if (ActiveForm != null)
+                    ActiveForm.Invalidate();
+            }
+            public override void remove(AFigure obj)
+            {
+                base.remove(obj);
 
-                    if (ActiveForm != null)
-                        ActiveForm.Invalidate();
-                }
+                tree.onSubjectChanged();
+                if (ActiveForm != null)
+                    ActiveForm.Invalidate();
             }
             public void removeAll()
             {
                 storage = new AFigure[0];
-                lb.Items.Clear();
                 tree.onSubjectChanged();
                 ActiveForm.Invalidate();
             }
@@ -574,12 +542,24 @@ namespace oopLab6
 
                 if (is_underM)
                 {
-                    lb.SetSelected(lb.Items.IndexOf(storage[i]), true);
                     tree.onSubjectChanged();
                     return true;
                 }
                 else
                     return false;
+            }
+
+            //save & load
+            public void load(AFigure obj)
+            {
+                base.add(obj);
+                tree.onSubjectChanged();
+            }
+            public void save(StreamWriter sw)
+            {
+                sw.WriteLine(storage.Length.ToString());
+                foreach (AFigure f in storage)
+                    f.save(sw);
             }
         }
 
@@ -1051,7 +1031,7 @@ namespace oopLab6
                         g.addFigure(o as AFigure);
                     }
                     lb.SelectedIndexChanged -= new EventHandler(handler);
-                    storage.remove();                                           // removed all sected object from storage
+                    storage.remove(obj);                                        // removed the sected object from storage
                     storage.add(g);                                             // and added them as a group
                     lb.SelectedIndexChanged += new EventHandler(handler);       /* handlers are calling when we using storage.add, but we
                                                                                    don't need it */
@@ -1209,11 +1189,21 @@ namespace oopLab6
                     }
                 }
             }
-            public void deleteObj()
+            public void deleteObj(int index)
             {
                 if (selected)
                 {
-                    storage.remove();
+                    if (storage.getFigure(index) != null)
+                    storage.remove(storage.getFigure(index));
+                    selected = false;
+                    observers.Invoke(this, null);
+                }
+            }
+            public void deleteObj(AFigure obj)
+            {
+                if (selected)
+                {
+                    storage.remove(obj);
                     selected = false;
                     observers.Invoke(this, null);
                 }
@@ -1267,7 +1257,7 @@ namespace oopLab6
                     setP2(p2);
                 }
                 else if (code == Keys.Delete)
-                    deleteObj();
+                    deleteObj(obj);
             }
             public void setPos(Point shift)
             {
@@ -1359,7 +1349,8 @@ namespace oopLab6
             if (model.obj_is_selected() == false)
             {
                 storage.unfocus();
-                lvObj.ClearSelected();
+                //lvObj.ClearSelected();
+                treeView1.SelectedNode = null;
                 return;
             }
 
@@ -1381,7 +1372,8 @@ namespace oopLab6
             storage.unfocus();
 
             treeView1.AfterSelect -= new TreeViewEventHandler(treeView1_AfterSelect);
-            storage.focus(model.getObject());
+            AFigure obj = model.getObject();
+            storage.focus(obj);
             //storage.focus(lvObj.SelectedItem as AFigure);
             treeView1.AfterSelect += new TreeViewEventHandler(treeView1_AfterSelect);
 
@@ -1432,17 +1424,27 @@ namespace oopLab6
                 flpSz.Visible = true;
             }
 
-            if (lvObj.SelectedItem != null)
+            if (obj != null)
             {
-                (lvObj.SelectedItem as AFigure).setColor(model.getColor());
-                (lvObj.SelectedItem as AFigure).setThickness(model.getThickness());
-                (lvObj.SelectedItem as AFigure).setP1(model.getP1());
-                (lvObj.SelectedItem as AFigure).setP2(model.getP2());
-                if (lvObj.SelectedItem is Triangle)
-                    (lvObj.SelectedItem as Triangle).setP3(model.getP3());
+                obj.setColor(model.getColor());
+                obj.setThickness(model.getThickness());
+                obj.setP1(model.getP1());
+                obj.setP2(model.getP2());
+                if (obj is Triangle)
+                    (obj as Triangle).setP3(model.getP3());
 
+                //if (lvObj.SelectedItem != null)
+                //{
+                //    (lvObj.SelectedItem as AFigure).setColor(model.getColor());
+                //    (lvObj.SelectedItem as AFigure).setThickness(model.getThickness());
+                //    (lvObj.SelectedItem as AFigure).setP1(model.getP1());
+                //    (lvObj.SelectedItem as AFigure).setP2(model.getP2());
+                //    if (lvObj.SelectedItem is Triangle)
+                //        (lvObj.SelectedItem as Triangle).setP3(model.getP3());
+
+                //}
+                this.Invalidate();
             }
-            this.Invalidate();
         }
 
         //
@@ -1540,7 +1542,13 @@ namespace oopLab6
         }
         private void btnTrsh_Click(object sender, EventArgs e)
         {
-            model.deleteObj();
+            try
+            {
+                model.deleteObj(treeView1.SelectedNode.Index);
+            }
+            catch
+            {
+            }
         }
 
 
