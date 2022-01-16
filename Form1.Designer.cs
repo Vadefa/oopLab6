@@ -36,6 +36,7 @@ namespace oopLab6
             this.elps = new System.Windows.Forms.Button();
             this.trn = new System.Windows.Forms.Button();
             this.rect = new System.Windows.Forms.Button();
+            this.btnTrsh = new System.Windows.Forms.Button();
             this.canvas = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.flpCol = new System.Windows.Forms.FlowLayoutPanel();
@@ -63,7 +64,6 @@ namespace oopLab6
             this.label5 = new System.Windows.Forms.Label();
             this.nump3X = new System.Windows.Forms.NumericUpDown();
             this.nump3Y = new System.Windows.Forms.NumericUpDown();
-            this.btnTrsh = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,17 +93,18 @@ namespace oopLab6
             // 
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Window;
+            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.ControlDark;
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel1.Controls.Add(this.btnArw);
             this.flowLayoutPanel1.Controls.Add(this.sctn);
             this.flowLayoutPanel1.Controls.Add(this.elps);
             this.flowLayoutPanel1.Controls.Add(this.trn);
             this.flowLayoutPanel1.Controls.Add(this.rect);
+            this.flowLayoutPanel1.Controls.Add(this.btnTrsh);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 54);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(40, 192);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(40, 230);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // btnArw
@@ -161,6 +162,17 @@ namespace oopLab6
             this.rect.UseVisualStyleBackColor = true;
             this.rect.Click += new System.EventHandler(this.btnRct_Click);
             // 
+            // btnTrsh
+            // 
+            this.btnTrsh.BackgroundImage = global::oopLab6.Properties.Resources.Trash_can;
+            this.btnTrsh.Location = new System.Drawing.Point(3, 193);
+            this.btnTrsh.Name = "btnTrsh";
+            this.btnTrsh.Size = new System.Drawing.Size(32, 32);
+            this.btnTrsh.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.btnTrsh, "Delete the selected element");
+            this.btnTrsh.UseVisualStyleBackColor = true;
+            this.btnTrsh.Click += new System.EventHandler(this.btnTrsh_Click);
+            // 
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.SystemColors.Window;
@@ -174,7 +186,7 @@ namespace oopLab6
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.Window;
+            this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.ControlDark;
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel2.Controls.Add(this.flpCol);
             this.flowLayoutPanel2.Controls.Add(this.flpThck);
@@ -199,9 +211,11 @@ namespace oopLab6
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 20);
+            this.label1.Size = new System.Drawing.Size(51, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Color:";
             // 
@@ -247,7 +261,7 @@ namespace oopLab6
             // 
             // flpThck
             // 
-            this.flpThck.BackColor = System.Drawing.Color.White;
+            this.flpThck.BackColor = System.Drawing.SystemColors.ControlDark;
             this.flpThck.Controls.Add(this.label6);
             this.flpThck.Controls.Add(this.numThck);
             this.flpThck.Location = new System.Drawing.Point(3, 70);
@@ -257,6 +271,8 @@ namespace oopLab6
             // 
             // label6
             // 
+            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label6.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label6.Location = new System.Drawing.Point(3, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(102, 25);
@@ -299,9 +315,11 @@ namespace oopLab6
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 40);
+            this.label2.Size = new System.Drawing.Size(91, 40);
             this.label2.TabIndex = 2;
             this.label2.Text = "Size (width; height):";
             // 
@@ -349,9 +367,11 @@ namespace oopLab6
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label3.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 20);
+            this.label3.Size = new System.Drawing.Size(92, 20);
             this.label3.TabIndex = 6;
             this.label3.Text = "Point 1 (x; y)";
             // 
@@ -394,9 +414,11 @@ namespace oopLab6
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label4.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(89, 20);
+            this.label4.Size = new System.Drawing.Size(94, 20);
             this.label4.TabIndex = 5;
             this.label4.Text = "Point 2 (x; y)";
             // 
@@ -449,9 +471,11 @@ namespace oopLab6
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label5.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label5.Location = new System.Drawing.Point(3, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(89, 20);
+            this.label5.Size = new System.Drawing.Size(94, 20);
             this.label5.TabIndex = 5;
             this.label5.Text = "Point 3 (x; y)";
             // 
@@ -481,17 +505,6 @@ namespace oopLab6
             this.nump3Y.TabIndex = 5;
             this.nump3Y.ValueChanged += new System.EventHandler(this.numP3_ValueChanged);
             // 
-            // btnTrsh
-            // 
-            this.btnTrsh.BackgroundImage = global::oopLab6.Properties.Resources.Trash_can;
-            this.btnTrsh.Location = new System.Drawing.Point(16, 248);
-            this.btnTrsh.Name = "btnTrsh";
-            this.btnTrsh.Size = new System.Drawing.Size(32, 32);
-            this.btnTrsh.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.btnTrsh, "Delete the selected element");
-            this.btnTrsh.UseVisualStyleBackColor = true;
-            this.btnTrsh.Click += new System.EventHandler(this.btnTrsh_Click);
-            // 
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -513,10 +526,13 @@ namespace oopLab6
             // 
             // treeView1
             // 
+            this.treeView1.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.treeView1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.treeView1.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.treeView1.HideSelection = false;
             this.treeView1.Location = new System.Drawing.Point(739, 54);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(271, 177);
+            this.treeView1.Size = new System.Drawing.Size(271, 230);
             this.treeView1.TabIndex = 6;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
@@ -526,9 +542,9 @@ namespace oopLab6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(1046, 693);
             this.Controls.Add(this.treeView1);
-            this.Controls.Add(this.btnTrsh);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.canvas);
             this.Controls.Add(this.flowLayoutPanel1);
