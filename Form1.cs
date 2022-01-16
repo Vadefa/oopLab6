@@ -441,10 +441,14 @@ namespace oopLab6
                     remove(obj);                   // deleting selected object from the storage, now it is in the group
                 }
                 base.add(obj);
+
+                observersInvoke();
             }
             public override void remove(AFigure obj)
             {
                 base.remove(obj);
+                selectedIndex = -1;
+                observersInvoke();
             }
             public void focus(AFigure obj)
             {
@@ -457,10 +461,12 @@ namespace oopLab6
                     else
                         i++;
                 }
+                observersInvoke();
             }
             public void unfocus()
             {
                 selectedIndex = -1;
+                observersInvoke();
             }
             public int selected_Index()
             {
@@ -1338,7 +1344,6 @@ namespace oopLab6
 
             if (model.obj_is_selected() == false)
             {
-                storage.observersInvoke();
                 Invalidate();
                 return;
             }
@@ -1411,9 +1416,6 @@ namespace oopLab6
                 obj.setColor(model.getColor());
                 obj.setThickness(model.getThickness());
             }
-
-            if (model.allows_treeRefresh())
-                storage.observersInvoke();
 
             this.Invalidate();
         }
