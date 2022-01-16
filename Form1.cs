@@ -399,9 +399,15 @@ namespace oopLab6
                 grPath = new GraphicsPath();
                 grPath.AddRectangle(new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
                 if (is_focused)
-                    grObj.DrawPath(new Pen(Color.Violet, thickness), grPath);
+                {
+                    grObj.DrawPath(new Pen(Color.Black, thickness), grPath);
+                    grObj.FillPath(new SolidBrush(Color.Violet), grPath);
+                }
                 else
-                    grObj.DrawPath(new Pen(color, thickness), grPath);
+                {
+                    grObj.DrawPath(new Pen(Color.Black, thickness), grPath);
+                    grObj.FillPath(new SolidBrush(color), grPath);
+                }
             }
         }
 
@@ -1165,12 +1171,15 @@ namespace oopLab6
                         AFigure figure;
                         if (objName == "sctn")
                             figure = new Section(mp1, mp2, thickness, color, grObj);
-                        
+
                         else if (objName == "elps")
                             figure = new Ellipse(mp1, mp2, thickness, color, grObj);
-                        
-                        else                                // if (objName == "rect")
+
+                        else if (objName == "rect")
                             figure = new Rect(mp1, mp2, thickness, color, grObj);
+
+                        else
+                            figure = new Sticky(mp1, mp2, thickness, color, grObj);
 
                         if (figure != null)
                         {
@@ -1556,6 +1565,11 @@ namespace oopLab6
         {
             model.keyUpProcess(e.KeyCode);
             e.Handled = true;
+        }
+
+        private void sticky_Click(object sender, EventArgs e)
+        {
+            model.setNameFromBtn((sender as Button).Name);
         }
     }
 }

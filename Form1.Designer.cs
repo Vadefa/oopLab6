@@ -36,6 +36,7 @@ namespace oopLab6
             this.elps = new System.Windows.Forms.Button();
             this.trn = new System.Windows.Forms.Button();
             this.rect = new System.Windows.Forms.Button();
+            this.sticky = new System.Windows.Forms.Button();
             this.btnTrsh = new System.Windows.Forms.Button();
             this.canvas = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
@@ -68,7 +69,6 @@ namespace oopLab6
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.sticky = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flpCol.SuspendLayout();
@@ -163,6 +163,16 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.rect, "1st click - left upper corner, 2nd click - right downer corner");
             this.rect.UseVisualStyleBackColor = true;
             this.rect.Click += new System.EventHandler(this.btnRct_Click);
+            // 
+            // sticky
+            // 
+            this.sticky.BackgroundImage = global::oopLab6.Properties.Resources.Sticky;
+            this.sticky.Location = new System.Drawing.Point(3, 193);
+            this.sticky.Name = "sticky";
+            this.sticky.Size = new System.Drawing.Size(32, 32);
+            this.sticky.TabIndex = 4;
+            this.sticky.UseVisualStyleBackColor = true;
+            this.sticky.Click += new System.EventHandler(this.sticky_Click);
             // 
             // btnTrsh
             // 
@@ -539,16 +549,6 @@ namespace oopLab6
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
             this.treeView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
-            // 
-            // sticky
-            // 
-            this.sticky.BackgroundImage = global::oopLab6.Properties.Resources.Sticky;
-            this.sticky.Location = new System.Drawing.Point(3, 193);
-            this.sticky.Name = "sticky";
-            this.sticky.Size = new System.Drawing.Size(32, 32);
-            this.sticky.TabIndex = 4;
-            this.sticky.UseVisualStyleBackColor = true;
-            this.sticky.Click += new System.EventHandler(this.btnTrsh_Click);
             // 
             // Form1
             // 
