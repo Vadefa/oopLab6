@@ -410,7 +410,7 @@ namespace oopLab6
 
                 AFigure[] temp = new AFigure[storage.Length - 1];
                 int j = 0;
-                while (j != i)
+                while (j != i && j < storage.Length - 1)
                 {
                     temp[j] = storage[j];
                     j++;
@@ -866,11 +866,6 @@ namespace oopLab6
                     tree.AfterSelect += handler;
 
                     tree.ExpandAll();
-
-                    //groups can be long enough so let's make them collapsed
-                    for (int i = 0; i < tree.Nodes[0].Nodes.Count; i++)
-                        if (tree.Nodes[0].Nodes[i].Text == "group")
-                            tree.Nodes[0].Nodes[i].Collapse();
                 }
                 catch
                 {
@@ -1032,22 +1027,54 @@ namespace oopLab6
                 if (obj == null)
                     return;
 
-                unselect();
+                if (multiSelect == false)
+                {
+                    unselect();
 
-                this.obj = obj;
-                setObjName(obj.getName());
-                color = obj.getColor();
-                thickness = obj.getThickness();
+                    this.obj = obj;
+                    setObjName(obj.getName());
+                    color = obj.getColor();
+                    thickness = obj.getThickness();
 
-                obj.focus();
-                storage.focus(obj);
+                    obj.focus();
+                    storage.focus(obj);
+                }
+                else
+                {
+                    Group g = new Group(2, grObj);      // count == 2 because first is the the group before, second - new object
+                    g.addFigure(this.obj);
+                    g.addFigure(obj);
+
+                    storage.remove(obj);
+                    unselect();
+
+                    storage.add(g);
+                    
+                    this.obj = g;
+                    color = g.getColor();
+                    thickness = g.getThickness();
+
+                    g.focus();
+                    storage.focus(g);
+                }
 
                 observers.Invoke(this, null);
             }
-            public void setObjectFromTree(int index)
+            public void setObjectFromTree(TreeView tree)
             {
-                setObject(storage.getFigure(index));
+                //we should not took elements inside the groups so we should check only the 2nd level of the tree's nodes
+                bool has_selected = false;
+
+                for (int i = 0; i < tree.Nodes[0].GetNodeCount(false) && has_selected == false; i++)
+                    if (tree.Nodes[0].Nodes[i].IsSelected)
+                    {
+                        setObject(storage.getFigure(i));
+                        has_selected = true;
+                    }
+                if (!has_selected)
+                    tree.SelectedNode = null;
             }
+
             public AFigure getObject()
             {
                 return obj;
@@ -1061,6 +1088,8 @@ namespace oopLab6
             Point mp1 = new Point(-1, -1);
             Point mp2 = new Point(-1, -1);
             Point mp3 = new Point(-1, -1);
+
+            bool multiSelect = false;
 
             public void setObjName(string objName)
             {
@@ -1179,7 +1208,13 @@ namespace oopLab6
             }
             public void keysProcess(Keys code)
             {
-                refreshDeny();
+                if (code == Keys.ControlKey)
+                {
+                    multiSelect = true;
+                    return;
+                }
+
+                allow_treeRefresh = false;
 
                 Point p1 = obj.getP1();
                 Point p2 = obj.getP2();
@@ -1222,7 +1257,12 @@ namespace oopLab6
                     refreshAllow();
                     deleteObj(obj);
                 }
-                refreshAllow();
+                allow_treeRefresh = true;
+            }
+            public void keyUpProcess(Keys code)
+            {
+                if (code == Keys.ControlKey)
+                    multiSelect = false;
             }
             public void setPos(Point shift)
             {
@@ -1488,22 +1528,24 @@ namespace oopLab6
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            model.setObjectFromTree(treeView1.SelectedNode.Index);
+            model.setObjectFromTree(treeView1);
         }
 
         private void treeView1_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = false;
             pressedKey = e.KeyCode;
+            model.keysProcess(pressedKey);
         }
 
         private void treeView1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            model.keysProcess(pressedKey);
+            //model.keysProcess(pressedKey);
         }
 
         private void treeView1_KeyUp(object sender, KeyEventArgs e)
         {
+            model.keyUpProcess(e.KeyCode);
             e.Handled = true;
         }
     }
