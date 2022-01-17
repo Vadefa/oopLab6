@@ -37,6 +37,8 @@ namespace oopLab6
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
         }
+
+
         public interface IFigure                //interface with abstract methods of figures
         {
             public abstract void setP1(Point p);
@@ -75,7 +77,7 @@ namespace oopLab6
             public abstract void onSubjectMoved(IAdvancedFigure sticky, Point shift);
 
         }
-        public abstract class SingleObserver    //observer for the storage
+        public interface SingleObserver    //observer for the storage
         {
             public abstract void onSubjectChanged();
         }
@@ -1098,7 +1100,7 @@ namespace oopLab6
                 this.handler = handler;
                 this.storage = storage;
             }
-            public override void onSubjectChanged()
+            public void onSubjectChanged()
             {
 
                 // we are refreshing the treeView so initially we should delete the old tree
