@@ -618,8 +618,9 @@ namespace oopLab6
                             for (int i = 0; i < (obj as Group).getCount(); i++)
                                 (figure as Sticky).removeObserver((obj as Group).getFigure(i));
                         // if we don't do this, our group objects will move twice if sticky moved
+
+                        //remove(obj);                    // deleting selected object from the storage, now it is in the group
                     }
-                    remove(obj);                                    // deleting selected object from the storage, now it is in the group
                 }
                 else if (obj is Sticky)
                 {
@@ -1296,6 +1297,7 @@ namespace oopLab6
                     g.addFigure(this.obj);
                     g.addFigure(obj);
 
+                    storage.remove(this.obj);
                     storage.remove(obj);
                     unselect();
 
