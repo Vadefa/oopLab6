@@ -181,6 +181,7 @@ namespace oopLab6
             this.sticky.Name = "sticky";
             this.sticky.Size = new System.Drawing.Size(32, 32);
             this.sticky.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.sticky, "Sticky rectangle");
             this.sticky.UseVisualStyleBackColor = true;
             this.sticky.Click += new System.EventHandler(this.sticky_Click);
             this.sticky.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
@@ -235,11 +236,11 @@ namespace oopLab6
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 20);
+            this.label1.Size = new System.Drawing.Size(56, 23);
             this.label1.TabIndex = 0;
             this.label1.Text = "Color:";
             // 
@@ -248,7 +249,7 @@ namespace oopLab6
             this.flowLayoutPanel3.Controls.Add(this.btnBlck);
             this.flowLayoutPanel3.Controls.Add(this.btnBlue);
             this.flowLayoutPanel3.Controls.Add(this.btnGrn);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 23);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 26);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(102, 34);
             this.flowLayoutPanel3.TabIndex = 9;
@@ -295,13 +296,14 @@ namespace oopLab6
             // 
             // label6
             // 
-            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label6.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label6.Location = new System.Drawing.Point(3, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(102, 25);
             this.label6.TabIndex = 10;
             this.label6.Text = "Thickness:";
+            this.toolTip1.SetToolTip(this.label6, "The thickness of the contour");
             // 
             // numThck
             // 
@@ -339,17 +341,17 @@ namespace oopLab6
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 40);
+            this.label2.Size = new System.Drawing.Size(103, 46);
             this.label2.TabIndex = 2;
             this.label2.Text = "Size (width; height):";
             // 
             // numWdt
             // 
-            this.numWdt.Location = new System.Drawing.Point(3, 43);
+            this.numWdt.Location = new System.Drawing.Point(3, 49);
             this.numWdt.Name = "numWdt";
             this.numWdt.Size = new System.Drawing.Size(48, 27);
             this.numWdt.TabIndex = 3;
@@ -362,7 +364,7 @@ namespace oopLab6
             // 
             // numHgh
             // 
-            this.numHgh.Location = new System.Drawing.Point(57, 43);
+            this.numHgh.Location = new System.Drawing.Point(57, 49);
             this.numHgh.Maximum = new decimal(new int[] {
             500,
             0,
@@ -391,17 +393,17 @@ namespace oopLab6
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label3.Location = new System.Drawing.Point(3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 20);
+            this.label3.Size = new System.Drawing.Size(105, 23);
             this.label3.TabIndex = 6;
             this.label3.Text = "Point 1 (x; y)";
             // 
             // numPosX
             // 
-            this.numPosX.Location = new System.Drawing.Point(3, 23);
+            this.numPosX.Location = new System.Drawing.Point(3, 26);
             this.numPosX.Maximum = new decimal(new int[] {
             700,
             0,
@@ -414,7 +416,7 @@ namespace oopLab6
             // 
             // numPosY
             // 
-            this.numPosY.Location = new System.Drawing.Point(57, 23);
+            this.numPosY.Location = new System.Drawing.Point(57, 26);
             this.numPosY.Maximum = new decimal(new int[] {
             500,
             0,
@@ -438,17 +440,17 @@ namespace oopLab6
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label4.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label4.Location = new System.Drawing.Point(3, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(94, 20);
+            this.label4.Size = new System.Drawing.Size(107, 23);
             this.label4.TabIndex = 5;
             this.label4.Text = "Point 2 (x; y)";
             // 
             // nump2X
             // 
-            this.nump2X.Location = new System.Drawing.Point(3, 23);
+            this.nump2X.Location = new System.Drawing.Point(3, 26);
             this.nump2X.Maximum = new decimal(new int[] {
             500,
             0,
@@ -466,7 +468,7 @@ namespace oopLab6
             // 
             // nump2Y
             // 
-            this.nump2Y.Location = new System.Drawing.Point(57, 23);
+            this.nump2Y.Location = new System.Drawing.Point(57, 26);
             this.nump2Y.Maximum = new decimal(new int[] {
             500,
             0,
@@ -495,17 +497,17 @@ namespace oopLab6
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label5.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label5.Location = new System.Drawing.Point(3, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 20);
+            this.label5.Size = new System.Drawing.Size(107, 23);
             this.label5.TabIndex = 5;
             this.label5.Text = "Point 3 (x; y)";
             // 
             // nump3X
             // 
-            this.nump3X.Location = new System.Drawing.Point(3, 23);
+            this.nump3X.Location = new System.Drawing.Point(3, 26);
             this.nump3X.Maximum = new decimal(new int[] {
             500,
             0,
@@ -518,7 +520,7 @@ namespace oopLab6
             // 
             // nump3Y
             // 
-            this.nump3Y.Location = new System.Drawing.Point(57, 23);
+            this.nump3Y.Location = new System.Drawing.Point(57, 26);
             this.nump3Y.Maximum = new decimal(new int[] {
             500,
             0,
@@ -546,12 +548,13 @@ namespace oopLab6
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(130, 24);
             this.toolStripMenuItem1.Text = "Clear everything";
+            this.toolStripMenuItem1.ToolTipText = "Removes everything from the working area";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // treeView1
             // 
-            this.treeView1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.treeView1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.treeView1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.treeView1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.treeView1.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.treeView1.HideSelection = false;
             this.treeView1.Location = new System.Drawing.Point(739, 54);

@@ -79,13 +79,10 @@ namespace oopLab6
         {
             public abstract void onSubjectChanged();
         }
-        
-        
+
+
         //I want to work with all figures through the one interface IAdvancedFigure
-        public interface IAdvancedFigure: IFigure, IObserver 
-        {
-            
-        }
+        public interface IAdvancedFigure : IFigure, IObserver { }
         public class Figure: IAdvancedFigure, IObserver
         {
             protected string name;
@@ -1585,7 +1582,7 @@ namespace oopLab6
                 Properties.Settings.Default.canvasHeight = canvasHeight;
                 Properties.Settings.Default.Save();
 
-                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
+                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage2.txt";
                 try
                 {
                     using (StreamWriter sw = new StreamWriter(path, false))
@@ -1595,7 +1592,7 @@ namespace oopLab6
                 }
                 catch
                 {
-                    MessageBox.Show("We could not load objects from file");
+                    MessageBox.Show("We can not save objects in the file");
                 }
             }
             public Model(StorageService storage, Graphics grObj)
@@ -1610,7 +1607,7 @@ namespace oopLab6
 
                 //loading objects:
                 MyFiguresArray figuresArray = new MyFiguresArray();
-                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
+                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage2.txt";
                 try
                 {
                 using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
@@ -1620,7 +1617,7 @@ namespace oopLab6
                 }
                 catch
                 {
-                    MessageBox.Show("We could not load objects from file");
+                    MessageBox.Show("We can not load objects from file");
                 }
             }
         }
