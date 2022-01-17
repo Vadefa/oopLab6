@@ -37,7 +37,7 @@ namespace oopLab6
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
         }
-        public interface IFigure                //public abstract class IAdvancedFigure
+        public interface IFigure                //interface with abstract methods of figures
         {
             public abstract void setP1(Point p);
             public abstract void setP2(Point p);
@@ -81,7 +81,7 @@ namespace oopLab6
         }
         
         
-        //I want to work with all figures through the one interface
+        //I want to work with all figures through the one interface IAdvancedFigure
         public interface IAdvancedFigure: IFigure, IObserver 
         {
             
