@@ -1102,7 +1102,7 @@ namespace oopLab6
 
                 try
                 {
-                    tree.Nodes.Add("root");
+                    tree.Nodes.Add("storage");
 
                     //adding figures by using the reversive method addNode
                     int count = storage.getCount();
@@ -1352,6 +1352,7 @@ namespace oopLab6
             public void setNameFromBtn(string btnName)
             {
                 unselect();
+                mPosReset();
                 this.btnName = btnName;
                 objName = btnName;
             }
