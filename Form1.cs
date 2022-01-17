@@ -69,6 +69,7 @@ namespace oopLab6
 
             //all figures should observe for sticky figures so I thought I can put this method in there
             public abstract bool onSubjectIntersects(AFigure sticky);
+            public abstract void onSubjectMoved(AFigure sticky, Point shift);
         }
 
         public abstract class SingleObserver
@@ -257,6 +258,10 @@ namespace oopLab6
                 else
                     return false;
             }
+            public override void onSubjectMoved(AFigure sticky, Point shift)
+            {
+                move(shift);
+            }
         }
         public class Section : Figure
         {
@@ -400,10 +405,30 @@ namespace oopLab6
         public class Sticky: Figure
         {
             private List<AFigure> _observers;
+            private List<AFigure> _intersecters;
+            private Model model;
+           /*Очень нехорошо было использовать тут зависимость от модели, ведь в основном изменения происходят в ней, но я придумал лишь 2 выбора:
+             1) - вызывать метод observersInvoke прямо из модели при проверки на перемещение липкого объекта.
+              obserbersInvoke бы возвращал список пересекающихся с ним объектов, а модель бы проверяла их и двигала вместе с ним */
+
+           // Но я посчитал, что так нарушится цель лабы использования паттерна, ведь он сам должен оповещать своих наблюдателей,
+           // поэтому сделал по-другому:
+            
+           /*2) - вызывать метод observersInvoke уже при движении липкого объекта, т.е., когда модель уже проверила возможность его движения
+             и вызвала его собственный метод move(), где объект сам вызывает observersInvoke. Там он задействует модель, передавая в неё
+             объекты для проверки не выходят ли они за рамки рабочей области.
+             Если нет, то */
             public Sticky(Point p1, Point p2, int thickness, Color col, Graphics grObj)
                             : base(p1, p2, thickness, col, grObj, true)
             {
                 name = "sticky";
+                _observers = new List<AFigure>();
+                _intersecters = new List<AFigure>();
+            }
+            public override void move(Point shift)
+            {
+                base.move(shift);
+                observersInvoke(shift);
             }
             public override void paint(Graphics grObj)
             {
@@ -429,9 +454,21 @@ namespace oopLab6
             {
                 _observers.Add(figure);
             }
+            public void addIntersecter(AFigure figure)
+            {
+                _intersecters.Add(figure);
+            }
             public void removeObserver(AFigure figure)
             {
                 _observers.Remove(figure);
+            }
+            public void removeIntersecter(AFigure figure)
+            {
+                _intersecters.Remove(figure);
+            }
+            public void setModel(Model model)
+            {
+                this.model = model;
             }
             public bool contains_Observer(AFigure figure)
             {
@@ -440,28 +477,65 @@ namespace oopLab6
                 else
                     return false;
             }
+            public bool contains_Intersecter(AFigure figure)
+            {
+                    return _intersecters.Contains(figure);
+            }
             public AFigure getObserver(int index)
             {
                 return (_observers[index]);
+            }
+            public AFigure getIntersecter(int index)
+            {
+                return _intersecters[index];
             }
             public int getObsCount()
             {
                 return _observers.Count;
             }
-            public bool observersCheck()
+            public int getIntersCount()
             {
-                bool shift_isPossible = true;              // if our sticky object moves, his friends can move outside the working area
-                int i = 0;
-                while (i < _observers.Count && shift_isPossible == true)
-                    if (_observers[i].onSubjectIntersects(this) == false)
-                        shift_isPossible = false;
-                return shift_isPossible;
+                return _intersecters.Count;
             }
+
             public void observersInvoke(Point shift)
             {
-                move(shift);
+                _intersecters = new List<AFigure>();
                 foreach (AFigure observer in _observers)
-                    observer.move(shift);
+                    if (observer.onSubjectIntersects(this))
+                        _intersecters.Add(observer);
+
+                foreach (AFigure intersecter in _intersecters)
+                {
+                    if (model.checkShift(intersecter, shift) == true)
+                        intersecter.onSubjectMoved(this, shift);
+                }
+
+            }
+
+            public override void onSubjectMoved(AFigure sticky, Point shift)
+            {
+                //the sticky object that was moved this object should not recursively move after this object will be moved.
+                removeObserver(sticky);
+
+                //also both their intersectors should not be moved twice.
+                int count = (sticky as Sticky).getIntersCount();
+                for(int i = 0; i < count; i++)
+                {
+                    if (contains_Intersecter((sticky as Sticky).getIntersecter(i)))
+                        removeObserver((sticky as Sticky).getIntersecter(i));
+                    //removeIntersecter((sticky as Sticky).getIntersecter(i));
+                }
+                move(shift);
+
+                //now return everything like it was before
+                addObserver(sticky);
+                for (int i = 0; i < count; i++)
+                {
+                    if (contains_Intersecter((sticky as Sticky).getIntersecter(i)))
+                        addObserver((sticky as Sticky).getIntersecter(i));
+                    //addIntersecter((sticky as Sticky).getIntersecter(i));
+                }
             }
         }
 
@@ -515,11 +589,31 @@ namespace oopLab6
             }
             public override void add(AFigure obj)
             {
+                foreach (AFigure figure in storage)
+                {
+                    if (figure is Sticky)
+                        (figure as Sticky).addObserver(obj);
+                }
+
                 if (obj is Group)
                 {
-                    remove(obj);                   // deleting selected object from the storage, now it is in the group
+                    foreach (AFigure figure in storage)
+                    {
+                        if (figure is Sticky)
+                            for (int i = 0; i < (obj as Group).getCount(); i++)
+                                (figure as Sticky).removeObserver((obj as Group).getFigure(i));
+                        // if we don't do this, our group objects will move twice if sticky moved
+                    }
+                    remove(obj);                                    // deleting selected object from the storage, now it is in the group
                 }
+                else if (obj is Sticky)
+                {
+                    foreach (AFigure figure in storage)
+                        (obj as Sticky).addObserver(figure);
+                }
+
                 base.add(obj);
+
 
                 observersInvoke();
             }
@@ -527,9 +621,14 @@ namespace oopLab6
             {
                 foreach (AFigure figure in storage)
                     if (figure is Sticky && figure != obj)
+                    {
                         if ((figure as Sticky).contains_Observer(figure))
                             (figure as Sticky).removeObserver(figure);
-                        
+
+                        //if ((figure as Sticky).contains_Intersecter(figure))
+                        //    (figure as Sticky).removeIntersecter(figure);
+                    }
+                
                 base.remove(obj);
                 selectedIndex = -1;
                 observersInvoke();
@@ -877,6 +976,10 @@ namespace oopLab6
                 else
                     return false;
             }
+            public override void onSubjectMoved(AFigure sticky, Point shift)
+            {
+                move(shift);
+            }
         }
 
         public class FiguresArray
@@ -1135,7 +1238,8 @@ namespace oopLab6
                 if (obj == null)
                     return;
 
-                if (multiSelect == false)
+                // I think that sticky objects should not be added in the group
+                if ((multiSelect == false) || (obj is Sticky) || (this.obj is Sticky))
                 {
                     unselect();
 
@@ -1255,8 +1359,10 @@ namespace oopLab6
                             figure = new Rect(mp1, mp2, thickness, color, grObj);
 
                         else
+                        {
                             figure = new Sticky(mp1, mp2, thickness, color, grObj);
-
+                            (figure as Sticky).setModel(this);
+                        }
                         if (figure != null)
                         {
                             mPosReset();
@@ -1382,26 +1488,7 @@ namespace oopLab6
                 p2.Y = p2.Y + shift.Y;
                 p3.Y = p3.Y + shift.Y;
 
-                if (objName == "sticky" && is_CorrectPos(p1) && is_CorrectPos(p2))
-                {
-                    if ((obj as Sticky).observersCheck() == true)
-                    {
-                        int count = (obj as Sticky).getObsCount();
-                        int i = 0;
-                        bool all_areMovable = true;
-                        
-                        while(i < count && all_areMovable == true)
-                        {
-                            if (checkShift((obj as Sticky).getObserver(i), shift) == false)
-                                all_areMovable = false;
-                            else
-                                i++;
-                        }
-                        if (all_areMovable)
-                            (obj as Sticky).observersInvoke(shift);
-                    }
-                }
-                else if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2))
+                if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2))
                 {
                     obj.move(shift);
                     observers.Invoke(this, null);
