@@ -71,7 +71,16 @@ namespace oopLab6
             protected Graphics grObj;
             protected GraphicsPath grPath;
 
-
+            public Figure(Graphics grObj)
+            {
+                name = "";
+                p1 = new Point(0, 0);
+                p2 = new Point(0, 0);
+                thickness = 1;
+                color = Color.Black;
+                grPath = new GraphicsPath();
+                this.grObj = grObj;
+            }
             public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
             {
                 name = "figure";
@@ -228,6 +237,11 @@ namespace oopLab6
         }
         public class Section : Figure
         {
+            public Section(Graphics grObj)
+                : base(grObj)
+            {
+                name = "sctn";
+            }
             public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
                 : base(p1, p2, thickness, color, grObj, false)
             {
@@ -250,6 +264,10 @@ namespace oopLab6
         }
         public class Ellipse : Figure
         {
+            public Ellipse(Graphics grObj) : base(grObj)
+            {
+                name = "elps";
+            }
             public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
                 : base(p1, p2, thickness, col, grObj, true)
             {
@@ -273,6 +291,10 @@ namespace oopLab6
         }
         public class Rect : Figure
         {
+            public Rect(Graphics grObj) : base(grObj)
+            {
+                name = "rect";
+            }
             public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
                 : base(p1, p2, thickness, col, grObj, true)
             {
@@ -296,6 +318,10 @@ namespace oopLab6
         public class Triangle : Figure
         {
             Point p3;
+            public Triangle(Graphics grObj) : base(grObj)
+            {
+                name = "trn";
+            }
             public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
             : base(p1, p2, thickness, col, null, false)
             {
@@ -528,8 +554,8 @@ namespace oopLab6
             private int _count;
             private AFigure []_figures;
             private string _name;
-            private Point p1;
-            private Point p2;
+            private Point p1;       //left upper corner
+            private Point p2;       //right lower corner
             Graphics grObj;
 
             public Group(int maxcount, Graphics grObj)
@@ -548,10 +574,14 @@ namespace oopLab6
                     return false;
                 else
                 {
+                    if (_count != 0)
+                        figure.setColor(getColor());
+
                     _count = _count + 1;
                     _figures[_count - 1] = figure;
+                    
 
-
+                    //setting new corners if the object is outside of the current group's "rectangle"
                     if (figure.getP1().X < p1.X || p1.X == -1)
                         p1.X = figure.getP1().X;
                     if (figure.getP2().X < p1.X)
@@ -600,8 +630,8 @@ namespace oopLab6
                 return _figures[iter];
             }
 
-            // realization of methods
 
+            // realization of methods
             public override void setP1(Point p)
             {
                 //Point shift = new Point(p.X - p1.X, p.Y - p1.Y);
@@ -782,16 +812,16 @@ namespace oopLab6
                 switch(code[0])
                 {
                     case "sctn":
-                        figure = new Section(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        figure = new Section(/*new Point(0, 0), new Point(0, 0), 1, Color.Black,*/ grObj);
                         break;
                     case "elps":
-                        figure = new Ellipse(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        figure = new Ellipse(/*new Point(0, 0), new Point(0, 0), 1, Color.Black,*/ grObj);
                         break;
                     case "rect":
-                        figure =  new Rect(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        figure =  new Rect(/*new Point(0, 0), new Point(0, 0), 1, Color.Black,*/ grObj);
                         break;
                     case "trn":
-                        figure = new Triangle(new Point(0, 0), new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        figure = new Triangle(/*new Point(0, 0), new Point(0, 0), new Point(0, 0), 1, Color.Black,*/ grObj);
                         break;
                     default:            // if it is a group
                         figure = new Group(int.Parse(code[1].ToString()), grObj);
