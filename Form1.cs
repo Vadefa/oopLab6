@@ -437,18 +437,7 @@ namespace oopLab6
         {
             private List<AFigure> _observers;
             private List<AFigure> _intersecters;
-            private Model model;
-           /*Очень нехорошо было использовать тут зависимость от модели, ведь в основном изменения происходят в ней, но я придумал лишь 2 выбора:
-             1) - вызывать метод observersInvoke прямо из модели при проверки на перемещение липкого объекта.
-              obserbersInvoke бы возвращал список пересекающихся с ним объектов, а модель бы проверяла их и двигала вместе с ним */
-
-           // Но я посчитал, что так нарушится цель лабы использования паттерна, ведь он сам должен оповещать своих наблюдателей,
-           // поэтому сделал по-другому:
-            
-           /*2) - вызывать метод observersInvoke уже при движении липкого объекта, т.е., когда модель уже проверила возможность его движения
-             и вызвала его собственный метод move(), где объект сам вызывает observersInvoke. Там он задействует модель, передавая в неё
-             объекты для проверки не выходят ли они за рамки рабочей области.
-             Если нет, то */
+           
             public Sticky(Point p1, Point p2, int thickness, Color col, Graphics grObj, int canvasWidth, int canvasHeight)
                             : base(p1, p2, thickness, col, grObj, true, canvasWidth, canvasHeight)
             {
@@ -497,10 +486,6 @@ namespace oopLab6
             {
                 _intersecters.Remove(figure);
             }
-            public void setModel(Model model)
-            {
-                this.model = model;
-            }
             public bool contains_Observer(AFigure figure)
             {
                 if (_observers.Contains(figure))
@@ -538,7 +523,6 @@ namespace oopLab6
 
                 foreach (AFigure intersecter in _intersecters)
                 {
-                    if (model.checkShift(intersecter, shift) == true)
                         intersecter.onSubjectMoved(this, shift);
                 }
 
@@ -1416,7 +1400,7 @@ namespace oopLab6
                         else
                         {
                             figure = new Sticky(mp1, mp2, thickness, color, grObj, canvasWidth, canvasHeight);
-                            (figure as Sticky).setModel(this);
+                            //(figure as Sticky).setModel(this);
                         }
                         if (figure != null)
                         {
