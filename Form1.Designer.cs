@@ -132,6 +132,8 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.sctn, "1st click - 1st point, 2nd - 2nd");
             this.sctn.UseVisualStyleBackColor = true;
             this.sctn.Click += new System.EventHandler(this.btnSctn_Click);
+            this.sctn.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
+            this.sctn.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             // 
             // elps
             // 
@@ -143,6 +145,8 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.elps, "1st click - left upper corner, 2nd click - right downer corner");
             this.elps.UseVisualStyleBackColor = true;
             this.elps.Click += new System.EventHandler(this.btnElps_Click);
+            this.elps.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
+            this.elps.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             // 
             // trn
             // 
@@ -154,6 +158,8 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.trn, "1st click - 1st point, 2nd click - 2nd point, 3rd click - 3rd point");
             this.trn.UseVisualStyleBackColor = true;
             this.trn.Click += new System.EventHandler(this.btnTrn_Click);
+            this.trn.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
+            this.trn.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             // 
             // rect
             // 
@@ -165,6 +171,8 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.rect, "1st click - left upper corner, 2nd click - right downer corner");
             this.rect.UseVisualStyleBackColor = true;
             this.rect.Click += new System.EventHandler(this.btnRct_Click);
+            this.rect.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
+            this.rect.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             // 
             // sticky
             // 
@@ -175,6 +183,8 @@ namespace oopLab6
             this.sticky.TabIndex = 4;
             this.sticky.UseVisualStyleBackColor = true;
             this.sticky.Click += new System.EventHandler(this.sticky_Click);
+            this.sticky.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
+            this.sticky.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             // 
             // btnTrsh
             // 

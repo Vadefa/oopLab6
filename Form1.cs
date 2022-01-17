@@ -1459,6 +1459,9 @@ namespace oopLab6
             }
             public void keysProcess(Keys code)
             {
+                if (obj == null)
+                    return;
+
                 if (code == Keys.ControlKey)
                 {
                     multiSelect = true;
