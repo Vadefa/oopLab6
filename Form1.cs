@@ -513,6 +513,8 @@ namespace oopLab6
 
             }
 
+
+            //if intersected with another sticky object
             public override void onSubjectMoved(AFigure sticky, Point shift)
             {
                 //the sticky object that was moved this object should not recursively move after this object will be moved.
@@ -524,7 +526,6 @@ namespace oopLab6
                 {
                     if (contains_Intersecter((sticky as Sticky).getIntersecter(i)))
                         removeObserver((sticky as Sticky).getIntersecter(i));
-                    //removeIntersecter((sticky as Sticky).getIntersecter(i));
                 }
                 move(shift);
 
@@ -534,7 +535,6 @@ namespace oopLab6
                 {
                     if (contains_Intersecter((sticky as Sticky).getIntersecter(i)))
                         addObserver((sticky as Sticky).getIntersecter(i));
-                    //addIntersecter((sticky as Sticky).getIntersecter(i));
                 }
             }
         }
@@ -720,7 +720,8 @@ namespace oopLab6
             //save & load
             public void load(AFigure obj)
             {
-                base.add(obj);
+                //base.add(obj);
+                add(obj);
                 observersInvoke();
             }
             public void save(StreamWriter sw)
@@ -1034,6 +1035,9 @@ namespace oopLab6
                         break;
                     case "trn":
                         figure = new Triangle(new Point(0, 0), new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        break;
+                        case "sticky":
+                        figure = new Sticky(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
                         break;
                     default:            // if it is a group
                         figure = new Group(int.Parse(code[1].ToString()), grObj);
