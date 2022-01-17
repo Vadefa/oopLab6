@@ -119,6 +119,8 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnArw, "Click here to unselect the element");
             this.btnArw.UseVisualStyleBackColor = true;
             this.btnArw.Click += new System.EventHandler(this.btnArw_Click);
+            this.btnArw.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
+            this.btnArw.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyUp);
             // 
             // sctn
             // 
