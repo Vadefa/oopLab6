@@ -37,8 +37,7 @@ namespace oopLab6
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
         }
-
-        public abstract class AFigure
+        public interface IFigure                //public abstract class IAdvancedFigure
         {
             public abstract void setP1(Point p);
             public abstract void setP2(Point p);
@@ -69,16 +68,25 @@ namespace oopLab6
             public abstract void save(StreamWriter sw);
             public abstract void load(StreamReader sr);
 
-            //all figures should observe for sticky figures so I thought I can put this method in there
-            public abstract bool onSubjectIntersects(AFigure sticky);
-            public abstract void onSubjectMoved(AFigure sticky, Point shift);
         }
+        public interface IObserver
+        {
+            public abstract bool onSubjectIntersects(IAdvancedFigure sticky);
+            public abstract void onSubjectMoved(IAdvancedFigure sticky, Point shift);
 
-        public abstract class SingleObserver
+        }
+        public abstract class SingleObserver    //observer for the storage
         {
             public abstract void onSubjectChanged();
         }
-        public class Figure: AFigure
+        
+        
+        //I want to work with all figures through the one interface
+        public interface IAdvancedFigure: IFigure, IObserver 
+        {
+            
+        }
+        public class Figure: IAdvancedFigure, IObserver
         {
             protected string name;
             protected Point p1;
@@ -141,17 +149,17 @@ namespace oopLab6
                     paint(grObj);
                 }
             }
-            public override void paint(Graphics grObj)
+            public virtual void paint(Graphics grObj)
             {
             }
-            public override bool is_correctPos(Point p)
+            public virtual bool is_correctPos(Point p)
             {
                 if (p.X >= 0 && p.X + thickness <= maxPosX && p.Y >= 0 && p.Y + thickness <= maxPosX)
                     return true;
                 else
                     return false;
             }
-            public override void move(Point shift)
+            public virtual void move(Point shift)
             {
                 Point tp1 = new Point();
                 Point tp2 = new Point();
@@ -175,55 +183,55 @@ namespace oopLab6
                         p2 = tp2;
                     }
             }
-            public override void focus()
+            public virtual void focus()
             {
                 is_focused = true;
             }
-            public override void unfocus()
+            public virtual void unfocus()
             {
                 is_focused = false;
             }
-            public override bool is_inFocus()
+            public virtual bool is_inFocus()
             {
                 return is_focused;
             }
-            public override void setP1(Point p)
+            public virtual void setP1(Point p)
             {
                 p1 = p;
             }
-            public override void setP2(Point p)
+            public virtual void setP2(Point p)
             {
                 p2 = p;
             }
-            public override void setThickness(int thickness)
+            public virtual void setThickness(int thickness)
             {
                 this.thickness = thickness;
             }
-            public override void setColor(Color color)
+            public virtual void setColor(Color color)
             {
                 this.color = color;
             }
-            public override Point getP1()
+            public virtual Point getP1()
             {
                 return p1;
             }
-            public override Point getP2()
+            public virtual Point getP2()
             {
                 return p2;
             }
-            public override int getThickness()
+            public virtual int getThickness()
             {
                 return thickness;
             }
-            public override Color getColor()
+            public virtual Color getColor()
             {
                 return color;
             }
-            public override string getName()
+            public virtual string getName()
             {
                 return name;
             }
-            public override bool is_undermouse(Point mouseP)
+            public virtual bool is_undermouse(Point mouseP)
             {
                 //checking the contour || checking the internal part of the object
                 if (grPath.IsOutlineVisible(mouseP, new Pen(color, thickness)) || grPath.IsVisible(mouseP))
@@ -234,14 +242,14 @@ namespace oopLab6
 
 
             //for triangle:
-            public override void setP3(Point p) { }
-            public override Point getP3()
+            public virtual void setP3(Point p) { }
+            public virtual Point getP3()
             {
                 return new Point(1, 1);
             }
 
             //for save&load:
-            public override void save(StreamWriter sw)
+            public virtual void save(StreamWriter sw)
             {
                 try
                 {
@@ -257,7 +265,7 @@ namespace oopLab6
                     MessageBox.Show("We got the problem of saving objects");
                 }
             }
-            public override void load(StreamReader sr)
+            public virtual void load(StreamReader sr)
             {
                 try
                 {
@@ -279,7 +287,7 @@ namespace oopLab6
             }
 
             //as observer:
-            public override bool onSubjectIntersects(AFigure sticky)
+            public virtual bool onSubjectIntersects(IAdvancedFigure sticky)
             {
                 RectangleF borders = grPath.GetBounds();
                 if (borders.IntersectsWith((sticky as Sticky).getGtPath().GetBounds()))
@@ -289,7 +297,7 @@ namespace oopLab6
                 else
                     return false;
             }
-            public override void onSubjectMoved(AFigure sticky, Point shift)
+            public virtual void onSubjectMoved(IAdvancedFigure sticky, Point shift)
             {
                 move(shift);
             }
@@ -435,15 +443,15 @@ namespace oopLab6
 
         public class Sticky: Figure
         {
-            private List<AFigure> _observers;
-            private List<AFigure> _intersecters;
+            private List<IAdvancedFigure> _observers;
+            private List<IAdvancedFigure> _intersecters;
            
             public Sticky(Point p1, Point p2, int thickness, Color col, Graphics grObj, int canvasWidth, int canvasHeight)
                             : base(p1, p2, thickness, col, grObj, true, canvasWidth, canvasHeight)
             {
                 name = "sticky";
-                _observers = new List<AFigure>();
-                _intersecters = new List<AFigure>();
+                _observers = new List<IAdvancedFigure>();
+                _intersecters = new List<IAdvancedFigure>();
             }
             public override void move(Point shift)
             {
@@ -470,38 +478,38 @@ namespace oopLab6
             {
                 return grPath;
             }
-            public void addObserver(AFigure figure)
+            public void addObserver(IAdvancedFigure figure)
             {
                 _observers.Add(figure);
             }
-            public void addIntersecter(AFigure figure)
+            public void addIntersecter(IAdvancedFigure figure)
             {
                 _intersecters.Add(figure);
             }
-            public void removeObserver(AFigure figure)
+            public void removeObserver(IAdvancedFigure figure)
             {
                 _observers.Remove(figure);
             }
-            public void removeIntersecter(AFigure figure)
+            public void removeIntersecter(IAdvancedFigure figure)
             {
                 _intersecters.Remove(figure);
             }
-            public bool contains_Observer(AFigure figure)
+            public bool contains_Observer(IAdvancedFigure figure)
             {
                 if (_observers.Contains(figure))
                     return true;
                 else
                     return false;
             }
-            public bool contains_Intersecter(AFigure figure)
+            public bool contains_Intersecter(IAdvancedFigure figure)
             {
                     return _intersecters.Contains(figure);
             }
-            public AFigure getObserver(int index)
+            public IAdvancedFigure getObserver(int index)
             {
                 return (_observers[index]);
             }
-            public AFigure getIntersecter(int index)
+            public IAdvancedFigure getIntersecter(int index)
             {
                 return _intersecters[index];
             }
@@ -516,12 +524,12 @@ namespace oopLab6
 
             public void observersInvoke(Point shift)
             {
-                _intersecters = new List<AFigure>();
-                foreach (AFigure observer in _observers)
+                _intersecters = new List<IAdvancedFigure>();
+                foreach (IAdvancedFigure observer in _observers)
                     if (observer.onSubjectIntersects(this))
                         _intersecters.Add(observer);
 
-                foreach (AFigure intersecter in _intersecters)
+                foreach (IAdvancedFigure intersecter in _intersecters)
                 {
                         intersecter.onSubjectMoved(this, shift);
                 }
@@ -530,7 +538,7 @@ namespace oopLab6
 
 
             //if intersected with another sticky object
-            public override void onSubjectMoved(AFigure sticky, Point shift)
+            public override void onSubjectMoved(IAdvancedFigure sticky, Point shift)
             {
                 //the sticky object that was moved this object should not recursively move after this object will be moved.
                 removeObserver(sticky);
@@ -556,27 +564,27 @@ namespace oopLab6
 
         public class Storage
         {
-            protected AFigure[] storage = new AFigure[0];
-            virtual public void add(AFigure obj)
+            protected IAdvancedFigure[] storage = new IAdvancedFigure[0];
+            virtual public void add(IAdvancedFigure obj)
             {
-                AFigure[] temp = new AFigure[storage.Length];
+                IAdvancedFigure[] temp = new IAdvancedFigure[storage.Length];
                 for (int i = 0; i < temp.Length; i++)
                     temp[i] = storage[i];
 
-                storage = new AFigure[temp.Length + 1];
+                storage = new IAdvancedFigure[temp.Length + 1];
                 for (int i = 0; i < temp.Length; i++)
                     storage[i] = temp[i];
 
                 storage[storage.Length - 1] = obj;
             }
-            virtual public void remove(AFigure obj)
+            virtual public void remove(IAdvancedFigure obj)
             {
                 int i = 0;
                 for (; i < storage.Length; i++)
                     if (storage[i] == obj)
                         break;
 
-                AFigure[] temp = new AFigure[storage.Length - 1];
+                IAdvancedFigure[] temp = new IAdvancedFigure[storage.Length - 1];
                 int j = 0;
                 while (j != i && j < storage.Length - 1)
                 {
@@ -587,7 +595,7 @@ namespace oopLab6
                 for (; j < storage.Length; j++)
                     temp[j - 1] = storage[j];
 
-                storage = new AFigure[temp.Length];
+                storage = new IAdvancedFigure[temp.Length];
                 for (i = 0; i < temp.Length; i++)
                     storage[i] = temp[i];
             }
@@ -602,9 +610,9 @@ namespace oopLab6
                 this.grObj = grObj;
                 selectedIndex = -1;
             }
-            public override void add(AFigure obj)
+            public override void add(IAdvancedFigure obj)
             {
-                foreach (AFigure figure in storage)
+                foreach (IAdvancedFigure figure in storage)
                 {
                     if (figure is Sticky)
                         (figure as Sticky).addObserver(obj);
@@ -612,7 +620,7 @@ namespace oopLab6
 
                 if (obj is Group)
                 {
-                    foreach (AFigure figure in storage)
+                    foreach (IAdvancedFigure figure in storage)
                     {
                         if (figure is Sticky)
                             for (int i = 0; i < (obj as Group).getCount(); i++)
@@ -624,7 +632,7 @@ namespace oopLab6
                 }
                 else if (obj is Sticky)
                 {
-                    foreach (AFigure figure in storage)
+                    foreach (IAdvancedFigure figure in storage)
                         (obj as Sticky).addObserver(figure);
                 }
 
@@ -633,9 +641,9 @@ namespace oopLab6
 
                 observersInvoke();
             }
-            public override void remove(AFigure obj)
+            public override void remove(IAdvancedFigure obj)
             {
-                foreach (AFigure figure in storage)
+                foreach (IAdvancedFigure figure in storage)
                     if (figure is Sticky && figure != obj)
                     {
                         if ((figure as Sticky).contains_Observer(figure))
@@ -649,7 +657,7 @@ namespace oopLab6
                 selectedIndex = -1;
                 observersInvoke();
             }
-            public void focus(AFigure obj)
+            public void focus(IAdvancedFigure obj)
             {
                 selectedIndex = -1;
                 int i = 0;
@@ -673,19 +681,19 @@ namespace oopLab6
             }
             public void removeAll()
             {
-                storage = new AFigure[0];
+                storage = new IAdvancedFigure[0];
                 selectedIndex = -1;
                 observersInvoke();
                 ActiveForm.Invalidate();
             }
             public void paint()
             {
-                foreach (AFigure f in storage)
+                foreach (IAdvancedFigure f in storage)
                     if (f != null)
                         f.paint(grObj);
             }
 
-            public bool contains(AFigure obj)
+            public bool contains(IAdvancedFigure obj)
             {
                 bool is_contain = false;
                 int i = 0;
@@ -702,7 +710,7 @@ namespace oopLab6
             {
                 return storage.Length;
             }
-            public AFigure getFigure(int iter)
+            public IAdvancedFigure getFigure(int iter)
             {
                 return storage[iter];
             }
@@ -710,7 +718,7 @@ namespace oopLab6
             {
                 this.tree = tree;
             }
-            public AFigure get_obj_underM(Point mouseP)
+            public IAdvancedFigure get_obj_underM(Point mouseP)
             {
                 bool is_underM = false;
                 int i = storage.Length - 1;
@@ -734,7 +742,7 @@ namespace oopLab6
             }
 
             //save & load
-            public void load(AFigure obj)
+            public void load(IAdvancedFigure obj)
             {
                 //base.add(obj);
                 add(obj);
@@ -743,7 +751,7 @@ namespace oopLab6
             public void save(StreamWriter sw)
             {
                 sw.WriteLine(storage.Length.ToString());
-                foreach (AFigure f in storage)
+                foreach (IAdvancedFigure f in storage)
                     f.save(sw);
             }
         }
@@ -752,11 +760,11 @@ namespace oopLab6
         ////objects are done
         ////
 
-        public class Group: AFigure
+        public class Group: IAdvancedFigure, IObserver
         {
             private int _maxcount;
             private int _count;
-            private AFigure []_figures;
+            private IAdvancedFigure []_figures;
             private string _name;
             private Point p1;
             private Point p2;
@@ -772,14 +780,14 @@ namespace oopLab6
                 _name = "group";
                 _maxcount = maxcount;
                 _count = 0;
-                _figures = new AFigure[maxcount];       //all elements will be null thanks visual studio
+                _figures = new IAdvancedFigure[maxcount];       //all elements will be null thanks visual studio
                 p1 = new Point(-1, -1);
                 p2 = new Point(-1, -1);
                 this.grObj = grObj;
                 maxPosX = canvasWidth;
                 maxPosY = canvasHeight;
             }
-            public bool addFigure(AFigure figure)
+            public bool addFigure(IAdvancedFigure figure)
             {
                 if (_count >= _maxcount)
                     return false;
@@ -832,14 +840,14 @@ namespace oopLab6
             {
                 return _count;
             }
-            public AFigure getFigure(int iter)
+            public IAdvancedFigure getFigure(int iter)
             {
                 return _figures[iter];
             }
 
             // realization of methods
 
-            public override void setP1(Point p)
+            public  void setP1(Point p)
             {
                 //Point shift = new Point(p.X - p1.X, p.Y - p1.Y);
                 //p1.X = p1.X + shift.X;
@@ -855,39 +863,39 @@ namespace oopLab6
                 //    _figures[i].setP1(tempP);
                 //}
             }
-            public override void setP2(Point p) { }
-            public override void setThickness(int thickness) {
+            public  void setP2(Point p) { }
+            public  void setThickness(int thickness) {
 
-                foreach (AFigure figure in _figures)
+                foreach (IAdvancedFigure figure in _figures)
                     figure.setThickness(thickness);
             }
-            public override void setColor(Color color)
+            public  void setColor(Color color)
             {
-                foreach (AFigure figure in _figures)
+                foreach (IAdvancedFigure figure in _figures)
                     figure.setColor(color);
             }
 
-            public override Point getP1()
+            public  Point getP1()
             {
                 return p1;
             }
-            public override Point getP2()
+            public  Point getP2()
             {
                 return p2;
             }
-            public override int getThickness()
+            public  int getThickness()
             {
                 return _figures[0].getThickness();
             }
-            public override Color getColor()
+            public  Color getColor()
             {
                 return _figures[0].getColor();
             }
-            public override string getName()
+            public  string getName()
             {
                 return _name;
             }
-            public override bool is_undermouse(Point mouseP)
+            public  bool is_undermouse(Point mouseP)
             {
                 bool has_objs_underM = false;
                 int i = _maxcount - 1;
@@ -903,42 +911,42 @@ namespace oopLab6
             }
 
             //for triangle:
-            public override void setP3(Point p) { }
-            public override Point getP3()
+            public  void setP3(Point p) { }
+            public  Point getP3()
             {
                 return new Point(-1, -1);
             }
 
             //operations:
-            public override void focus() {
-                foreach (AFigure figure in _figures)
+            public  void focus() {
+                foreach (IAdvancedFigure figure in _figures)
                     figure.focus();
                 is_focused = true;
             }
-            public override void unfocus()
+            public  void unfocus()
             {
-                foreach (AFigure figure in _figures)
+                foreach (IAdvancedFigure figure in _figures)
                     figure.unfocus();
                 is_focused = false;
             }
-            public override bool is_inFocus()
+            public  bool is_inFocus()
             {
                 return is_focused;
             }
-            public override void paint(Graphics grObj)
+            public  void paint(Graphics grObj)
             {
                 if (_figures[0] != null)
-                    foreach (AFigure figure in _figures)
+                    foreach (IAdvancedFigure figure in _figures)
                         figure.paint(grObj);
             }
-            public override bool is_correctPos(Point p)
+            public  bool is_correctPos(Point p)
             {
                 if (p.X >= 0 && p.X + _figures[0].getThickness() <= maxPosX && p.Y >= 0 && p.Y + _figures[0].getThickness() <= maxPosX)
                     return true;
                 else
                     return false;
             }
-            public override void move(Point shift)
+            public  void move(Point shift)
             {
                 Point tp1 = new Point();
                 Point tp2 = new Point();
@@ -953,7 +961,7 @@ namespace oopLab6
                 {
                     p1 = tp1;
                     p2 = tp2;
-                    foreach (AFigure f in _figures)
+                    foreach (IAdvancedFigure f in _figures)
                     {
                         f.move(shift);
                     }
@@ -961,12 +969,12 @@ namespace oopLab6
             }
 
             //for save&load:
-            public override void save(StreamWriter sw)
+            public  void save(StreamWriter sw)
             {
                 try
                 {
                     sw.WriteLine("group" + " " + _count.ToString() + " " + maxPosX.ToString() + " " + maxPosY.ToString()) ;
-                    foreach (AFigure f in _figures)
+                    foreach (IAdvancedFigure f in _figures)
                         f.save(sw);
                 }
                 catch
@@ -974,7 +982,7 @@ namespace oopLab6
                     MessageBox.Show("We got the problem of saving a group of objects");
                 }
             }
-            public override void load(StreamReader sr) {
+            public  void load(StreamReader sr) {
                 try
                 {
                     MyFiguresArray tempArr = new MyFiguresArray();
@@ -982,7 +990,7 @@ namespace oopLab6
                     for (int i = 0; i < _maxcount; i++)
                     {
                         code = sr.ReadLine().Split();
-                        AFigure f = tempArr.createFigure(code, grObj);
+                        IAdvancedFigure f = tempArr.createFigure(code, grObj);
                         if (f != null)
                         {
                             f.load(sr);
@@ -998,7 +1006,7 @@ namespace oopLab6
             }
 
             //as observer:
-            public override bool onSubjectIntersects(AFigure sticky)
+            public  bool onSubjectIntersects(IAdvancedFigure sticky)
             {
                 bool collides = false;
                 int i = 0;
@@ -1013,7 +1021,7 @@ namespace oopLab6
                 else
                     return false;
             }
-            public override void onSubjectMoved(AFigure sticky, Point shift)
+            public  void onSubjectMoved(IAdvancedFigure sticky, Point shift)
             {
                 move(shift);
             }
@@ -1022,8 +1030,8 @@ namespace oopLab6
         public class FiguresArray
         {
             private int _count;
-            private AFigure []_figures;
-            public virtual AFigure createFigure(string[] code, Graphics grObj)
+            private IAdvancedFigure []_figures;
+            public virtual IAdvancedFigure createFigure(string[] code, Graphics grObj)
             {
                 return null;
             }
@@ -1033,7 +1041,7 @@ namespace oopLab6
                 try
                 {
                     _count = int.Parse(sr.ReadLine());
-                    _figures = new AFigure[_count];
+                    _figures = new IAdvancedFigure[_count];
 
                     for (int i = 0; i < _count; i++)
                     {
@@ -1055,9 +1063,9 @@ namespace oopLab6
         }
         public class MyFiguresArray: FiguresArray
         {
-            public override AFigure createFigure(string[] code, Graphics grObj)
+            public override IAdvancedFigure createFigure(string[] code, Graphics grObj)
             {
-                AFigure figure = null;
+                IAdvancedFigure figure = null;
                 switch(code[0])
                 {
                     case "sctn":
@@ -1123,7 +1131,7 @@ namespace oopLab6
                     MessageBox.Show("Error. Can't refresh the tree");
                 }
             }
-            public void addNode(TreeNode node, AFigure figure, int index)
+            public void addNode(TreeNode node, IAdvancedFigure figure, int index)
             {
                 node.Nodes.Add(figure.getName());
 
@@ -1145,7 +1153,7 @@ namespace oopLab6
 
             private Graphics grObj;
             private StorageService storage;
-            private AFigure obj;
+            private IAdvancedFigure obj;
 
             private int canvasWidth;
             private int canvasHeight;
@@ -1273,7 +1281,7 @@ namespace oopLab6
                     observers.Invoke(this, null);
                 }
             }
-            public void setObject(AFigure obj)
+            public void setObject(IAdvancedFigure obj)
             {
                 if (obj == null)
                     return;
@@ -1329,7 +1337,7 @@ namespace oopLab6
                     tree.SelectedNode = null;
             }
 
-            public AFigure getObject()
+            public IAdvancedFigure getObject()
             {
                 return obj;
             }
@@ -1370,7 +1378,7 @@ namespace oopLab6
             {
                 if (btnName == "btnArw")
                 {
-                    AFigure figure = storage.get_obj_underM(mouseP);
+                    IAdvancedFigure figure = storage.get_obj_underM(mouseP);
                     if (figure != null)
                     {
                         setObject(figure);
@@ -1390,7 +1398,7 @@ namespace oopLab6
                     mp2 = mouseP;
                     if (objName != "trn")
                     {
-                        AFigure figure;
+                        IAdvancedFigure figure;
                         if (objName == "sctn")
                             figure = new Section(mp1, mp2, thickness, color, grObj, canvasWidth, canvasHeight);
 
@@ -1418,7 +1426,7 @@ namespace oopLab6
                     mp3 = mouseP;
                     if (objName == "trn")
                     {
-                        AFigure figure = new Triangle(mp1, mp2, mp3, thickness, color, grObj, canvasWidth, canvasHeight);
+                        IAdvancedFigure figure = new Triangle(mp1, mp2, mp3, thickness, color, grObj, canvasWidth, canvasHeight);
 
                         mPosReset();
                         storage.add(figure);
@@ -1546,7 +1554,7 @@ namespace oopLab6
                 //    observers.Invoke(this, null);
                 //}
             }
-            public bool checkShift(AFigure figure, Point shift)
+            public bool checkShift(IAdvancedFigure figure, Point shift)
             {
                 Point p1 = figure.getP1();
                 Point p2 = figure.getP2();
@@ -1644,7 +1652,7 @@ namespace oopLab6
             numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
 
 
-            AFigure obj = model.getObject();
+            IAdvancedFigure obj = model.getObject();
 
             if (model.getObjName() == "sctn" || model.getObjName() == "trn")
             {
