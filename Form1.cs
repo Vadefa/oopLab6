@@ -22,6 +22,7 @@ namespace oopLab6
 
         Keys pressedKey;
 
+
         public Form1()
         {
             InitializeComponent();
@@ -61,6 +62,7 @@ namespace oopLab6
             public abstract void unfocus();
             public abstract bool is_inFocus();
             public abstract void paint(Graphics grObj);
+            public abstract bool is_correctPos(Point p);
             public abstract void move(Point shift);
 
             //for save&load:
@@ -88,13 +90,17 @@ namespace oopLab6
             protected Graphics grObj;
             protected GraphicsPath grPath;
 
+            protected int maxPosX;
+            protected int maxPosY;
 
-            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
+            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse, int canvasWidth, int canvasHeight)
             {
                 name = "figure";
                 this.thickness = thickness;
                 this.color = color;
                 grPath = new GraphicsPath();
+                maxPosX = canvasWidth;
+                maxPosY = canvasHeight;
                 if (allow_reverse)
                 {
                     if (p1.X < p2.X)                            // if we don't painting as the default left-right, up-down style
@@ -138,13 +144,36 @@ namespace oopLab6
             public override void paint(Graphics grObj)
             {
             }
+            public override bool is_correctPos(Point p)
+            {
+                if (p.X >= 0 && p.X + thickness <= maxPosX && p.Y >= 0 && p.Y + thickness <= maxPosX)
+                    return true;
+                else
+                    return false;
+            }
             public override void move(Point shift)
             {
-                p1.X = p1.X + shift.X;
-                p1.Y = p1.Y + shift.Y;
+                Point tp1 = new Point();
+                Point tp2 = new Point();
 
-                p2.X = p2.X + shift.X;
-                p2.Y = p2.Y + shift.Y;
+
+                tp1.X = p1.X + shift.X;
+                tp1.Y = p1.Y + shift.Y;
+
+                tp2.X = p2.X + shift.X;
+                tp2.Y = p2.Y + shift.Y;
+
+                //p1.X = p1.X + shift.X;
+                //p1.Y = p1.Y + shift.Y;
+
+                //p2.X = p2.X + shift.X;
+                //p2.Y = p2.Y + shift.Y;
+
+                if (is_correctPos(tp1) && is_correctPos(tp2))
+                    {
+                        p1 = tp1;
+                        p2 = tp2;
+                    }
             }
             public override void focus()
             {
@@ -217,7 +246,7 @@ namespace oopLab6
                 try
                 {
                     sw.WriteLine(getName());
-                    sw.WriteLine(p1.X.ToString() + " " + p1.Y.ToString() + " " + p2.X.ToString() + " " + p2.Y.ToString());
+                    sw.WriteLine(p1.X.ToString() + " " + p1.Y.ToString() + " " + p2.X.ToString() + " " + p2.Y.ToString() + " " + maxPosX.ToString() + " " + maxPosY.ToString());
                     string col = color.ToString();
                     col = col.Remove(0, 7);
                     col = col.Remove(col.LastIndexOf(']'));
@@ -235,6 +264,8 @@ namespace oopLab6
                     string[] cords = sr.ReadLine().Split();
                     p1 = new Point(int.Parse(cords[0]), int.Parse(cords[1]));
                     p2 = new Point(int.Parse(cords[2]), int.Parse(cords[3]));
+                    maxPosX = int.Parse(cords[4]);
+                    maxPosY = int.Parse(cords[5]);
 
                     string[] props = sr.ReadLine().Split();
                     color = Color.FromName(props[0]);
@@ -265,8 +296,8 @@ namespace oopLab6
         }
         public class Section : Figure
         {
-            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
-                : base(p1, p2, thickness, color, grObj, false)
+            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj, int canvasWidth, int canvasHeight)
+                : base(p1, p2, thickness, color, grObj, false, canvasWidth, canvasHeight)
             {
                 name = "sctn";
             }
@@ -287,8 +318,8 @@ namespace oopLab6
         }
         public class Ellipse : Figure
         {
-            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                : base(p1, p2, thickness, col, grObj, true)
+            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj, int canvasWidth, int canvasHeight)
+                : base(p1, p2, thickness, col, grObj, true, canvasWidth, canvasHeight)
             {
                 name = "elps";
             }
@@ -310,8 +341,8 @@ namespace oopLab6
         }
         public class Rect : Figure
         {
-            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                : base(p1, p2, thickness, col, grObj, true)
+            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj, int canvasWidth, int canvasHeight)
+                : base(p1, p2, thickness, col, grObj, true, canvasWidth, canvasHeight)
             {
                 name = "rect";
             }
@@ -333,8 +364,8 @@ namespace oopLab6
         public class Triangle : Figure
         {
             Point p3;
-            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
-            : base(p1, p2, thickness, col, null, false)
+            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj, int canvasWidth, int canvasHeight)
+            : base(p1, p2, thickness, col, null, false, canvasWidth, canvasHeight)
             {
                 name = "trn";
                 this.p3 = p3;
@@ -418,8 +449,8 @@ namespace oopLab6
              и вызвала его собственный метод move(), где объект сам вызывает observersInvoke. Там он задействует модель, передавая в неё
              объекты для проверки не выходят ли они за рамки рабочей области.
              Если нет, то */
-            public Sticky(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                            : base(p1, p2, thickness, col, grObj, true)
+            public Sticky(Point p1, Point p2, int thickness, Color col, Graphics grObj, int canvasWidth, int canvasHeight)
+                            : base(p1, p2, thickness, col, grObj, true, canvasWidth, canvasHeight)
             {
                 name = "sticky";
                 _observers = new List<AFigure>();
@@ -746,9 +777,12 @@ namespace oopLab6
             private Point p2;
             Graphics grObj;
 
+            int maxPosX;
+            int maxPosY;
+
             private bool is_focused;
 
-            public Group(int maxcount, Graphics grObj)
+            public Group(int maxcount, Graphics grObj, int canvasWidth, int canvasHeight)
             {
                 _name = "group";
                 _maxcount = maxcount;
@@ -757,6 +791,8 @@ namespace oopLab6
                 p1 = new Point(-1, -1);
                 p2 = new Point(-1, -1);
                 this.grObj = grObj;
+                maxPosX = canvasWidth;
+                maxPosY = canvasHeight;
             }
             public bool addFigure(AFigure figure)
             {
@@ -910,17 +946,32 @@ namespace oopLab6
                     foreach (AFigure figure in _figures)
                         figure.paint(grObj);
             }
+            public override bool is_correctPos(Point p)
+            {
+                if (p.X >= 0 && p.X + _figures[0].getThickness() <= maxPosX && p.Y >= 0 && p.Y + _figures[0].getThickness() <= maxPosX)
+                    return true;
+                else
+                    return false;
+            }
             public override void move(Point shift)
             {
-                p1.X = p1.X + shift.X;
-                p1.Y = p1.Y + shift.Y;
+                Point tp1 = new Point();
+                Point tp2 = new Point();
 
-                p2.X = p2.X + shift.X;
-                p2.Y = p2.Y + shift.Y;
+                tp1.X = p1.X + shift.X;
+                tp1.Y = p1.Y + shift.Y;
 
-                foreach (AFigure f in _figures)
+                tp2.X = p2.X + shift.X;
+                tp2.Y = p2.Y + shift.Y;
+
+                if (is_correctPos(tp1) && is_correctPos(tp2))
                 {
-                    f.move(shift);
+                    p1 = tp1;
+                    p2 = tp2;
+                    foreach (AFigure f in _figures)
+                    {
+                        f.move(shift);
+                    }
                 }
             }
 
@@ -929,7 +980,7 @@ namespace oopLab6
             {
                 try
                 {
-                    sw.WriteLine("group" + " " + _count.ToString());
+                    sw.WriteLine("group" + " " + _count.ToString() + " " + maxPosX.ToString() + " " + maxPosY.ToString()) ;
                     foreach (AFigure f in _figures)
                         f.save(sw);
                 }
@@ -1025,22 +1076,22 @@ namespace oopLab6
                 switch(code[0])
                 {
                     case "sctn":
-                        figure = new Section(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        figure = new Section(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj, 1, 1);
                         break;
                     case "elps":
-                        figure = new Ellipse(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        figure = new Ellipse(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj, 1, 1);
                         break;
                     case "rect":
-                        figure =  new Rect(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        figure =  new Rect(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj, 1, 1);
                         break;
                     case "trn":
-                        figure = new Triangle(new Point(0, 0), new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        figure = new Triangle(new Point(0, 0), new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj, 1, 1);
                         break;
                         case "sticky":
-                        figure = new Sticky(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj);
+                        figure = new Sticky(new Point(0, 0), new Point(0, 0), 1, Color.Black, grObj, 1, 1);
                         break;
                     default:            // if it is a group
-                        figure = new Group(int.Parse(code[1].ToString()), grObj);
+                        figure = new Group(int.Parse(code[1].ToString()), grObj, int.Parse(code[2]), int.Parse(code[3]));
                         break;
                 }
                 return figure;
@@ -1257,7 +1308,7 @@ namespace oopLab6
                 }
                 else
                 {
-                    Group g = new Group(2, grObj);      // count == 2 because first is the the group before, second - new object
+                    Group g = new Group(2, grObj, canvasWidth, canvasHeight);      // count == 2 because first is the the group before, second - new object
                     g.addFigure(this.obj);
                     g.addFigure(obj);
 
@@ -1354,17 +1405,17 @@ namespace oopLab6
                     {
                         AFigure figure;
                         if (objName == "sctn")
-                            figure = new Section(mp1, mp2, thickness, color, grObj);
+                            figure = new Section(mp1, mp2, thickness, color, grObj, canvasWidth, canvasHeight);
 
                         else if (objName == "elps")
-                            figure = new Ellipse(mp1, mp2, thickness, color, grObj);
+                            figure = new Ellipse(mp1, mp2, thickness, color, grObj, canvasWidth, canvasHeight);
 
                         else if (objName == "rect")
-                            figure = new Rect(mp1, mp2, thickness, color, grObj);
+                            figure = new Rect(mp1, mp2, thickness, color, grObj, canvasWidth, canvasHeight);
 
                         else
                         {
-                            figure = new Sticky(mp1, mp2, thickness, color, grObj);
+                            figure = new Sticky(mp1, mp2, thickness, color, grObj, canvasWidth, canvasHeight);
                             (figure as Sticky).setModel(this);
                         }
                         if (figure != null)
@@ -1380,7 +1431,7 @@ namespace oopLab6
                     mp3 = mouseP;
                     if (objName == "trn")
                     {
-                        AFigure figure = new Triangle(mp1, mp2, mp3, thickness, color, grObj);
+                        AFigure figure = new Triangle(mp1, mp2, mp3, thickness, color, grObj, canvasWidth, canvasHeight);
 
                         mPosReset();
                         storage.add(figure);
@@ -1480,28 +1531,30 @@ namespace oopLab6
             }
             public void setPos(Point shift)
             {
+                obj.move(shift);
+                observers.Invoke(this, null);
 
-                Point p1 = obj.getP1();
-                Point p2 = obj.getP2();
-                Point p3 = obj.getP3();
+                //Point p1 = obj.getP1();
+                //Point p2 = obj.getP2();
+                //Point p3 = obj.getP3();
 
-                p1.X = p1.X + shift.X;
-                p2.X = p2.X + shift.X;
-                p3.X = p3.X + shift.X;
-                p1.Y = p1.Y + shift.Y;
-                p2.Y = p2.Y + shift.Y;
-                p3.Y = p3.Y + shift.Y;
+                //p1.X = p1.X + shift.X;
+                //p2.X = p2.X + shift.X;
+                //p3.X = p3.X + shift.X;
+                //p1.Y = p1.Y + shift.Y;
+                //p2.Y = p2.Y + shift.Y;
+                //p3.Y = p3.Y + shift.Y;
 
-                if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2))
-                {
-                    obj.move(shift);
-                    observers.Invoke(this, null);
-                }
-                else if (objName == "trn" && is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3))
-                {
-                    obj.move(shift);
-                    observers.Invoke(this, null);
-                }
+                //if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2))
+                //{
+                //    obj.move(shift);
+                //    observers.Invoke(this, null);
+                //}
+                //else if (objName == "trn" && is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3))
+                //{
+                //    obj.move(shift);
+                //    observers.Invoke(this, null);
+                //}
             }
             public bool checkShift(AFigure figure, Point shift)
             {
