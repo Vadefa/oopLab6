@@ -812,16 +812,16 @@ namespace oopLab6
                 switch(code[0])
                 {
                     case "sctn":
-                        figure = new Section(/*new Point(0, 0), new Point(0, 0), 1, Color.Black,*/ grObj);
+                        figure = new Section(grObj);
                         break;
                     case "elps":
-                        figure = new Ellipse(/*new Point(0, 0), new Point(0, 0), 1, Color.Black,*/ grObj);
+                        figure = new Ellipse(grObj);
                         break;
                     case "rect":
-                        figure =  new Rect(/*new Point(0, 0), new Point(0, 0), 1, Color.Black,*/ grObj);
+                        figure =  new Rect(grObj);
                         break;
                     case "trn":
-                        figure = new Triangle(/*new Point(0, 0), new Point(0, 0), new Point(0, 0), 1, Color.Black,*/ grObj);
+                        figure = new Triangle(grObj);
                         break;
                     default:            // if it is a group
                         figure = new Group(int.Parse(code[1].ToString()), grObj);
@@ -1188,7 +1188,7 @@ namespace oopLab6
                 }
                 catch
                 {
-                    MessageBox.Show("We could not load objects from file");
+                    MessageBox.Show("We can not save objects in the file");
                 }
             }
             public Model(StorageService storage, Graphics grObj)
@@ -1208,14 +1208,14 @@ namespace oopLab6
                 string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
                 try
                 {
-                using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
-                {
-                    figuresArray.loadFigures(sr, grObj, storage);
-                }
+                    using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
+                    {
+                        figuresArray.loadFigures(sr, grObj, storage);
+                    }
                 }
                 catch
                 {
-                    MessageBox.Show("We could not load objects from file");
+                    MessageBox.Show("We can not load objects from file");
                 }
             }
         }
