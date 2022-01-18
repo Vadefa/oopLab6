@@ -1,18 +1,1 @@
-3
-sctn
-141 281 303 213
-Black 9
-sctn
-297 354 422 181
-Black 9
-group 2
-sctn
-211 222 393 244
-Blue 9
-group 2
-sctn
-22 136 157 205
-Blue 9
-sctn
-326 121 222 97
-Blue 9
+0
