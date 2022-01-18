@@ -791,7 +791,7 @@ namespace oopLab6
                         code = sr.ReadLine().Split();
                         _figures[i] = createFigure(code, grObj);
 
-                        if (_figures[i] != null)
+                        if (_figures[i] != null)        //if null -> empty string in the txt
                         {
                             _figures[i].load(sr);
                             storage.load(_figures[i]);
