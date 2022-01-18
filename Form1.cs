@@ -656,6 +656,17 @@ namespace oopLab6
                 selectedIndex = -1;
                 observersInvoke();
             }
+            public void removeObservers(List<IAdvancedFigure> observers)
+            {
+                foreach(IAdvancedFigure figure in storage)
+                {
+                    if (figure is Sticky)
+                    {
+                        foreach (IAdvancedFigure observer in observers)
+                            (figure as Sticky).removeObserver(observer);
+                    }
+                }
+            }
             public void focus(IAdvancedFigure obj)
             {
                 selectedIndex = -1;
@@ -842,6 +853,24 @@ namespace oopLab6
             public IAdvancedFigure getFigure(int iter)
             {
                 return _figures[iter];
+            }
+
+            public void removeFigures()
+            {
+                for (int i = _count - 1; i >= 0; i--)
+                {
+                    _figures[i] = null;
+                }
+            }
+            public List<IAdvancedFigure> ungroup()
+            {
+                List<IAdvancedFigure> figures = new List<IAdvancedFigure>();
+                foreach (IAdvancedFigure figure in _figures)
+                {
+                    figures.Add(figure);
+                }
+                removeFigures();
+                return figures;
             }
 
             // realization of methods
@@ -1519,6 +1548,10 @@ namespace oopLab6
                     refreshAllow();
                     deleteObj();
                 }
+                else if (code == Keys.U)
+                {
+                    ungroup();
+                }
                 allow_treeRefresh = true;
             }
             public void keyUpProcess(Keys code)
@@ -1576,6 +1609,24 @@ namespace oopLab6
                 }
                 else
                     return false;
+            }
+            public void ungroup()
+            {
+                if (obj is Group)
+                {
+                    (obj as Group).unfocus();
+                    List<IAdvancedFigure> figures = (obj as Group).ungroup();
+                    
+                    storage.removeObservers(figures);
+                    storage.remove(obj);
+                    objName = "";
+                    obj = null;
+
+                    foreach (IAdvancedFigure figure in figures)
+                        storage.add(figure);
+
+                    observers.Invoke(this, null);
+                }
             }
             public void destructor()
             {
