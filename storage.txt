@@ -1,56 +1,73 @@
-7
+3
+group 2
 elps
 36 49 74 142
 Black 11
+group 2
 elps
-104 54 137 147
+106 53 139 146
 Black 11
 group 2
 sctn
-175 144 176 53
+177 144 178 53
 Black 11
 elps
-172 55 205 97
+174 55 207 97
+Black 11
+group 2
+group 2
+sctn
+308 241 367 240
 Black 11
 group 2
 sctn
-52 189 48 279
+303 202 359 204
 Black 11
 sctn
-51 272 101 276
+350 206 310 268
+Black 11
+group 2
+group 2
+trn
+214 242 247 255
+Black 11
+207 277
+group 2
+sctn
+210 277 207 200
+Black 11
+trn
+206 205 228 214
+Black 11
+213 238
+group 2
+group 2
+sctn
+42 187 38 277
+Black 11
+sctn
+41 270 91 274
 Black 11
 group 2
 sctn
-147 238 176 251
+137 236 166 249
 Black 11
 group 2
 sctn
-136 277 163 196
+126 275 153 194
 Black 11
 sctn
-182 279 165 204
+172 277 155 202
+Black 11
+group 2
+elps
+55 349 123 406
 Black 11
 group 2
 trn
-224 244 257 257
+161 345 209 402
 Black 11
-217 279
-group 2
-sctn
-220 279 217 202
-Black 11
-trn
-216 207 238 216
-Black 11
-223 240
-group 2
-sctn
-318 243 377 242
-Black 11
-group 2
-sctn
-313 204 369 206
-Black 11
-sctn
-360 208 320 270
+237 365
+rect
+256 342 325 394
 Black 11

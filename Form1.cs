@@ -461,6 +461,11 @@ namespace oopLab6
                     lb.SelectedItem = obj;
                 }
             }
+            public void fill(AFigure obj)
+            {
+                base.add(obj);
+                lb.Items.Add(obj);
+            }
             public void load(AFigure obj)
             {
                 base.add(obj);
@@ -483,13 +488,18 @@ namespace oopLab6
                     //using reverge step allows to delete them all, because after deleting sI.count reduces by 1
                     for(int i = selectedItems.Count - 1; i >= 0; i--)
                     {
-                        remove(selectedItems[i] as AFigure);
+                        base.remove(selectedItems[i] as AFigure);
                         lb.Items.Remove(selectedItems[i]);
                     }
                     //lb.ClearSelected();
                     if (ActiveForm != null)
                         ActiveForm.Invalidate();
                 }
+            }
+            public override void remove(AFigure figure)
+            {
+                lb.Items.Remove(figure);
+                base.remove(figure);
             }
             public void removeAll()
             {
@@ -621,6 +631,23 @@ namespace oopLab6
                     return true;
                 }
             }
+            public void removeFigures()
+            {
+                for (int i = _count - 1; i >= 0; i--)
+                {
+                    _figures[i] = null;
+                }
+            }
+            public List<AFigure> ungroup()
+            {
+                List<AFigure> figures = new List<AFigure>();
+                foreach (AFigure figure in _figures)
+                {
+                    figures.Add(figure);
+                }
+                removeFigures();
+                return figures;
+            }
             public int getCount()
             {
                 return _count;
@@ -710,7 +737,8 @@ namespace oopLab6
             public override void unfocus()
             {
                 foreach (AFigure figure in _figures)
-                    figure.unfocus();
+                    if (figure != null)
+                        figure.unfocus();
             }
             public override void paint(Graphics grObj)
             {
@@ -1140,6 +1168,10 @@ namespace oopLab6
                 }
                 else if (code == Keys.Delete)
                     deleteObj();
+                else if (code == Keys.U)
+                {
+                    ungroup();
+                }
             }
             public void setPos(Point shift)
             {
@@ -1168,6 +1200,25 @@ namespace oopLab6
                     this.p2 = p2;
                     this.p3 = p3;
                     obj.move(shift);
+                    observers.Invoke(this, null);
+                }
+            }
+            public void ungroup()
+            {
+                if (obj is Group)
+                {
+
+                    (obj as Group).unfocus();
+                    List<AFigure> figures = (obj as Group).ungroup();
+
+                    storage.remove(obj);
+                    selected = false;
+                    objName = "";
+                    obj = null;
+
+                    foreach (AFigure figure in figures)
+                        storage.fill(figure);
+
                     observers.Invoke(this, null);
                 }
             }
