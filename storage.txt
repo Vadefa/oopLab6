@@ -60,14 +60,14 @@ sctn
 172 277 155 202
 Black 11
 group 2
+rect
+256 342 325 394
+Black 11
+group 2
 elps
 55 349 123 406
 Black 11
-group 2
 trn
 161 345 209 402
 Black 11
 237 365
-rect
-256 342 325 394
-Black 11
