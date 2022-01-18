@@ -14,10 +14,10 @@ elps
 Black 11
 group 2
 sctn
-52 192 48 282
+52 189 48 279
 Black 11
 sctn
-51 275 101 279
+51 272 101 276
 Black 11
 group 2
 sctn
