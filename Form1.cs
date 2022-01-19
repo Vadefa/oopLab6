@@ -1022,6 +1022,9 @@ namespace oopLab6
                     case Keys.G:
                         group();
                         break;
+                    case Keys.U:
+                        ungroup();
+                        break;
                     default:
                         break;
                 }
@@ -1054,7 +1057,20 @@ namespace oopLab6
                     obsInvoke();
                 }
             }
-            
+            public void ungroup()
+            {
+                if (selectedFigures.Count == 1 && selectedFigures[0] is Group)
+                {
+                    Group tempG = (selectedFigures[0] as Group);
+                    unselect();
+                    AFigure tempF;
+                    for (int i = 0; i < tempG.getCount(); i++)
+                    {
+                        tempF = tempG.getFigure(i);
+                        create(tempF);           //I want that pushed out figures were added in the storage too and were initially focused
+                    }
+                }
+            }
             private void unselect()
             {
                 foreach (AFigure f in selectedFigures)
@@ -1369,5 +1385,9 @@ namespace oopLab6
             e.Handled = true;
         }
 
+        private void btnGroup_Click(object sender, EventArgs e)
+        {
+            model.group();
+        }
     }
 }

@@ -489,7 +489,7 @@ namespace oopLab6
             // btnTrsh
             // 
             this.btnTrsh.BackgroundImage = global::oopLab6.Properties.Resources.Trash_can;
-            this.btnTrsh.Location = new System.Drawing.Point(159, 656);
+            this.btnTrsh.Location = new System.Drawing.Point(159, 486);
             this.btnTrsh.Name = "btnTrsh";
             this.btnTrsh.Size = new System.Drawing.Size(32, 32);
             this.btnTrsh.TabIndex = 4;
@@ -518,12 +518,14 @@ namespace oopLab6
             // 
             // btnGroup
             // 
-            this.btnGroup.Location = new System.Drawing.Point(62, 656);
+            this.btnGroup.Location = new System.Drawing.Point(58, 486);
             this.btnGroup.Name = "btnGroup";
             this.btnGroup.Size = new System.Drawing.Size(94, 32);
             this.btnGroup.TabIndex = 6;
             this.btnGroup.Text = "Group";
             this.btnGroup.UseVisualStyleBackColor = true;
+            this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
+            this.btnGroup.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
             // 
             // Form1
             // 
