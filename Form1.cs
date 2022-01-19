@@ -846,7 +846,7 @@ namespace oopLab6
             public void mouseClickGetting(Point mouseP)
             {
                 for (int i = 0; i < positions.Length; i++)
-                    if (positions[i] == null)
+                    if (positions[i].X == -1)
                     {
                         positions[i] = mouseP;
                         handlePosition();
@@ -887,9 +887,9 @@ namespace oopLab6
             }
             public void tryCreateFigure(string type)
             {
-                if (positions[1] != null)
+                if (positions[1].X != -1)
                 {
-                    if (type == "trn" && positions[2] != null)
+                    if (type == "trn" && positions[2].X != -1)
                     {
                         create(new Triangle(positions[0], positions[1], positions[2], thickness, color, grObj, canvasWidth, canvasHeight));
                     }
@@ -909,7 +909,6 @@ namespace oopLab6
 
                         }
                     }
-                    positionReset();
                 }
                 
             }
@@ -917,11 +916,12 @@ namespace oopLab6
             {
                 selectedFigures.Add(figure);
                 storage.add(figure);
+                positionReset();
                 obsInvoke();
             }
             private void positionReset()
             {
-                positions = new Point[3];
+                positions = new Point[3] { new Point(-1, -1), new Point(-1, -1), new Point(-1, -1) };
             }
             private void btnArrowHandle()
             {
@@ -956,6 +956,7 @@ namespace oopLab6
             private void unselect()
             {
                 selectedFigures = new List<AFigure>();
+                positionReset();
                 obsInvoke();
             }
             private void obsInvoke()    // changes the color of all the selected figures and invokes the controller
@@ -998,7 +999,7 @@ namespace oopLab6
 
                 is_a_set = false;
                 selectedFigures = new List<AFigure>();
-                positions =  new Point[3];
+                positions = new Point[3] { new Point(-1, -1), new Point(-1, -1), new Point(-1, -1) };
                 thickness = Properties.Settings.Default.thickness;
                 color = Color.Black;
 
