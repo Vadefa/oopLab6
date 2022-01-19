@@ -842,7 +842,7 @@ namespace oopLab6
 
             private string btnName;
 
-
+            //creating and selecting elements
             public void mouseClickGetting(Point mouseP)
             {
                 for (int i = 0; i < positions.Length; i++)
@@ -930,31 +930,24 @@ namespace oopLab6
                 AFigure figure = storage.check_objs_underM(positions[0]);
                 if (figure != null)
                 {
-                    selectedFigures.Add(figure);
+                    selectedFigures.Add(figure);    //we're not creating the new element so we don't use the method create()
                     obsInvoke();
                 }
-            }
-
-
-            public AFigure getFigure(int iter)
-            {
-                if (selectedFigures.Count != 0)
-                    return selectedFigures[iter];
                 else
-                    return null;
-            }
-            public bool handles_set()
-            {
-                return is_a_set;
+                {
+                    unselect();
+                }
+
+                positionReset();
             }
 
-            public void setBtn(string btnName)
-            {
-                unselect();
-                this.btnName = btnName;
-            }
+
+            
             private void unselect()
             {
+                foreach (AFigure f in selectedFigures)
+                    f.unfocus();
+
                 selectedFigures = new List<AFigure>();
                 positionReset();
                 obsInvoke();
@@ -966,11 +959,61 @@ namespace oopLab6
                 else
                     is_a_set = false;
 
+
                 foreach (AFigure figure in selectedFigures)
+                {
                     figure.focus();
+                    figure.setColor(color);
+                    figure.setThickness(thickness);
+                }
 
                 observers.Invoke(this, null);
             }
+
+            //setters
+            public void setBtn(string btnName)
+            {
+                unselect();
+                this.btnName = btnName;
+            }
+            public void setCol(Color color)
+            {
+                this.color = color;
+                obsInvoke();
+            }
+            public void setThick(int thickness)
+            {
+                if (thickness > 0 && thickness <= 20)
+                    this.thickness = thickness;
+                obsInvoke();
+            }
+
+            //getters
+            public bool handles_set()
+            {
+                return is_a_set;
+            }
+            public AFigure getFigure(int iter)
+            {
+                if (selectedFigures.Count != 0)
+                    return selectedFigures[iter];
+                else
+                    return null;
+            }
+            public int getCanvWidth()
+            {
+                return canvasWidth;
+            }
+            public int getCanvHeight()
+            {
+                return canvasHeight;
+            }
+            public int getThick()
+            {
+                return thickness;
+            }
+
+            //destructor and constructor
             public void destructor()
             {
                 Properties.Settings.Default.thickness = thickness;
@@ -1032,6 +1075,15 @@ namespace oopLab6
             flpP2.Visible = false;
             flpP3.Visible = false;
 
+            numPosX.Maximum = model.getCanvWidth();
+            nump2X.Maximum = model.getCanvWidth();
+            nump3X.Maximum = model.getCanvWidth();
+            numWdt.Maximum = model.getCanvWidth();
+            numPosY.Maximum = model.getCanvHeight();
+            nump2Y.Maximum = model.getCanvHeight();
+            nump3Y.Maximum = model.getCanvHeight();
+            numHgh.Maximum = model.getCanvHeight();
+
             if (model.getFigure(0) == null)
             {
                 Invalidate();
@@ -1091,91 +1143,31 @@ namespace oopLab6
             }
             Invalidate();
 
-                //if (model.obj_is_selected() == false)
-                //{
-                //    storage.unfocus();
-                //    lvObj.ClearSelected();
-                //    return;
-                //}
 
-                //numPosX.Maximum = model.getCanvWidth();
-                //nump2X.Maximum = model.getCanvWidth();
-                //nump3X.Maximum = model.getCanvWidth();
-                //numWdt.Maximum = model.getCanvWidth();
-                //numPosY.Maximum = model.getCanvHeight();
-                //nump2Y.Maximum = model.getCanvHeight();
-                //nump3Y.Maximum = model.getCanvHeight();
-                //numHgh.Maximum = model.getCanvHeight();
 
-                //numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
-                //numThck.Value = model.getThickness();
-                //numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
+            numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
+            numThck.Value = model.getThick();
+            numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
 
 
 
-                //storage.unfocus();
-                //storage.focus(lvObj.SelectedItem as AFigure);
+            //storage.unfocus();
+            //storage.focus(lvObj.SelectedItem as AFigure);
 
 
-                //if (model.getObjName() == "sctn" || model.getObjName() == "trn")
-                //{
-                //    numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
-                //    numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
-                //    nump2X.ValueChanged -= new EventHandler(numP2_ValueChanged);
-                //    nump2Y.ValueChanged -= new EventHandler(numP2_ValueChanged);
 
-                //    numPosX.Value = model.getP1().X;
-                //    numPosY.Value = model.getP1().Y;
-                //    nump2X.Value = model.getP2().X;
-                //    nump2Y.Value = model.getP2().Y;
 
-                //    nump2X.ValueChanged += new EventHandler(numP2_ValueChanged);
-                //    nump2Y.ValueChanged += new EventHandler(numP2_ValueChanged);
-                //    numPosX.ValueChanged += new EventHandler(numP1_ValueChanged);
-                //    numPosY.ValueChanged += new EventHandler(numP1_ValueChanged);
+            //if (lvObj.SelectedItem != null)
+            //{
+            //    (lvObj.SelectedItem as AFigure).setColor(model.getColor());
+            //    (lvObj.SelectedItem as AFigure).setThickness(model.getThickness());
+            //    (lvObj.SelectedItem as AFigure).setP1(model.getP1());
+            //    (lvObj.SelectedItem as AFigure).setP2(model.getP2());
+            //    if (lvObj.SelectedItem is Triangle)
+            //        (lvObj.SelectedItem as Triangle).setP3(model.getP3());
 
-                //    flpP1.Visible = true;
-                //    flpP2.Visible = true;
-
-                //    if (model.getObjName() == "trn")
-                //    {
-                //        nump3X.ValueChanged -= new EventHandler(numP3_ValueChanged);
-                //        nump3Y.ValueChanged -= new EventHandler(numP3_ValueChanged);
-
-                //        nump3X.Value = model.getP3().X;
-                //        nump3Y.Value = model.getP3().Y;
-                //        flpP3.Visible = true;
-
-                //        nump3X.ValueChanged += new EventHandler(numP3_ValueChanged);
-                //        nump3Y.ValueChanged += new EventHandler(numP3_ValueChanged);
-                //    }
-                //}
-                //else if (model.getObjName() != "group")
-                //{
-                //    numWdt.ValueChanged -= new EventHandler(size_ValueChanged);
-                //    numHgh.ValueChanged -= new EventHandler(size_ValueChanged);
-
-                //    numWdt.Value = Math.Abs(model.getP2().X - model.getP1().X);
-                //    numHgh.Value = Math.Abs(model.getP2().Y - model.getP1().Y);
-
-                //    numWdt.ValueChanged += new EventHandler(size_ValueChanged);
-                //    numHgh.ValueChanged += new EventHandler(size_ValueChanged);
-
-                //    flpSz.Visible = true;
-                //}
-
-                //if (lvObj.SelectedItem != null)
-                //{
-                //    (lvObj.SelectedItem as AFigure).setColor(model.getColor());
-                //    (lvObj.SelectedItem as AFigure).setThickness(model.getThickness());
-                //    (lvObj.SelectedItem as AFigure).setP1(model.getP1());
-                //    (lvObj.SelectedItem as AFigure).setP2(model.getP2());
-                //    if (lvObj.SelectedItem is Triangle)
-                //        (lvObj.SelectedItem as Triangle).setP3(model.getP3());
-
-                //}
-                //this.Invalidate();
-            }
+            //}
+        }
 
             //model is done
 
@@ -1224,19 +1216,19 @@ namespace oopLab6
 
         private void btnBlck_Click(object sender, EventArgs e)
         {
-            //model.setColor((sender as Button).BackColor);
+            model.setCol((sender as Button).BackColor);
         }
         private void btnBlue_Click(object sender, EventArgs e)
         {
-            //model.setColor((sender as Button).BackColor);
+            model.setCol((sender as Button).BackColor);
         }
         private void btnGrn_Click(object sender, EventArgs e)
         {
-            //model.setColor((sender as Button).BackColor);
+            model.setCol((sender as Button).BackColor);
         }
         private void numThck_ValueChanged(object sender, EventArgs e)
         {
-            //model.setThickness((int)(sender as NumericUpDown).Value);
+            model.setThick((int)(sender as NumericUpDown).Value);
         }
 
 
