@@ -116,6 +116,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnArw, "Click here to unselect the element");
             this.btnArw.UseVisualStyleBackColor = true;
             this.btnArw.Click += new System.EventHandler(this.btnArw_Click);
+            this.btnArw.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
             // 
             // btnSctn
             // 
@@ -127,6 +128,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnSctn, "1st click - 1st point, 2nd - 2nd");
             this.btnSctn.UseVisualStyleBackColor = true;
             this.btnSctn.Click += new System.EventHandler(this.btnSctn_Click);
+            this.btnSctn.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
             // 
             // btnElps
             // 
@@ -138,6 +140,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnElps, "1st click - left upper corner, 2nd click - right downer corner");
             this.btnElps.UseVisualStyleBackColor = true;
             this.btnElps.Click += new System.EventHandler(this.btnElps_Click);
+            this.btnElps.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
             // 
             // btnTrn
             // 
@@ -149,6 +152,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnTrn, "1st click - 1st point, 2nd click - 2nd point, 3rd click - 3rd point");
             this.btnTrn.UseVisualStyleBackColor = true;
             this.btnTrn.Click += new System.EventHandler(this.btnTrn_Click);
+            this.btnTrn.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
             // 
             // btnRect
             // 
@@ -160,6 +164,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnRect, "1st click - left upper corner, 2nd click - right downer corner");
             this.btnRect.UseVisualStyleBackColor = true;
             this.btnRect.Click += new System.EventHandler(this.btnRct_Click);
+            this.btnRect.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
             // 
             // canvas
             // 

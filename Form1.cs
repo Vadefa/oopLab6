@@ -55,6 +55,9 @@ namespace oopLab6
             public abstract void paint(Graphics grObj);
             public abstract void move(Point shift);
 
+            //for check:
+            public abstract bool is_inBorders(Point p);
+
             //for save&load:
             public abstract void save(StreamWriter sw);
             public abstract void load(StreamReader sr);
@@ -90,7 +93,7 @@ namespace oopLab6
                 this.thickness = thickness;
                 this.color = color;
                 this.maxPosX = maxPosX;
-                this.maxPosX = maxPosY;
+                this.maxPosY = maxPosY;
                 grPath = new GraphicsPath();
                 if (allow_reverse)
                 {
@@ -137,11 +140,28 @@ namespace oopLab6
             }
             public override void move(Point shift)
             {
-                p1.X = p1.X + shift.X;
-                p1.Y = p1.Y + shift.Y;
 
-                p2.X = p2.X + shift.X;
-                p2.Y = p2.Y + shift.Y;
+                Point tp1 = new Point();
+                Point tp2 = new Point();
+                
+                tp1.X = p1.X + shift.X;
+                tp1.Y = p1.Y + shift.Y;
+
+                tp2.X = p2.X + shift.X;
+                tp2.Y = p2.Y + shift.Y;
+
+                if (is_inBorders(tp1) && is_inBorders(tp2))
+                {
+                    p1 = tp1;
+                    p2 = tp2;
+                }
+            }
+            public override bool is_inBorders(Point p)
+            {
+                if (p.X - thickness >= 0 && p.X + thickness <= maxPosX && p.Y - thickness >= 0 && p.Y + thickness <= maxPosY)
+                    return true;
+                else
+                    return false;
             }
             public override void focus()
             {
@@ -351,9 +371,23 @@ namespace oopLab6
             }
             public override void move(Point shift)
             {
-                base.move(shift);
-                p3.X = p3.X + shift.X;
-                p3.Y = p3.Y + shift.Y;
+                Point tp1 = new Point();
+                Point tp2 = new Point();
+                Point tp3 = new Point();
+
+                tp1.X = p1.X + shift.X;
+                tp1.Y = p1.Y + shift.Y;
+                tp2.X = p2.X + shift.X;
+                tp2.Y = p2.Y + shift.Y;
+                tp3.X = p3.X + shift.X;
+                tp3.Y = p3.Y + shift.Y;
+
+                if (is_inBorders(tp1) && is_inBorders(tp2) && is_inBorders(tp3))
+                {
+                    p1 = tp1;
+                    p2 = tp2;
+                    p3 = tp3;
+                }
             }
 
             public override Point getP3()
@@ -526,6 +560,9 @@ namespace oopLab6
             private string _name;
             private Point p1;       //left upper corner
             private Point p2;       //right lower corner
+            private int thickness;
+            private int maxPosX;
+            private int maxPosY;
             Graphics grObj;
 
             public Group(int maxcount, Graphics grObj)
@@ -708,16 +745,33 @@ namespace oopLab6
             }
             public override void move(Point shift)
             {
-                p1.X = p1.X + shift.X;
-                p1.Y = p1.Y + shift.Y;
+                Point tp1 = new Point();
+                Point tp2 = new Point();
 
-                p2.X = p2.X + shift.X;
-                p2.Y = p2.Y + shift.Y;
+                tp1.X = p1.X + shift.X;
+                tp1.Y = p1.Y + shift.Y;
 
-                foreach (AFigure f in _figures)
+                tp2.X = p2.X + shift.X;
+                tp2.Y = p2.Y + shift.Y;
+
+                if (is_inBorders(tp1) && is_inBorders(tp2))
                 {
-                    f.move(shift);
+                    p1 = tp1;
+                    p2 = tp2;
+                    foreach (AFigure f in _figures)
+                    {
+                        f.move(shift);
+                    }
                 }
+            }
+
+            //check:
+            public override bool is_inBorders(Point p)
+            {
+                if (p.X - thickness >= 0 && p.X + thickness <= maxPosX && p.Y - thickness >= 0 && p.Y + thickness <= maxPosY)
+                    return true;
+                else
+                    return false;
             }
 
             //for save&load:
@@ -941,7 +995,39 @@ namespace oopLab6
                 positionReset();
             }
 
+            //handling elements:
+            public void buttonPressedGetting(Keys key)
+            {
+                switch (key)
+                {
+                    case Keys.NumPad4:
+                        move(new Point(-1, 0));
+                        break;
+                    case Keys.NumPad6:
+                        move(new Point(1, 0));
+                        break;
+                    case Keys.NumPad8:
+                        move(new Point(0, -1));
+                        break;
+                    case Keys.NumPad2:
+                        move(new Point(0, 1));
+                        break;
+                    case Keys.Delete:
+                        
+                        break;
+                    case Keys.G:
 
+                        break;
+                    default:
+                        break;
+                }
+            }
+            public void move(Point shift)
+            {
+                foreach (AFigure figure in selectedFigures)
+                    figure.move(shift);
+                obsInvoke();
+            }
             
             private void unselect()
             {
@@ -987,6 +1073,7 @@ namespace oopLab6
                     this.thickness = thickness;
                 obsInvoke();
             }
+
 
             //getters
             public bool handles_set()
@@ -1141,37 +1228,18 @@ namespace oopLab6
                     flpSz.Visible = true;
                 }
             }
-            Invalidate();
-
-
 
             numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
             numThck.Value = model.getThick();
             numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
 
+            Invalidate();
 
-
-            //storage.unfocus();
-            //storage.focus(lvObj.SelectedItem as AFigure);
-
-
-
-
-            //if (lvObj.SelectedItem != null)
-            //{
-            //    (lvObj.SelectedItem as AFigure).setColor(model.getColor());
-            //    (lvObj.SelectedItem as AFigure).setThickness(model.getThickness());
-            //    (lvObj.SelectedItem as AFigure).setP1(model.getP1());
-            //    (lvObj.SelectedItem as AFigure).setP2(model.getP2());
-            //    if (lvObj.SelectedItem is Triangle)
-            //        (lvObj.SelectedItem as Triangle).setP3(model.getP3());
-
-            //}
         }
 
-            //model is done
+        //model is done
 
-            private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             model.destructor();
         }
@@ -1271,7 +1339,7 @@ namespace oopLab6
         private void lvObj_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = false;
-            //model.keysProcess(e.KeyCode);
+            model.buttonPressedGetting(e.KeyCode);
             e.Handled = true;
         }
 
