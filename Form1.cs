@@ -24,7 +24,7 @@ namespace oopLab6
             InitializeComponent();
 
             grObj = canvas.CreateGraphics();
-            storage = new StorageService(lvObj, grObj);
+            storage = new StorageService(grObj);
             model = new Model(storage, grObj);
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
@@ -66,6 +66,9 @@ namespace oopLab6
             protected Point p2;
             protected int thickness;
             protected Color color;
+            
+            protected int maxPosX;
+            protected int maxPosY;
 
             protected bool is_focused = false;
             protected Graphics grObj;
@@ -81,11 +84,13 @@ namespace oopLab6
                 grPath = new GraphicsPath();
                 this.grObj = grObj;
             }
-            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse)
+            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse, int maxPosX, int maxPosY)
             {
                 name = "figure";
                 this.thickness = thickness;
                 this.color = color;
+                this.maxPosX = maxPosX;
+                this.maxPosX = maxPosY;
                 grPath = new GraphicsPath();
                 if (allow_reverse)
                 {
@@ -242,8 +247,8 @@ namespace oopLab6
             {
                 name = "sctn";
             }
-            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj)
-                : base(p1, p2, thickness, color, grObj, false)
+            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj, int maxPosX, int maxPosY)
+                : base(p1, p2, thickness, color, grObj, false, maxPosX, maxPosY)
             {
                 name = "sctn";
             }
@@ -268,8 +273,8 @@ namespace oopLab6
             {
                 name = "elps";
             }
-            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                : base(p1, p2, thickness, col, grObj, true)
+            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj, int maxPosX, int maxPosY)
+                : base(p1, p2, thickness, col, grObj, true, maxPosX, maxPosY)
             {
                 name = "elps";
             }
@@ -295,8 +300,8 @@ namespace oopLab6
             {
                 name = "rect";
             }
-            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj)
-                : base(p1, p2, thickness, col, grObj, true)
+            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj, int maxPosX, int maxPosY)
+                : base(p1, p2, thickness, col, grObj, true, maxPosX, maxPosY)
             {
                 name = "rect";
             }
@@ -322,8 +327,8 @@ namespace oopLab6
             {
                 name = "trn";
             }
-            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj)
-            : base(p1, p2, thickness, col, null, false)
+            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj, int maxPosX, int maxPosY)
+            : base(p1, p2, thickness, col, null, false, maxPosX, maxPosY)
             {
                 name = "trn";
                 this.p3 = p3;
@@ -431,22 +436,17 @@ namespace oopLab6
         }
         public class StorageService : Storage
         {
-            AFigure selected;
-            ListBox lb;
             Graphics grObj;
-            public StorageService(ListBox lb, Graphics grObj)
+            public StorageService(Graphics grObj)
             {
-                this.lb = lb;
                 this.grObj = grObj;
             }
             public new void add(AFigure obj)
             {
                 if (obj is Group)
                 {
-                    remove();                   // deleting all selected objects from the storage, now they're in the group
+                    //remove();                   // deleting all selected objects from the storage, now they're in the group
                     base.add(obj);
-                    lb.Items.Add(obj);
-                    lb.SelectedItem = obj;
                 }
                 else
                 {
@@ -454,22 +454,17 @@ namespace oopLab6
                     unfocus();
                     focus(obj);
 
-                    lb.ClearSelected();
-                    lb.Items.Add(obj);
                     if (ActiveForm != null)
                         ActiveForm.Invalidate();
-                    lb.SelectedItem = obj;
                 }
             }
             public void fill(AFigure obj)
             {
                 base.add(obj);
-                lb.Items.Add(obj);
             }
             public void load(AFigure obj)
             {
                 base.add(obj);
-                lb.Items.Add(obj);
             }
             public void save(StreamWriter sw)
             {
@@ -477,34 +472,13 @@ namespace oopLab6
                 foreach (AFigure f in storage)
                     f.save(sw);
             }
-            public void remove()
-            {
-                if (lb.SelectedItem != null)
-                {
-                    //getting the collection of selected elements for deleting them from both storage and listbox
-                    ListBox.SelectedObjectCollection selectedItems = new ListBox.SelectedObjectCollection(lb);
-                    selectedItems = lb.SelectedItems;
-                    
-                    //using reverge step allows to delete them all, because after deleting sI.count reduces by 1
-                    for(int i = selectedItems.Count - 1; i >= 0; i--)
-                    {
-                        base.remove(selectedItems[i] as AFigure);
-                        lb.Items.Remove(selectedItems[i]);
-                    }
-                    //lb.ClearSelected();
-                    if (ActiveForm != null)
-                        ActiveForm.Invalidate();
-                }
-            }
             public override void remove(AFigure figure)
             {
-                lb.Items.Remove(figure);
                 base.remove(figure);
             }
             public void removeAll()
             {
                 storage = new AFigure[0];
-                lb.Items.Clear();
                 ActiveForm.Invalidate();
             }
             public void paint()
@@ -514,25 +488,12 @@ namespace oopLab6
             }
             public void focus(AFigure obj)
             {
-                if (obj != null)
-                {
-                    selected = obj;
-                    selected.focus();
-                    if (ActiveForm != null)
-                        ActiveForm.Invalidate();
-                }
             }
             public void unfocus()
             {
-                if (selected != null)
-                {
-                    selected.unfocus();
-                    if (ActiveForm != null)
-                        ActiveForm.Invalidate();
-                }
             }
 
-            public bool check_objs_underM(Point mouseP)
+            public AFigure check_objs_underM(Point mouseP)
             {
                 bool is_underM = false;
                 int i = storage.Length - 1;
@@ -546,11 +507,10 @@ namespace oopLab6
 
                 if (is_underM)
                 {
-                    lb.SetSelected(lb.Items.IndexOf(storage[i]), true);
-                    return true;
+                    return storage[i];
                 }
                 else
-                    return false;
+                    return null;
             }
         }
 
@@ -861,367 +821,118 @@ namespace oopLab6
 
         public class Model
         {
-            private Color color;
-            private int thickness;
-            private Point p1;
-            private Point p2;
-            private Point p3;
-            private Graphics grObj;
+            //argegating data:
             private StorageService storage;
-            private AFigure obj;
+            private Graphics grObj;
 
+            //observer that calls the controller to refresh the canvas
+            public EventHandler observers;
+
+            //data related objects
+            private List<AFigure> selectedFigures;          //figures those are processing by the model
+            private Point[] positions = new Point[3];
+            private int thickness;
+            private Color color;
+
+            //data related the canvas
             private int canvasWidth;
             private int canvasHeight;
 
-            private bool selected = false;
+            private string btnName;
 
-            private int count;
 
-            public System.EventHandler observers;
-
-            public bool obj_is_selected()
+            public void mouseClickGetting(Point mouseP)
             {
-                return selected;
-            }
-            public void unselect()
-            {
-                selected = false;
-                objName = "";
-                mPosReset();
-                observers.Invoke(this, null);
-            }
-
-            public bool is_CorrectPos(Point p)
-            {
-                if (p.X >= 0 && p.X + thickness <= canvasWidth && p.Y >= 0 && p.Y + thickness <= canvasHeight)
-                    return true;
-                else
-                    return false;
-            }
-            public void setColor(Color color)
-            {
-                this.color = color;
-                observers.Invoke(this, null);
-            }
-            public void setThickness(int thickness)
-            {
-                if (thickness > 0 && thickness <= 20)
-                    this.thickness = thickness;
-                observers.Invoke(this, null);
-            }
-            public void setP1(Point p)
-            {
-                if (is_CorrectPos(p))
-                    p1 = p;
-
-                observers.Invoke(this, null);
-            }
-            public void setP2(Point p)
-            {
-                if (is_CorrectPos(p))
-                    p2 = p;
-
-                observers.Invoke(this, null);
-            }
-            public void setP3(Point p)
-            {
-                if (is_CorrectPos(p))
-                    p3 = p;
-
-                observers.Invoke(this, null);
-            }
-            public void setSize(int width, int height)
-            {
-                Point p = new Point(p1.X + width, p1.Y + height);
-                if (is_CorrectPos(p))
-                    p2 = p;
-                observers.Invoke(this, null);
-            }
-            public void setcanvWidth(int width)
-            {
-                if (ActiveForm != null)
-                    if (width < ActiveForm.Size.Width && width >= 50)
+                for (int i = 0; i < positions.Length; i++)
+                    if (positions[i] == null)
                     {
-                        canvasWidth = width;
-                        ActiveForm.Invalidate();
-                    }
-                observers.Invoke(this, null);
-            }
-            public void setcanvHeight(int height)
-            {
-                if (ActiveForm != null)
-                    if (height < ActiveForm.Size.Height && height >= 50)
-                    {
-                        canvasHeight = height;
-                        ActiveForm.Invalidate();
-                    }
-                observers.Invoke(this, null);
-            }
+                        positions[i] = mouseP;
+                        handlePosition();
 
-            public void setObject(AFigure obj, int count, ListBox lb, EventHandler handler)
+                        break;
+                    }
+
+                // if the array is full, it won't be added
+            }
+            private void handlePosition()
             {
-                this.count = count;
-                setObjName(obj.getName());
-                if (count > 1)
+                //when handling the position we want to create an object or select an object. It depends on the button that was pressed before.
+                switch (btnName)
                 {
-                    Group g = new Group(count, grObj);
-                    foreach (object o in lb.SelectedItems)
-                    {
-                        g.addFigure(o as AFigure);
-                    }
-                    lb.SelectedIndexChanged -= new EventHandler(handler);
-                    storage.remove();                                           // removed all sected object from storage
-                    storage.add(g);                                             // and added them as a group
-                    lb.SelectedIndexChanged += new EventHandler(handler);       /* handlers are calling when we using storage.add, but we
-                                                                                   don't need it */
-                    this.obj = g;
-                    color = g.getColor();
-                    thickness = g.getThickness();
-                    p1 = g.getP1();
-                    p2 = g.getP2();
+                    case "btnSctn":
+                        tryCreateFigure("sctn");
+                        break;
+
+                    case "btnElps":
+                        tryCreateFigure("elps");
+                        break;
+
+                    case "btnRect":
+                        tryCreateFigure("rect");
+                        break;
+
+                    case "btnTrn":
+                        tryCreateFigure("trn");
+                        break;
+
+                    case "btnArw":
+                        btnHandleArrow();
+                        break;
+
+                    default:
+                        break;
                 }
-                else
+            }
+            public void tryCreateFigure(string type)
+            {
+                if (positions[1] != null)
                 {
-                    this.obj = obj;
-                    color = obj.getColor();
-                    thickness = obj.getThickness();
-                    p1 = obj.getP1();
-                    p2 = obj.getP2();
-                    p3 = obj.getP3();
-                }
-                selected = true;
-                observers.Invoke(this, null);
-            }
-            public Color getColor()
-            {
-                return color;
-            }
-            public int getThickness()
-            {
-                return thickness;
-            }
-            public Point getP1()
-            {
-                return p1;
-            }
-            public Point getP2()
-            {
-                return p2;
-            }
-            public Point getP3()
-            {
-                return p3;
-            }
-            public int getCanvWidth()
-            {
-                return canvasWidth;
-            }
-            public int getCanvHeight()
-            {
-                return canvasHeight;
-            }
-
-
-            ////// clicked mousebuttons: creating/deleting
-
-            string btnName = "";
-            string objName = "";
-            Point mp1 = new Point(-1, -1);
-            Point mp2 = new Point(-1, -1);
-            Point mp3 = new Point(-1, -1);
-
-            public void setObjName(string objName)
-            {
-                this.objName = objName;
-            }
-            public void setNameFromBtn(string btnName)
-            {
-                unselect();
-                this.btnName = btnName;
-                objName = btnName;
-            }
-            public Point getMp1()
-            {
-                return mp1;
-            }
-            public Point getMp2()
-            {
-                return mp2;
-            }
-            public Point getMp3()
-            {
-                return mp3;
-            }
-            public string getObjName()
-            {
-                return objName;
-            }
-            public void mPosReset()
-            {
-                mp1 = new Point(-1, -1);
-                mp2 = mp1;
-                mp3 = mp1;
-            }
-            public void mouseProcess(Point mouseP)
-            {
-                if (btnName == "btnArw")
-                    if (storage.check_objs_underM(mouseP) == true)
+                    if (type == "trn" && positions[2] != null)
                     {
-                        mPosReset();
-                        return;
+                        create(new Triangle(positions[0], positions[1], positions[2], thickness, color, grObj, canvasWidth, canvasHeight));
                     }
                     else
                     {
-                        unselect();
-                    }
-
-                if (mp1.X == -1)
-                {
-                    mp1 = mouseP;
-                }
-                else if (mp2.X == -1)
-                {
-                    mp2 = mouseP;
-                    if (objName != "trn")
-                    {
-                        if (objName == "sctn")
+                        switch (type)
                         {
-                            storage.add(new Section(mp1, mp2, thickness, color, grObj));
+                            case "sctn":
+                                create(new Section(positions[0], positions[1], thickness, color, grObj, canvasWidth, canvasHeight));
+                                break;
+                            case "elps":
+                                create(new Ellipse(positions[0], positions[1], thickness, color, grObj, canvasWidth, canvasHeight));
+                                break;
+                            case "rect":
+                                create(new Rect(positions[0], positions[1], thickness, color, grObj, canvasWidth, canvasHeight));
+                                break;
+
                         }
-                        else if (objName == "elps")
-                        {
-                            storage.add(new Ellipse(mp1, mp2, thickness, color, grObj));
-                        }
-                        else if (objName == "rect")
-                        {
-                            storage.add(new Rect(mp1, mp2, thickness, color, grObj));
-                        }
-                        mPosReset();
                     }
+                    observers.Invoke(this, null);
+                    positionReset();
                 }
-                else
-                {
-                    mp3 = mouseP;
-                    if (objName == "trn")
-                    {
-                        storage.add(new Triangle(mp1, mp2, mp3, thickness, color, grObj));
-                        mPosReset();
-                    }
-                }
+                
             }
-            public void deleteObj()
+            private void create(AFigure figure)
             {
-                if (selected)
+                selectedFigures.Add(figure);
+                storage.add(figure);
+            }
+            private void positionReset()
+            {
+                positions = new Point[3];
+            }
+            private void btnHandleArrow()
+            {
+                //If we click on the canvas by the arrow, then we want to select the object.
+                //Here we need only one Point - point where the mouse was just clicked. It should be positions[0]
+                AFigure figure = storage.check_objs_underM(positions[0]);
+                if (figure != null)
                 {
-                    storage.remove();
-                    selected = false;
+                    selectedFigures.Add(figure);
                     observers.Invoke(this, null);
                 }
             }
-            public void deleteAll()
-            {
-                storage.removeAll();
-                selected = false;
-                observers.Invoke(this, null);
-            }
 
-
-            ////// pressed keybuttons: moving, scaling
-
-            public void keysProcess(Keys code)
-            {
-                Point p1 = this.p1;
-                Point p2 = this.p2;
-
-                Point shift = new Point(0, 0);
-                if (code == Keys.Left)
-                {
-                    shift.X = -1;
-                    setPos(shift);
-                }
-                else if (code == Keys.Right)
-                {
-                    shift.X = 1;
-                    setPos(shift);
-                }
-                else if (code == Keys.Up)
-                {
-                    shift.Y = -1;
-                    setPos(shift);
-                }
-                else if (code == Keys.Down)
-                {
-                    shift.Y = 1;
-                    setPos(shift);
-                }
-                else if (code == Keys.Oemplus && !(obj is Triangle) && !(obj is Section) && !(obj is Group))
-                {
-                    p2.X = p1.X + Math.Abs(p2.X - p1.X) + 1;
-                    p2.Y = p1.Y + Math.Abs(p2.Y - p1.Y) + 1;
-                    setP2(p2);
-                }
-                else if (code == Keys.OemMinus && !(obj is Triangle) && !(obj is Section) && !(obj is Group))
-                {
-                    p2.X = p1.X + Math.Abs(p2.X - p1.X) - 1;
-                    p2.Y = p1.Y + Math.Abs(p2.Y - p1.Y) - 1;
-                    setP2(p2);
-                }
-                else if (code == Keys.Delete)
-                    deleteObj();
-                else if (code == Keys.U)
-                {
-                    ungroup();
-                }
-            }
-            public void setPos(Point shift)
-            {
-
-                Point p1 = this.p1;
-                Point p2 = this.p2;
-                Point p3 = this.p3;
-
-                p1.X = p1.X + shift.X;
-                p2.X = p2.X + shift.X;
-                p3.X = p3.X + shift.X;
-                p1.Y = p1.Y + shift.Y;
-                p2.Y = p2.Y + shift.Y;
-                p3.Y = p3.Y + shift.Y;
-
-                if (objName != "trn" && is_CorrectPos(p1) && is_CorrectPos(p2))
-                {
-                    this.p1 = p1;
-                    this.p2 = p2;
-                    obj.move(shift);
-                    observers.Invoke(this, null);
-                }
-                else if (objName == "trn" && is_CorrectPos(p1) && is_CorrectPos(p2) && is_CorrectPos(p3))
-                {
-                    this.p1 = p1;
-                    this.p2 = p2;
-                    this.p3 = p3;
-                    obj.move(shift);
-                    observers.Invoke(this, null);
-                }
-            }
-            public void ungroup()
-            {
-                if (obj is Group)
-                {
-
-                    (obj as Group).unfocus();
-                    List<AFigure> figures = (obj as Group).ungroup();
-
-                    storage.remove(obj);
-                    selected = false;
-                    objName = "";
-                    obj = null;
-
-                    foreach (AFigure figure in figures)
-                        storage.fill(figure);
-
-                    observers.Invoke(this, null);
-                }
-            }
             public void destructor()
             {
                 Properties.Settings.Default.thickness = thickness;
@@ -1229,139 +940,139 @@ namespace oopLab6
                 Properties.Settings.Default.canvasHeight = canvasHeight;
                 Properties.Settings.Default.Save();
 
-                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
-                try
-                {
-                    using (StreamWriter sw = new StreamWriter(path, false))
-                    {
-                        storage.save(sw);
-                    }
-                }
-                catch
-                {
-                    MessageBox.Show("We can not save objects in the file");
-                }
+                //string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
+                //try
+                //{
+                //    using (StreamWriter sw = new StreamWriter(path, false))
+                //    {
+                //        storage.save(sw);
+                //    }
+                //}
+                //catch
+                //{
+                //    MessageBox.Show("We can not save objects in the file");
+                //}
             }
             public Model(StorageService storage, Graphics grObj)
             {
+                selectedFigures = new List<AFigure>();
+
                 color = Color.Black;
                 thickness = Properties.Settings.Default.thickness;
                 canvasWidth = Properties.Settings.Default.canvasWidth;
                 canvasHeight = Properties.Settings.Default.canvasHeight;
-                p1 = new Point(-1, -1);
-                p2 = new Point(-1, -1);
-                p3 = new Point(-1, -1);
                 this.storage = storage;
                 this.grObj = grObj;
 
-                //loading objects:
-                MyFiguresArray figuresArray = new MyFiguresArray();
-                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
-                try
-                {
-                    using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
-                    {
-                        figuresArray.loadFigures(sr, grObj, storage);
-                    }
-                }
-                catch
-                {
-                    MessageBox.Show("We can not load objects from file");
-                }
+                ////loading objects:
+                //MyFiguresArray figuresArray = new MyFiguresArray();
+                //string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
+                //try
+                //{
+                //    using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
+                //    {
+                //        figuresArray.loadFigures(sr, grObj, storage);
+                //    }
+                //}
+                //catch
+                //{
+                //    MessageBox.Show("We can not load objects from file");
+                //}
             }
         }
 
         public void UpdateFromModel(object sender, EventArgs e)
         {
-            flpSz.Visible = false;
-            flpP1.Visible = false;
-            flpP2.Visible = false;
-            flpP3.Visible = false;
 
-            if (model.obj_is_selected() == false)
-            {
-                storage.unfocus();
-                lvObj.ClearSelected();
-                return;
-            }
+            //flpSz.Visible = false;
+            //flpP1.Visible = false;
+            //flpP2.Visible = false;
+            //flpP3.Visible = false;
 
-            numPosX.Maximum = model.getCanvWidth();
-            nump2X.Maximum = model.getCanvWidth();
-            nump3X.Maximum = model.getCanvWidth();
-            numWdt.Maximum = model.getCanvWidth();
-            numPosY.Maximum = model.getCanvHeight();
-            nump2Y.Maximum = model.getCanvHeight();
-            nump3Y.Maximum = model.getCanvHeight();
-            numHgh.Maximum = model.getCanvHeight();
+            //if (model.obj_is_selected() == false)
+            //{
+            //    storage.unfocus();
+            //    lvObj.ClearSelected();
+            //    return;
+            //}
 
-            numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
-            numThck.Value = model.getThickness();
-            numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
+            //numPosX.Maximum = model.getCanvWidth();
+            //nump2X.Maximum = model.getCanvWidth();
+            //nump3X.Maximum = model.getCanvWidth();
+            //numWdt.Maximum = model.getCanvWidth();
+            //numPosY.Maximum = model.getCanvHeight();
+            //nump2Y.Maximum = model.getCanvHeight();
+            //nump3Y.Maximum = model.getCanvHeight();
+            //numHgh.Maximum = model.getCanvHeight();
 
-
-
-            storage.unfocus();
-            storage.focus(lvObj.SelectedItem as AFigure);
+            //numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
+            //numThck.Value = model.getThickness();
+            //numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
 
 
-            if (model.getObjName() == "sctn" || model.getObjName() == "trn")
-            {
-                numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
-                numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
-                nump2X.ValueChanged -= new EventHandler(numP2_ValueChanged);
-                nump2Y.ValueChanged -= new EventHandler(numP2_ValueChanged);
 
-                numPosX.Value = model.getP1().X;
-                numPosY.Value = model.getP1().Y;
-                nump2X.Value = model.getP2().X;
-                nump2Y.Value = model.getP2().Y;
+            //storage.unfocus();
+            //storage.focus(lvObj.SelectedItem as AFigure);
 
-                nump2X.ValueChanged += new EventHandler(numP2_ValueChanged);
-                nump2Y.ValueChanged += new EventHandler(numP2_ValueChanged);
-                numPosX.ValueChanged += new EventHandler(numP1_ValueChanged);
-                numPosY.ValueChanged += new EventHandler(numP1_ValueChanged);
 
-                flpP1.Visible = true;
-                flpP2.Visible = true;
+            //if (model.getObjName() == "sctn" || model.getObjName() == "trn")
+            //{
+            //    numPosX.ValueChanged -= new EventHandler(numP1_ValueChanged);
+            //    numPosY.ValueChanged -= new EventHandler(numP1_ValueChanged);
+            //    nump2X.ValueChanged -= new EventHandler(numP2_ValueChanged);
+            //    nump2Y.ValueChanged -= new EventHandler(numP2_ValueChanged);
 
-                if (model.getObjName() == "trn")
-                {
-                    nump3X.ValueChanged -= new EventHandler(numP3_ValueChanged);
-                    nump3Y.ValueChanged -= new EventHandler(numP3_ValueChanged);
+            //    numPosX.Value = model.getP1().X;
+            //    numPosY.Value = model.getP1().Y;
+            //    nump2X.Value = model.getP2().X;
+            //    nump2Y.Value = model.getP2().Y;
 
-                    nump3X.Value = model.getP3().X;
-                    nump3Y.Value = model.getP3().Y;
-                    flpP3.Visible = true;
+            //    nump2X.ValueChanged += new EventHandler(numP2_ValueChanged);
+            //    nump2Y.ValueChanged += new EventHandler(numP2_ValueChanged);
+            //    numPosX.ValueChanged += new EventHandler(numP1_ValueChanged);
+            //    numPosY.ValueChanged += new EventHandler(numP1_ValueChanged);
 
-                    nump3X.ValueChanged += new EventHandler(numP3_ValueChanged);
-                    nump3Y.ValueChanged += new EventHandler(numP3_ValueChanged);
-                }
-            }
-            else if (model.getObjName() != "group")
-            {
-                numWdt.ValueChanged -= new EventHandler(size_ValueChanged);
-                numHgh.ValueChanged -= new EventHandler(size_ValueChanged);
+            //    flpP1.Visible = true;
+            //    flpP2.Visible = true;
 
-                numWdt.Value = Math.Abs(model.getP2().X - model.getP1().X);
-                numHgh.Value = Math.Abs(model.getP2().Y - model.getP1().Y);
+            //    if (model.getObjName() == "trn")
+            //    {
+            //        nump3X.ValueChanged -= new EventHandler(numP3_ValueChanged);
+            //        nump3Y.ValueChanged -= new EventHandler(numP3_ValueChanged);
 
-                numWdt.ValueChanged += new EventHandler(size_ValueChanged);
-                numHgh.ValueChanged += new EventHandler(size_ValueChanged);
+            //        nump3X.Value = model.getP3().X;
+            //        nump3Y.Value = model.getP3().Y;
+            //        flpP3.Visible = true;
 
-                flpSz.Visible = true;
-            }
+            //        nump3X.ValueChanged += new EventHandler(numP3_ValueChanged);
+            //        nump3Y.ValueChanged += new EventHandler(numP3_ValueChanged);
+            //    }
+            //}
+            //else if (model.getObjName() != "group")
+            //{
+            //    numWdt.ValueChanged -= new EventHandler(size_ValueChanged);
+            //    numHgh.ValueChanged -= new EventHandler(size_ValueChanged);
 
-            if (lvObj.SelectedItem != null)
-            {
-                (lvObj.SelectedItem as AFigure).setColor(model.getColor());
-                (lvObj.SelectedItem as AFigure).setThickness(model.getThickness());
-                (lvObj.SelectedItem as AFigure).setP1(model.getP1());
-                (lvObj.SelectedItem as AFigure).setP2(model.getP2());
-                if (lvObj.SelectedItem is Triangle)
-                    (lvObj.SelectedItem as Triangle).setP3(model.getP3());
+            //    numWdt.Value = Math.Abs(model.getP2().X - model.getP1().X);
+            //    numHgh.Value = Math.Abs(model.getP2().Y - model.getP1().Y);
 
-            }
-            this.Invalidate();
+            //    numWdt.ValueChanged += new EventHandler(size_ValueChanged);
+            //    numHgh.ValueChanged += new EventHandler(size_ValueChanged);
+
+            //    flpSz.Visible = true;
+            //}
+
+            //if (lvObj.SelectedItem != null)
+            //{
+            //    (lvObj.SelectedItem as AFigure).setColor(model.getColor());
+            //    (lvObj.SelectedItem as AFigure).setThickness(model.getThickness());
+            //    (lvObj.SelectedItem as AFigure).setP1(model.getP1());
+            //    (lvObj.SelectedItem as AFigure).setP2(model.getP2());
+            //    if (lvObj.SelectedItem is Triangle)
+            //        (lvObj.SelectedItem as Triangle).setP3(model.getP3());
+
+            //}
+            //this.Invalidate();
         }
 
         //model is done
@@ -1382,92 +1093,92 @@ namespace oopLab6
         private void canvas_Click(object sender, EventArgs e)
         {
             Point mousePos = PointToClient(new Point(Cursor.Position.X - (sender as Panel).Location.X, Cursor.Position.Y - (sender as Panel).Location.Y));
-            model.mouseProcess(mousePos);
+            //model.mouseProcess(mousePos);
         }
 
 
         private void btnArw_Click(object sender, EventArgs e)
         {
             //model.unselect();
-            model.setNameFromBtn((sender as Button).Name);
+            //model.setNameFromBtn((sender as Button).Name);
         }
         private void btnSctn_Click(object sender, EventArgs e)
         {
-            model.setNameFromBtn((sender as Button).Name);
+            //model.setNameFromBtn((sender as Button).Name);
         }
         private void btnElps_Click(object sender, EventArgs e)
         {
-            model.setNameFromBtn((sender as Button).Name);
+            //model.setNameFromBtn((sender as Button).Name);
         }
         private void btnTrn_Click(object sender, EventArgs e)
         {
-            model.setNameFromBtn((sender as Button).Name);
+            //model.setNameFromBtn((sender as Button).Name);
         }
         private void btnRct_Click(object sender, EventArgs e)
         {
-            model.setNameFromBtn((sender as Button).Name);
+            //model.setNameFromBtn((sender as Button).Name);
         }
 
 
 
         private void btnBlck_Click(object sender, EventArgs e)
         {
-            model.setColor((sender as Button).BackColor);
+            //model.setColor((sender as Button).BackColor);
         }
         private void btnBlue_Click(object sender, EventArgs e)
         {
-            model.setColor((sender as Button).BackColor);
+            //model.setColor((sender as Button).BackColor);
         }
         private void btnGrn_Click(object sender, EventArgs e)
         {
-            model.setColor((sender as Button).BackColor);
+            //model.setColor((sender as Button).BackColor);
         }
         private void numThck_ValueChanged(object sender, EventArgs e)
         {
-            model.setThickness((int)(sender as NumericUpDown).Value);
+            //model.setThickness((int)(sender as NumericUpDown).Value);
         }
 
 
 
         private void size_ValueChanged(object sender, EventArgs e)
         {
-            model.setSize((int)numWdt.Value, (int)numHgh.Value);
+            //model.setSize((int)numWdt.Value, (int)numHgh.Value);
         }
         private void numP1_ValueChanged(object sender, EventArgs e)
         {
-            model.setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
+            //model.setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
         }
         private void numP2_ValueChanged(object sender, EventArgs e)
         {
-            model.setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
+            //model.setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
         }
         private void numP3_ValueChanged(object sender, EventArgs e)
         {
-            model.setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
+            //model.setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
         }
 
 
         private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lvObj.SelectedItem != null)
-            {
-                model.setObject(lvObj.SelectedItem as AFigure, lvObj.SelectedItems.Count, sender as ListBox, lvObj_SelectedIndexChanged);
-            }
+            //if (lvObj.SelectedItem != null)
+            //{
+            //    model.setObject(lvObj.SelectedItem as AFigure, lvObj.SelectedItems.Count, sender as ListBox, lvObj_SelectedIndexChanged);
+            //}
         }
         private void btnTrsh_Click(object sender, EventArgs e)
         {
-            model.deleteObj();
+            //model.deleteObj();
         }
 
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            model.deleteAll();
+            //model.deleteAll();
         }
         private void lvObj_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = false;
-            model.keysProcess(e.KeyCode);
+            //model.keysProcess(e.KeyCode);
             e.Handled = true;
         }
 
