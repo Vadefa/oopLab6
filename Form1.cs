@@ -565,7 +565,7 @@ namespace oopLab6
             private int maxPosY;
             Graphics grObj;
 
-            public Group(int maxcount, Graphics grObj)
+            public Group(int maxcount, Graphics grObj, int maxPosX, int maxPosY, int thickness)
             {
                 _name = "group";
                 _maxcount = maxcount;
@@ -574,6 +574,10 @@ namespace oopLab6
                 p1 = new Point(-1, -1);
                 p2 = new Point(-1, -1);
                 this.grObj = grObj;
+
+                this.maxPosX = maxPosX;
+                this.maxPosY = maxPosY;
+                this.thickness = thickness;
             }
             public bool addFigure(AFigure figure)
             {
@@ -866,7 +870,7 @@ namespace oopLab6
                         figure = new Triangle(grObj);
                         break;
                     default:            // if it is a group
-                        figure = new Group(int.Parse(code[1].ToString()), grObj);
+                        //figure = new Group(int.Parse(code[1].ToString()), grObj);
                         break;
                 }
                 return figure;
@@ -1013,10 +1017,10 @@ namespace oopLab6
                         move(new Point(0, 1));
                         break;
                     case Keys.Delete:
-                        
+                        delete();
                         break;
                     case Keys.G:
-
+                        group();
                         break;
                     default:
                         break;
@@ -1027,6 +1031,28 @@ namespace oopLab6
                 foreach (AFigure figure in selectedFigures)
                     figure.move(shift);
                 obsInvoke();
+            }
+            public void delete()
+            {
+                foreach (AFigure figure in selectedFigures)
+                    storage.remove(figure);
+                unselect();
+            }
+            public void group()
+            {
+                if (selectedFigures.Count > 1)
+                {
+                    Group g = new Group(selectedFigures.Count, grObj, canvasWidth, canvasHeight, thickness);
+                    for (int i = 0; i < selectedFigures.Count; i++)
+                    {
+                        g.addFigure(selectedFigures[i]);
+                        storage.remove(selectedFigures[i]);
+                    }
+                    unselect();
+                    selectedFigures.Add(g);
+                    storage.add(g);
+                    obsInvoke();
+                }
             }
             
             private void unselect()
