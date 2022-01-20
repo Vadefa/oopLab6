@@ -234,7 +234,8 @@ namespace oopLab6
                 try
                 {
                     sw.WriteLine(getName());
-                    sw.WriteLine(p1.X.ToString() + " " + p1.Y.ToString() + " " + p2.X.ToString() + " " + p2.Y.ToString());
+                    sw.WriteLine(p1.X.ToString() + " " + p1.Y.ToString() + " " + p2.X.ToString() + " " + p2.Y.ToString()
+                        + " " + maxPosX.ToString() + " " + maxPosY.ToString());
                     string col = color.ToString();
                     col = col.Remove(0, 7);
                     col = col.Remove(col.LastIndexOf(']'));
@@ -252,6 +253,8 @@ namespace oopLab6
                     string[] cords = sr.ReadLine().Split();
                     p1 = new Point(int.Parse(cords[0]), int.Parse(cords[1]));
                     p2 = new Point(int.Parse(cords[2]), int.Parse(cords[3]));
+                    maxPosX = int.Parse(cords[4]);
+                    maxPosY = int.Parse(cords[5]);
 
                     string[] props = sr.ReadLine().Split();
                     color = Color.FromName(props[0]);
@@ -535,6 +538,10 @@ namespace oopLab6
             private int maxPosX;
             private int maxPosY;
 
+            public Group()
+            {
+                _count = 0;
+            }
             public Group(int maxcount, int maxPosX, int maxPosY, int thickness)
             {
                 _name = "group";
@@ -771,7 +778,8 @@ namespace oopLab6
             {
                 try
                 {
-                    sw.WriteLine("group" + " " + _count.ToString());
+                    sw.WriteLine("group");
+                    sw.WriteLine(_count.ToString() + " " + maxPosX.ToString() + " " + maxPosY.ToString());
                     foreach (AFigure f in _figures)
                         f.save(sw);
                 }
@@ -783,8 +791,17 @@ namespace oopLab6
             public override void load(StreamReader sr) {
                 try
                 {
-                    MyFiguresArray tempArr = new MyFiguresArray();
                     string[] code;
+                    code = sr.ReadLine().Split();
+                    _maxcount = int.Parse(code[0]);
+                    _figures = new AFigure[_maxcount];
+                    maxPosX = int.Parse(code[1]);
+                    maxPosX = int.Parse(code[2]);
+
+                    p1 = new Point(-1, -1);
+                    p2 = new Point(-1, -1);
+
+                    MyFiguresArray tempArr = new MyFiguresArray();
                     for (int i = 0; i < _maxcount; i++)
                     {
                         code = sr.ReadLine().Split();
@@ -808,10 +825,8 @@ namespace oopLab6
         {
             private int _count;
             private AFigure []_figures;
-            public virtual AFigure createFigure(string[] code)
-            {
-                return null;
-            }
+            public virtual AFigure createFigure(string[] code) { return null; }
+            
             public void loadFigures(StreamReader sr, StorageService storage)
             {
                 string[] code;
@@ -858,7 +873,7 @@ namespace oopLab6
                         figure = new Triangle();
                         break;
                     default:            // if it is a group
-                        //figure = new Group(int.Parse(code[1].ToString()), grObj);
+                        figure = new Group();
                         break;
                 }
                 return figure;
@@ -1106,7 +1121,7 @@ namespace oopLab6
                 //positionReset();
                 obsInvoke();
             }
-            private void obsInvoke()    // changes the color of all the selected figures and invokes the controller
+            private void obsInvoke()    // selects all the selected figures and invokes the controller
             {
                 if (selectedFigures.Count > 1)
                     is_a_set = true;
@@ -1310,18 +1325,18 @@ namespace oopLab6
                 Properties.Settings.Default.canvasHeight = canvasHeight;
                 Properties.Settings.Default.Save();
 
-                //string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
-                //try
-                //{
-                //    using (StreamWriter sw = new StreamWriter(path, false))
-                //    {
-                //        storage.save(sw);
-                //    }
-                //}
-                //catch
-                //{
-                //    MessageBox.Show("We can not save objects in the file");
-                //}
+                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(path, false))
+                    {
+                        storage.save(sw);
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("We can not save objects in the file");
+                }
             }
             public Model(StorageService storage)
             {
@@ -1338,21 +1353,21 @@ namespace oopLab6
 
                 canvasWidth = Properties.Settings.Default.canvasWidth;
                 canvasHeight = Properties.Settings.Default.canvasHeight;
-                
+
                 ////loading objects:
-                //MyFiguresArray figuresArray = new MyFiguresArray();
-                //string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
-                //try
-                //{
-                //    using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
-                //    {
-                //        figuresArray.loadFigures(sr, grObj, storage);
-                //    }
-                //}
-                //catch
-                //{
-                //    MessageBox.Show("We can not load objects from file");
-                //}
+                MyFiguresArray figuresArray = new MyFiguresArray();
+                string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
+                try
+                {
+                    using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
+                    {
+                        figuresArray.loadFigures(sr, storage);
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("We can not load objects from file");
+                }
             }
         }
 

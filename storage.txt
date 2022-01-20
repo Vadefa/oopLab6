@@ -1,72 +1,19 @@
 4
-group 2
-group 2
-sctn
-308 241 367 240
-Black 11
-group 2
-sctn
-303 202 359 204
-Black 11
-sctn
-350 206 310 268
-Black 11
-group 2
-group 2
+elps
+83 125 159 207 410 450
+Blue 3
+elps
+123 260 207 316 410 450
+ForestGreen 7
 trn
-214 242 247 255
-Black 11
-207 277
-group 2
-sctn
-210 277 207 200
-Black 11
-trn
-206 205 228 214
-Black 11
-213 238
-group 2
-group 2
-sctn
-42 187 38 277
-Black 11
-sctn
-41 270 91 274
-Black 11
-group 2
-sctn
-137 236 166 249
-Black 11
-group 2
-sctn
-126 275 153 194
-Black 11
-sctn
-172 277 155 202
-Black 11
-group 2
+242 144 185 87 410 450
+Black 7
+266 67
+group
+2 410 450
 rect
-256 342 325 394
-Black 11
-group 2
-elps
-55 349 123 406
-Black 11
-trn
-161 345 209 402
-Black 11
-237 365
-elps
-36 49 74 142
-Black 11
-group 2
-elps
-106 53 139 146
-Black 11
-group 2
+294 365 335 400 410 450
+Black 5
 sctn
-177 144 178 53
-Black 11
-elps
-174 55 207 97
-Black 11
+330 222 354 267 410 450
+Black 3
