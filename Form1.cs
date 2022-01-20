@@ -1173,7 +1173,9 @@ namespace oopLab6
             }
             public void setSize(int width, int height)
             {
-                //setSize is being called only if there is one object in the selectedFigures list
+                if (selectedFigures.Count == 0)
+                    return;
+
                 Point tp1 = selectedFigures[0].getP1();
                 Point tp2 = selectedFigures[0].getP2();
 
@@ -1191,7 +1193,9 @@ namespace oopLab6
             }
             public void setPos(Point p, char number)
             {
-                //setPos1 is being called only if there is one object in the selectedFigures list
+                if (selectedFigures.Count == 0)
+                    return;
+
                 switch (number)
                 {
                     case '1':
