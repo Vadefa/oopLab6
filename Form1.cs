@@ -477,20 +477,7 @@ namespace oopLab6
             }
             public override void add(AFigure obj)
             {
-                if (obj is Group)
-                {
-                    //remove();                   // deleting all selected objects from the storage, now they're in the group
-                    base.add(obj);
-                }
-                else
-                {
-                    base.add(obj);
-                    //unfocus();
-                    //focus(obj);
-
-                    //if (ActiveForm != null)
-                    //    ActiveForm.Invalidate();
-                }
+                base.add(obj);
             }
             public void fill(AFigure obj)
             {
@@ -510,10 +497,9 @@ namespace oopLab6
             {
                 base.remove(figure);
             }
-            public void removeAll()
+            public void clear()
             {
                 storage = new AFigure[0];
-                ActiveForm.Invalidate();
             }
             public void paint()
             {
@@ -1044,6 +1030,13 @@ namespace oopLab6
                 unselect();
                 positionReset();
             }
+            public void clear()
+            {
+                unselect();
+                positionReset();
+                storage.clear();
+                obsInvoke();
+            }
             public void group()
             {
                 if (selectedFigures.Count > 1)
@@ -1376,13 +1369,13 @@ namespace oopLab6
         }
         private void btnTrsh_Click(object sender, EventArgs e)
         {
-            //model.deleteObj();
+            model.delete();
         }
 
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //model.deleteAll();
+            model.clear();
         }
         private void lvObj_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1394,6 +1387,16 @@ namespace oopLab6
         private void btnGroup_Click(object sender, EventArgs e)
         {
             model.group();
+        }
+
+        private void btnUngroup_Click(object sender, EventArgs e)
+        {
+            model.ungroup();
+        }
+
+        private void setCanvasSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

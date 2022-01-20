@@ -68,6 +68,8 @@ namespace oopLab6
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnGroup = new System.Windows.Forms.Button();
+            this.btnUngroup = new System.Windows.Forms.Button();
+            this.setCanvasSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flpCol.SuspendLayout();
@@ -501,7 +503,8 @@ namespace oopLab6
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.setCanvasSizeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(948, 28);
@@ -527,11 +530,30 @@ namespace oopLab6
             this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
             this.btnGroup.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
             // 
+            // btnUngroup
+            // 
+            this.btnUngroup.Location = new System.Drawing.Point(58, 525);
+            this.btnUngroup.Name = "btnUngroup";
+            this.btnUngroup.Size = new System.Drawing.Size(94, 29);
+            this.btnUngroup.TabIndex = 7;
+            this.btnUngroup.Text = "Ungroup";
+            this.btnUngroup.UseVisualStyleBackColor = true;
+            this.btnUngroup.Click += new System.EventHandler(this.btnUngroup_Click);
+            this.btnUngroup.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
+            // 
+            // setCanvasSizeToolStripMenuItem
+            // 
+            this.setCanvasSizeToolStripMenuItem.Name = "setCanvasSizeToolStripMenuItem";
+            this.setCanvasSizeToolStripMenuItem.Size = new System.Drawing.Size(121, 24);
+            this.setCanvasSizeToolStripMenuItem.Text = "Set canvas size";
+            this.setCanvasSizeToolStripMenuItem.Click += new System.EventHandler(this.setCanvasSizeToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 693);
+            this.Controls.Add(this.btnUngroup);
             this.Controls.Add(this.btnGroup);
             this.Controls.Add(this.btnTrsh);
             this.Controls.Add(this.flowLayoutPanel2);
@@ -613,6 +635,8 @@ namespace oopLab6
         private System.Windows.Forms.FlowLayoutPanel flpP2;
         private System.Windows.Forms.FlowLayoutPanel flpP3;
         private System.Windows.Forms.Button btnGroup;
+        private System.Windows.Forms.Button btnUngroup;
+        private System.Windows.Forms.ToolStripMenuItem setCanvasSizeToolStripMenuItem;
     }
 }
 
