@@ -166,12 +166,15 @@ namespace oopLab6
             }
             public override void setP1(Point p)
             {
-                p1 = p;
+                if (is_inBorders(p))
+                    p1 = p;
             }
             public override void setP2(Point p)
             {
-                p2 = p;
+                if (is_inBorders(p))
+                    p2 = p;
             }
+            
             public override void setMaxPosX(int maxPosX)
             {
                 this.maxPosX = maxPosX;
@@ -275,10 +278,6 @@ namespace oopLab6
             }
             public override void paint(Graphics grObj)
             {
-                //if (is_focused)
-                //    grObj.DrawLine(new Pen(Color.Violet, thickness), p1, p2);
-                //else
-                //    grObj.DrawLine(new Pen(color, thickness), p1, p2);
                 grPath.Dispose();
                 grPath = new GraphicsPath();
                 grPath.AddLine(p1, p2);
@@ -301,10 +300,6 @@ namespace oopLab6
             }
             public override void paint(Graphics grObj)
             {
-                //if (is_focused)
-                //    grObj.DrawEllipse(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
-                //else
-                //    grObj.DrawEllipse(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
                 grPath.Dispose();
                 grPath = new GraphicsPath();
                 grPath.AddEllipse(new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
@@ -328,10 +323,6 @@ namespace oopLab6
             }
             public override void paint(Graphics grObj)
             {
-                //if (is_focused)
-                //    grObj.DrawRectangle(new Pen(Color.Violet, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
-                //else
-                //    grObj.DrawRectangle(new Pen(color, thickness), new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
                 grPath.Dispose();
                 grPath = new GraphicsPath();
                 grPath.AddRectangle(new Rectangle(p1, new Size(Math.Abs(p2.X - p1.X), Math.Abs(p2.Y - p1.Y))));
@@ -356,10 +347,6 @@ namespace oopLab6
             }
             public override void paint(Graphics grObj)
             {
-                //if (is_focused)
-                //    grObj.DrawPolygon(new Pen(Color.Violet, thickness), new Point[] { p1, p2, p3 });
-                //else
-                //    grObj.DrawPolygon(new Pen(color, thickness), new Point[] { p1, p2, p3 });
                 grPath.Dispose();
                 grPath = new GraphicsPath();
                 grPath.AddPolygon(new Point[] { p1, p2, p3 });
@@ -395,9 +382,8 @@ namespace oopLab6
             }
             public override void setP3(Point p3)
             {
-                this.p3 = p3;
-                if (ActiveForm != null)
-                    ActiveForm.Invalidate();
+                if (is_inBorders(p3))
+                    this.p3 = p3;
             }
 
 
@@ -669,22 +655,7 @@ namespace oopLab6
 
 
             // realization of methods
-            public override void setP1(Point p)
-            {
-                //Point shift = new Point(p.X - p1.X, p.Y - p1.Y);
-                //p1.X = p1.X + shift.X;
-                //p1.Y = p1.Y + shift.Y;
-
-                //Point tempP = new Point();
-
-                //for (int i = 0; i < _count; i++)
-                //{
-                //    tempP = _figures[i].getP1();
-                //    tempP.X = tempP.X + shift.X;
-                //    tempP.Y = tempP.Y + shift.Y;
-                //    _figures[i].setP1(tempP);
-                //}
-            }
+            public override void setP1(Point p) { }
             public override void setP2(Point p) { }
             public override void setMaxPosX(int maxPosX)
             {
@@ -1116,16 +1087,15 @@ namespace oopLab6
                 else
                     is_a_set = false;
 
-
                 foreach (AFigure figure in selectedFigures)
                 {
                     figure.focus();
-                    figure.setColor(color);
-                    figure.setThickness(thickness);
                 }
 
                 observers.Invoke(this, null);
             }
+
+            //handling numericupdowns:
 
             //setters
             public void setBtn(string btnName)
@@ -1137,12 +1107,31 @@ namespace oopLab6
             public void setCol(Color color)
             {
                 this.color = color;
+                foreach (AFigure figure in selectedFigures)
+                    figure.setColor(color);
+
                 obsInvoke();
             }
             public void setThick(int thickness)
             {
                 if (thickness > 0 && thickness <= 20)
+                {
                     this.thickness = thickness;
+                    foreach (AFigure figure in selectedFigures)
+                        figure.setThickness(thickness);
+                }
+                obsInvoke();
+            }
+            public void setSize(int width, int height)
+            {
+
+                Point tp1 = selectedFigures[0].getP1();
+                Point tp2 = selectedFigures[0].getP2();
+
+                tp2.X = tp2.X + (width - (tp2.X - tp1.X));    // current width of an object = p2.X - p1.X
+                tp2.Y = tp2.Y + (height - (tp2.Y - tp1.Y));
+
+                selectedFigures[0].setP2(tp2);                  // the size of a figure changes depending on its p2. p1 will remain the same
                 obsInvoke();
             }
 
@@ -1228,7 +1217,7 @@ namespace oopLab6
 
                 foreach (AFigure f in figuresToDelete)
                 {
-                    if (f is Group)
+                    if (f is Group) //of course I should have made the recoursive method, I just don't want to clutter up (захламлять) the model
                     {
                         AFigure groupFigure;
                         int groupCount = (f as Group).getCount();
@@ -1241,6 +1230,11 @@ namespace oopLab6
                             {
                                 (f as Group).removeFigure(groupFigure);
                             }
+                            else
+                            {
+                                groupFigure.setMaxPosX(canvasWidth);
+                                groupFigure.setMaxPosY(canvasHeight);
+                            }
                         }
 
                         if ((f as Group).getCount() == 1)
@@ -1248,17 +1242,13 @@ namespace oopLab6
                             //if count = 1 then, in the group remained only one element.
                             //but the group that contains only one element - is not the group anymore. It's a single object.
                             //so let's ungroup it:
-                            AFigure tempF = (f as Group).getFigure(0);
-                            storage.remove(f);
-                            unselect();
 
-                            create(tempF);  //that element is does not included in both of selected or storage containers, so we can use that method.
+                            AFigure tempF = (f as Group).getFigure(0);
+                            unselect();
+                            storage.add(tempF);
                         }
                     }
-                    else
-                    {
-                        storage.remove(f);
-                    }
+                    storage.remove(f);
                 }
                 obsInvoke();
             }
@@ -1385,14 +1375,14 @@ namespace oopLab6
                 }
                 else if (!(figure is Group))
                 {
-                    numWdt.ValueChanged -= new EventHandler(size_ValueChanged);
-                    numHgh.ValueChanged -= new EventHandler(size_ValueChanged);
+                    numWdt.ValueChanged -= new EventHandler(setSize);
+                    numHgh.ValueChanged -= new EventHandler(setSize);
 
                     numWdt.Value = Math.Abs(figure.getP2().X - figure.getP1().X);
                     numHgh.Value = Math.Abs(figure.getP2().Y - figure.getP1().Y);
 
-                    numWdt.ValueChanged += new EventHandler(size_ValueChanged);
-                    numHgh.ValueChanged += new EventHandler(size_ValueChanged);
+                    numWdt.ValueChanged += new EventHandler(setSize);
+                    numHgh.ValueChanged += new EventHandler(setSize);
 
                     flpSz.Visible = true;
                 }
@@ -1467,12 +1457,6 @@ namespace oopLab6
             model.setThick((int)(sender as NumericUpDown).Value);
         }
 
-
-
-        private void size_ValueChanged(object sender, EventArgs e)
-        {
-            //model.setSize((int)numWdt.Value, (int)numHgh.Value);
-        }
         private void numP1_ValueChanged(object sender, EventArgs e)
         {
             //model.setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
@@ -1486,14 +1470,6 @@ namespace oopLab6
             //model.setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
         }
 
-
-        private void lvObj_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //if (lvObj.SelectedItem != null)
-            //{
-            //    model.setObject(lvObj.SelectedItem as AFigure, lvObj.SelectedItems.Count, sender as ListBox, lvObj_SelectedIndexChanged);
-            //}
-        }
         private void btnTrsh_Click(object sender, EventArgs e)
         {
             model.delete();
@@ -1531,6 +1507,11 @@ namespace oopLab6
         public void popupFunc(PopupCanvSetSize popup)
         {
             model.canvSetSizeReceive(popup);
+        }
+
+        private void setSize(object sender, EventArgs e)
+        {
+            model.setSize((int)(numWdt.Value), (int)(numHgh.Value));
         }
     }
 }

@@ -323,7 +323,7 @@ namespace oopLab6
             0,
             0,
             0});
-            this.numWdt.ValueChanged += new System.EventHandler(this.size_ValueChanged);
+            this.numWdt.ValueChanged += new System.EventHandler(this.setSize);
             // 
             // numHgh
             // 
@@ -341,7 +341,7 @@ namespace oopLab6
             0,
             0,
             0});
-            this.numHgh.ValueChanged += new System.EventHandler(this.size_ValueChanged);
+            this.numHgh.ValueChanged += new System.EventHandler(this.setSize);
             // 
             // flpP1
             // 
