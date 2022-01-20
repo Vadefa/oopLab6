@@ -485,6 +485,7 @@ namespace oopLab6
             }
             public void save(StreamWriter sw)
             {
+                
                 sw.WriteLine(storage.Length.ToString());
                 foreach (AFigure f in storage)
                     f.save(sw);
@@ -651,16 +652,7 @@ namespace oopLab6
                     _figures[i] = null;
                 }
             }
-            public List<AFigure> ungroup()
-            {
-                List<AFigure> figures = new List<AFigure>();
-                foreach (AFigure figure in _figures)
-                {
-                    figures.Add(figure);
-                }
-                removeFigures();
-                return figures;
-            }
+
             public int getCount()
             {
                 return _count;
@@ -806,7 +798,7 @@ namespace oopLab6
                     _maxcount = int.Parse(code[0]);
                     _figures = new AFigure[_maxcount];
                     maxPosX = int.Parse(code[1]);
-                    maxPosX = int.Parse(code[2]);
+                    maxPosY = int.Parse(code[2]);
 
                     p1 = new Point(-1, -1);
                     p2 = new Point(-1, -1);
@@ -1120,6 +1112,7 @@ namespace oopLab6
                         tempF = tempG.getFigure(i);
                         create(tempF);           //I want that pushed out figures were added in the storage too and were initially focused
                     }
+                    storage.remove(tempG);
                 }
             }
             private void unselect()
