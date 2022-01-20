@@ -15,7 +15,6 @@ namespace oopLab6
 {
     public partial class Form1 : Form
     {
-        Graphics grObj;
         StorageService storage;
         Model model;
 
@@ -23,8 +22,8 @@ namespace oopLab6
         {
             InitializeComponent();
 
-            storage = new StorageService(grObj);
-            model = new Model(storage, grObj);
+            storage = new StorageService();
+            model = new Model(storage);
             model.observers += new EventHandler(UpdateFromModel);
             model.observers.Invoke(this, null);
         }
@@ -33,6 +32,8 @@ namespace oopLab6
         {
             public abstract void setP1(Point p);
             public abstract void setP2(Point p);
+            public abstract void setMaxPosX(int maxPosX);
+            public abstract void setMaxPosY(int maxPosY);
             public abstract void setThickness(int thickness);
             public abstract void setColor(Color color);
 
@@ -170,6 +171,14 @@ namespace oopLab6
             public override void setP2(Point p)
             {
                 p2 = p;
+            }
+            public override void setMaxPosX(int maxPosX)
+            {
+                this.maxPosX = maxPosX;
+            }
+            public override void setMaxPosY(int maxPosY)
+            {
+                this.maxPosY = maxPosY;
             }
             public override void setThickness(int thickness)
             {
@@ -460,10 +469,8 @@ namespace oopLab6
         }
         public class StorageService : Storage
         {
-            Graphics grObj;
-            public StorageService(Graphics grObj)
+            public StorageService()
             {
-                this.grObj = grObj;
             }
             public override void add(AFigure obj)
             {
@@ -608,6 +615,32 @@ namespace oopLab6
                     return true;
                 }
             }
+            public void removeFigure(AFigure figure)
+            {
+                for (int i = 0; i < _count; i++)
+                {
+                    if (_figures[i] == figure)
+                    {
+                        AFigure[] temp = new AFigure[_maxcount - 1];
+                        int j = 0;
+                        while (j != i)
+                        {
+                            temp[j] = _figures[j];
+                            j++;
+                        }
+                        j = j + 1;
+                        for (; j < _maxcount; j++)
+                            temp[j - 1] = _figures[j];
+
+                        _figures = new AFigure[temp.Length];
+                        for (i = 0; i < temp.Length; i++)
+                            _figures[i] = temp[i];
+
+                        _count = _count - 1;
+                        break;
+                    }
+                }
+            }
             public void removeFigures()
             {
                 for (int i = _count - 1; i >= 0; i--)
@@ -653,6 +686,14 @@ namespace oopLab6
                 //}
             }
             public override void setP2(Point p) { }
+            public override void setMaxPosX(int maxPosX)
+            {
+                this.maxPosX = maxPosX;
+            }
+            public override void setMaxPosY(int maxPosY)
+            {
+                this.maxPosY = maxPosY;
+            }
             public override void setThickness(int thickness) {
 
                 foreach (AFigure figure in _figures)
@@ -1018,6 +1059,7 @@ namespace oopLab6
                     storage.remove(figure);
                 unselect();
                 positionReset();
+                obsInvoke();
             }
             public void clear()
             {
@@ -1177,9 +1219,47 @@ namespace oopLab6
                     {
                         figuresToDelete.Add(figure);
                     }
+                    else
+                    {
+                        figure.setMaxPosX(canvasWidth);
+                        figure.setMaxPosY(canvasHeight);
+                    }
                 }
+
                 foreach (AFigure f in figuresToDelete)
-                    storage.remove(f);
+                {
+                    if (f is Group)
+                    {
+                        AFigure groupFigure;
+                        int groupCount = (f as Group).getCount();
+
+                        for (int i = count; i >= 0; i--)
+                        {
+                            groupFigure = (f as Group).getFigure(i);
+                            if (groupFigure.getP1().X > canvasWidth || groupFigure.getP1().Y > canvasHeight ||
+                                groupFigure.getP2().X > canvasWidth || groupFigure.getP2().Y > canvasHeight)
+                            {
+                                (f as Group).removeFigure(groupFigure);
+                            }
+                        }
+
+                        if ((f as Group).getCount() == 1)
+                        {
+                            //if count = 1 then, in the group remained only one element.
+                            //but the group that contains only one element - is not the group anymore. It's a single object.
+                            //so let's ungroup it:
+                            AFigure tempF = (f as Group).getFigure(0);
+                            storage.remove(f);
+                            unselect();
+
+                            create(tempF);  //that element is does not included in both of selected or storage containers, so we can use that method.
+                        }
+                    }
+                    else
+                    {
+                        storage.remove(f);
+                    }
+                }
                 obsInvoke();
             }
 
@@ -1204,7 +1284,7 @@ namespace oopLab6
                 //    MessageBox.Show("We can not save objects in the file");
                 //}
             }
-            public Model(StorageService storage, Graphics grObj)
+            public Model(StorageService storage)
             {
                 this.storage = storage;
 
