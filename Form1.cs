@@ -1152,10 +1152,16 @@ namespace oopLab6
                 Point tp1 = selectedFigures[0].getP1();
                 Point tp2 = selectedFigures[0].getP2();
 
-                tp2.X = tp2.X + (width - (tp2.X - tp1.X));    // current width of an object = p2.X - p1.X
-                tp2.Y = tp2.Y + (height - (tp2.Y - tp1.Y));
+                int dWidth = width - (tp2.X - tp1.X);   // current width of an object = p2.X - p1.X
+                int dHeight = height - (tp2.Y - tp1.Y);
 
-                selectedFigures[0].setP2(tp2);                  // the size of a figure changes depending on its p2. p1 will remain the same
+                tp2.X = tp2.X + dWidth;
+                tp2.Y = tp2.Y + dHeight;
+
+                if (tp2.X > selectedFigures[0].getP1().X && tp2.Y > selectedFigures[0].getP1().Y)
+                {
+                    selectedFigures[0].setP2(tp2);      // the size of a figure changes depending on its p2. p1 will remain the same
+                }
                 obsInvoke();
             }
             public void setPos(Point p, char number)
