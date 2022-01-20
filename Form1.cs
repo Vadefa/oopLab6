@@ -23,7 +23,6 @@ namespace oopLab6
         {
             InitializeComponent();
 
-            grObj = canvas.CreateGraphics();
             storage = new StorageService(grObj);
             model = new Model(storage, grObj);
             model.observers += new EventHandler(UpdateFromModel);
@@ -74,10 +73,9 @@ namespace oopLab6
             protected int maxPosY;
 
             protected bool is_focused = false;
-            protected Graphics grObj;
             protected GraphicsPath grPath;
 
-            public Figure(Graphics grObj)
+            public Figure()
             {
                 name = "";
                 p1 = new Point(0, 0);
@@ -85,9 +83,8 @@ namespace oopLab6
                 thickness = 1;
                 color = Color.Black;
                 grPath = new GraphicsPath();
-                this.grObj = grObj;
             }
-            public Figure(Point p1, Point p2, int thickness, Color color, Graphics grObj, bool allow_reverse, int maxPosX, int maxPosY)
+            public Figure(Point p1, Point p2, int thickness, Color color, bool allow_reverse, int maxPosX, int maxPosY)
             {
                 name = "figure";
                 this.thickness = thickness;
@@ -128,11 +125,6 @@ namespace oopLab6
                 {
                     this.p1 = p1;
                     this.p2 = p2;
-                }
-                if (grObj != null)              // grObj == null means we don't want to paint the object from the base constructor
-                {
-                    this.grObj = grObj;
-                    paint(grObj);
                 }
             }
             public override void paint(Graphics grObj)
@@ -262,13 +254,13 @@ namespace oopLab6
         }
         public class Section : Figure
         {
-            public Section(Graphics grObj)
-                : base(grObj)
+            public Section()
+                : base()
             {
                 name = "sctn";
             }
-            public Section(Point p1, Point p2, int thickness, Color color, Graphics grObj, int maxPosX, int maxPosY)
-                : base(p1, p2, thickness, color, grObj, false, maxPosX, maxPosY)
+            public Section(Point p1, Point p2, int thickness, Color color, int maxPosX, int maxPosY)
+                : base(p1, p2, thickness, color, false, maxPosX, maxPosY)
             {
                 name = "sctn";
             }
@@ -289,12 +281,12 @@ namespace oopLab6
         }
         public class Ellipse : Figure
         {
-            public Ellipse(Graphics grObj) : base(grObj)
+            public Ellipse() : base()
             {
                 name = "elps";
             }
-            public Ellipse(Point p1, Point p2, int thickness, Color col, Graphics grObj, int maxPosX, int maxPosY)
-                : base(p1, p2, thickness, col, grObj, true, maxPosX, maxPosY)
+            public Ellipse(Point p1, Point p2, int thickness, Color col, int maxPosX, int maxPosY)
+                : base(p1, p2, thickness, col, true, maxPosX, maxPosY)
             {
                 name = "elps";
             }
@@ -316,12 +308,12 @@ namespace oopLab6
         }
         public class Rect : Figure
         {
-            public Rect(Graphics grObj) : base(grObj)
+            public Rect() : base()
             {
                 name = "rect";
             }
-            public Rect(Point p1, Point p2, int thickness, Color col, Graphics grObj, int maxPosX, int maxPosY)
-                : base(p1, p2, thickness, col, grObj, true, maxPosX, maxPosY)
+            public Rect(Point p1, Point p2, int thickness, Color col, int maxPosX, int maxPosY)
+                : base(p1, p2, thickness, col, true, maxPosX, maxPosY)
             {
                 name = "rect";
             }
@@ -343,17 +335,15 @@ namespace oopLab6
         public class Triangle : Figure
         {
             Point p3;
-            public Triangle(Graphics grObj) : base(grObj)
+            public Triangle() : base()
             {
                 name = "trn";
             }
-            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, Graphics grObj, int maxPosX, int maxPosY)
-            : base(p1, p2, thickness, col, null, false, maxPosX, maxPosY)
+            public Triangle(Point p1, Point p2, Point p3, int thickness, Color col, int maxPosX, int maxPosY)
+            : base(p1, p2, thickness, col, false, maxPosX, maxPosY)
             {
                 name = "trn";
                 this.p3 = p3;
-                this.grObj = grObj;
-                paint(grObj);
             }
             public override void paint(Graphics grObj)
             {
@@ -501,7 +491,7 @@ namespace oopLab6
             {
                 storage = new AFigure[0];
             }
-            public void paint()
+            public void paint(Graphics grObj)
             {
                 foreach (AFigure f in storage)
                     f.paint(grObj);
@@ -551,9 +541,8 @@ namespace oopLab6
             private int thickness;
             private int maxPosX;
             private int maxPosY;
-            Graphics grObj;
 
-            public Group(int maxcount, Graphics grObj, int maxPosX, int maxPosY, int thickness)
+            public Group(int maxcount, int maxPosX, int maxPosY, int thickness)
             {
                 _name = "group";
                 _maxcount = maxcount;
@@ -561,7 +550,6 @@ namespace oopLab6
                 _figures = new AFigure[maxcount];       //all elements will be null thanks visual studio
                 p1 = new Point(-1, -1);
                 p2 = new Point(-1, -1);
-                this.grObj = grObj;
 
                 this.maxPosX = maxPosX;
                 this.maxPosY = maxPosY;
@@ -788,7 +776,7 @@ namespace oopLab6
                     for (int i = 0; i < _maxcount; i++)
                     {
                         code = sr.ReadLine().Split();
-                        AFigure f = tempArr.createFigure(code, grObj);
+                        AFigure f = tempArr.createFigure(code);
                         if (f != null)
                         {
                             f.load(sr);
@@ -808,11 +796,11 @@ namespace oopLab6
         {
             private int _count;
             private AFigure []_figures;
-            public virtual AFigure createFigure(string[] code, Graphics grObj)
+            public virtual AFigure createFigure(string[] code)
             {
                 return null;
             }
-            public void loadFigures(StreamReader sr, Graphics grObj, StorageService storage)
+            public void loadFigures(StreamReader sr, StorageService storage)
             {
                 string[] code;
                 try
@@ -823,7 +811,7 @@ namespace oopLab6
                     for (int i = 0; i < _count; i++)
                     {
                         code = sr.ReadLine().Split();
-                        _figures[i] = createFigure(code, grObj);
+                        _figures[i] = createFigure(code);
 
                         if (_figures[i] != null)        //if null -> empty string in the txt or something wrong
                         {
@@ -840,22 +828,22 @@ namespace oopLab6
         }
         public class MyFiguresArray: FiguresArray
         {
-            public override AFigure createFigure(string[] code, Graphics grObj)
+            public override AFigure createFigure(string[] code)
             {
                 AFigure figure = null;
                 switch(code[0])
                 {
                     case "sctn":
-                        figure = new Section(grObj);
+                        figure = new Section();
                         break;
                     case "elps":
-                        figure = new Ellipse(grObj);
+                        figure = new Ellipse();
                         break;
                     case "rect":
-                        figure =  new Rect(grObj);
+                        figure =  new Rect();
                         break;
                     case "trn":
-                        figure = new Triangle(grObj);
+                        figure = new Triangle();
                         break;
                     default:            // if it is a group
                         //figure = new Group(int.Parse(code[1].ToString()), grObj);
@@ -869,7 +857,6 @@ namespace oopLab6
         {
             //argegating data:
             private StorageService storage;
-            private Graphics grObj;
 
             //observer that calls the controller to refresh the canvas
             public EventHandler observers;
@@ -938,20 +925,20 @@ namespace oopLab6
                 {
                     if (type == "trn" && positions[2].X != -1)
                     {
-                        create(new Triangle(positions[0], positions[1], positions[2], thickness, color, grObj, canvasWidth, canvasHeight));
+                        create(new Triangle(positions[0], positions[1], positions[2], thickness, color, canvasWidth, canvasHeight));
                     }
                     else
                     {
                         switch (type)
                         {
                             case "sctn":
-                                create(new Section(positions[0], positions[1], thickness, color, grObj, canvasWidth, canvasHeight));
+                                create(new Section(positions[0], positions[1], thickness, color, canvasWidth, canvasHeight));
                                 break;
                             case "elps":
-                                create(new Ellipse(positions[0], positions[1], thickness, color, grObj, canvasWidth, canvasHeight));
+                                create(new Ellipse(positions[0], positions[1], thickness, color, canvasWidth, canvasHeight));
                                 break;
                             case "rect":
-                                create(new Rect(positions[0], positions[1], thickness, color, grObj, canvasWidth, canvasHeight));
+                                create(new Rect(positions[0], positions[1], thickness, color, canvasWidth, canvasHeight));
                                 break;
 
                         }
@@ -1043,7 +1030,7 @@ namespace oopLab6
             {
                 if (selectedFigures.Count > 1)
                 {
-                    Group g = new Group(selectedFigures.Count, grObj, canvasWidth, canvasHeight, thickness);
+                    Group g = new Group(selectedFigures.Count, canvasWidth, canvasHeight, thickness);
                     for (int i = 0; i < selectedFigures.Count; i++)
                     {
                         g.addFigure(selectedFigures[i]);
@@ -1220,7 +1207,6 @@ namespace oopLab6
             public Model(StorageService storage, Graphics grObj)
             {
                 this.storage = storage;
-                this.grObj = grObj;
 
 
                 is_a_set = false;
@@ -1261,7 +1247,9 @@ namespace oopLab6
             int width = model.getCanvWidth();
             int height = model.getCanvHeight();
 
-            canvas.Size = new Size(width, height);
+            //canvas.Size = new Size(width, height);
+            canvas.Height = height;
+            canvas.Width = width;
 
             numPosX.Maximum = width;
             nump2X.Maximum = width;
@@ -1350,8 +1338,7 @@ namespace oopLab6
         }
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
-            grObj = canvas.CreateGraphics();
-            storage.paint();
+            storage.paint(e.Graphics);
         }
         private void canvas_Click(object sender, EventArgs e)
         {
