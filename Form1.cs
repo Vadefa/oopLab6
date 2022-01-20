@@ -1014,6 +1014,12 @@ namespace oopLab6
                     case Keys.U:
                         ungroup();
                         break;
+                    case Keys.Oemplus:
+                        handleSizeSetting('+');
+                        break;
+                    case Keys.OemMinus:
+                        handleSizeSetting('-');
+                        break;
                     default:
                         break;
                 }
@@ -1023,6 +1029,26 @@ namespace oopLab6
                 foreach (AFigure figure in selectedFigures)
                     figure.move(shift);
                 obsInvoke();
+            }
+            private void handleSizeSetting(char sign)
+            {
+                if (selectedFigures.Count == 1 && !(selectedFigures[0] is Section) && !(selectedFigures[0] is Triangle)
+                    && !(selectedFigures[0] is Group))
+                {
+                    int width;
+                    int height;
+                    if (sign == '+')
+                    {
+                        width = selectedFigures[0].getP2().X - selectedFigures[0].getP1().X + 1;
+                        height = selectedFigures[0].getP2().Y - selectedFigures[0].getP1().Y + 1;
+                    }
+                    else
+                    {
+                        width = selectedFigures[0].getP2().X - selectedFigures[0].getP1().X - 1;
+                        height = selectedFigures[0].getP2().Y - selectedFigures[0].getP1().Y - 1;
+                    }
+                    setSize(width, height);
+                }
             }
             public void delete()
             {
