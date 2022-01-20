@@ -1121,8 +1121,6 @@ namespace oopLab6
                 observers.Invoke(this, null);
             }
 
-            //handling numericupdowns:
-
             //setters
             public void setBtn(string btnName)
             {
@@ -1150,7 +1148,7 @@ namespace oopLab6
             }
             public void setSize(int width, int height)
             {
-
+                //setSize is being called only if there is one object in the selectedFigures list
                 Point tp1 = selectedFigures[0].getP1();
                 Point tp2 = selectedFigures[0].getP2();
 
@@ -1158,6 +1156,25 @@ namespace oopLab6
                 tp2.Y = tp2.Y + (height - (tp2.Y - tp1.Y));
 
                 selectedFigures[0].setP2(tp2);                  // the size of a figure changes depending on its p2. p1 will remain the same
+                obsInvoke();
+            }
+            public void setPos(Point p, char number)
+            {
+                //setPos1 is being called only if there is one object in the selectedFigures list
+                switch (number)
+                {
+                    case '1':
+                        selectedFigures[0].setP1(p);
+                        break;
+                    case '2':
+                        selectedFigures[0].setP2(p);
+                        break;
+                    case '3':
+                        selectedFigures[0].setP3(p);
+                        break;
+                    default:
+                        break;
+                }
                 obsInvoke();
             }
 
@@ -1187,7 +1204,7 @@ namespace oopLab6
                 return thickness;
             }
 
-            //handling pop-up forms:
+            //handling pop-up form:
             public void canvSetSizeSend(PopupCanvSetSize popup)
             {
                 unselect();
@@ -1356,6 +1373,15 @@ namespace oopLab6
             nump3Y.Maximum = height;
             numHgh.Maximum = height;
 
+
+            numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
+            if (model.getFigure(0) != null)
+                numThck.Value = model.getFigure(0).getThickness();
+            else
+                numThck.Value = model.getThick();
+            numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
+
+
             if (model.getFigure(0) == null)
             {
                 Invalidate();
@@ -1365,6 +1391,7 @@ namespace oopLab6
             if (model.handles_set() == false)
             {
                 AFigure figure = model.getFigure(0);
+
 
                 if (figure is Section || figure is Triangle)
                 {
@@ -1414,9 +1441,6 @@ namespace oopLab6
                 }
             }
 
-            numThck.ValueChanged -= new EventHandler(numThck_ValueChanged);
-            numThck.Value = model.getThick();
-            numThck.ValueChanged += new EventHandler(numThck_ValueChanged);
 
             Invalidate();
 
@@ -1485,20 +1509,40 @@ namespace oopLab6
 
         private void numP1_ValueChanged(object sender, EventArgs e)
         {
-            //model.setP1(new Point((int)numPosX.Value, (int)numPosY.Value));
+            model.setPos(new Point((int)numPosX.Value, (int)numPosY.Value), '1');
         }
         private void numP2_ValueChanged(object sender, EventArgs e)
         {
-            //model.setP2(new Point((int)nump2X.Value, (int)nump2Y.Value));
+            model.setPos(new Point((int)nump2X.Value, (int)nump2Y.Value), '2');
         }
         private void numP3_ValueChanged(object sender, EventArgs e)
         {
-            //model.setP3(new Point((int)nump3X.Value, (int)nump3Y.Value));
+            model.setPos(new Point((int)nump3X.Value, (int)nump3Y.Value), '3');
+        }
+        private void setSize(object sender, EventArgs e)
+        {
+            model.setSize((int)(numWdt.Value), (int)(numHgh.Value));
         }
 
+
+
+        private void Frm_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = false;
+            model.buttonPressedGetting(e.KeyCode);
+            e.Handled = true;
+        }
         private void btnTrsh_Click(object sender, EventArgs e)
         {
             model.delete();
+        }
+        private void btnGroup_Click(object sender, EventArgs e)
+        {
+            model.group();
+        }
+        private void btnUngroup_Click(object sender, EventArgs e)
+        {
+            model.ungroup();
         }
 
 
@@ -1506,23 +1550,6 @@ namespace oopLab6
         {
             model.clear();
         }
-        private void lvObj_KeyDown(object sender, KeyEventArgs e)
-        {
-            e.Handled = false;
-            model.buttonPressedGetting(e.KeyCode);
-            e.Handled = true;
-        }
-
-        private void btnGroup_Click(object sender, EventArgs e)
-        {
-            model.group();
-        }
-
-        private void btnUngroup_Click(object sender, EventArgs e)
-        {
-            model.ungroup();
-        }
-
         private void setCanvasSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PopupCanvSetSize popup = new PopupCanvSetSize(new PopupDelegate (popupFunc));
@@ -1535,9 +1562,6 @@ namespace oopLab6
             model.canvSetSizeReceive(popup);
         }
 
-        private void setSize(object sender, EventArgs e)
-        {
-            model.setSize((int)(numWdt.Value), (int)(numHgh.Value));
-        }
+
     }
 }

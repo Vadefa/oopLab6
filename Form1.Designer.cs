@@ -118,7 +118,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnArw, "Click here to unselect the element");
             this.btnArw.UseVisualStyleBackColor = true;
             this.btnArw.Click += new System.EventHandler(this.btnArw_Click);
-            this.btnArw.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
+            this.btnArw.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Frm_KeyDown);
             // 
             // btnSctn
             // 
@@ -130,7 +130,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnSctn, "1st click - 1st point, 2nd - 2nd");
             this.btnSctn.UseVisualStyleBackColor = true;
             this.btnSctn.Click += new System.EventHandler(this.btnSctn_Click);
-            this.btnSctn.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
+            this.btnSctn.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Frm_KeyDown);
             // 
             // btnElps
             // 
@@ -142,7 +142,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnElps, "1st click - left upper corner, 2nd click - right downer corner");
             this.btnElps.UseVisualStyleBackColor = true;
             this.btnElps.Click += new System.EventHandler(this.btnElps_Click);
-            this.btnElps.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
+            this.btnElps.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Frm_KeyDown);
             // 
             // btnTrn
             // 
@@ -154,7 +154,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnTrn, "1st click - 1st point, 2nd click - 2nd point, 3rd click - 3rd point");
             this.btnTrn.UseVisualStyleBackColor = true;
             this.btnTrn.Click += new System.EventHandler(this.btnTrn_Click);
-            this.btnTrn.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
+            this.btnTrn.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Frm_KeyDown);
             // 
             // btnRect
             // 
@@ -166,7 +166,7 @@ namespace oopLab6
             this.toolTip1.SetToolTip(this.btnRect, "1st click - left upper corner, 2nd click - right downer corner");
             this.btnRect.UseVisualStyleBackColor = true;
             this.btnRect.Click += new System.EventHandler(this.btnRct_Click);
-            this.btnRect.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
+            this.btnRect.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Frm_KeyDown);
             // 
             // canvas
             // 
@@ -315,6 +315,11 @@ namespace oopLab6
             // numWdt
             // 
             this.numWdt.Location = new System.Drawing.Point(3, 43);
+            this.numWdt.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numWdt.Name = "numWdt";
             this.numWdt.Size = new System.Drawing.Size(48, 27);
             this.numWdt.TabIndex = 3;
@@ -330,6 +335,11 @@ namespace oopLab6
             this.numHgh.Location = new System.Drawing.Point(57, 43);
             this.numHgh.Maximum = new decimal(new int[] {
             500,
+            0,
+            0,
+            0});
+            this.numHgh.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -535,7 +545,7 @@ namespace oopLab6
             this.btnGroup.Text = "Group";
             this.btnGroup.UseVisualStyleBackColor = true;
             this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
-            this.btnGroup.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
+            this.btnGroup.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Frm_KeyDown);
             // 
             // btnUngroup
             // 
@@ -546,7 +556,7 @@ namespace oopLab6
             this.btnUngroup.Text = "Ungroup";
             this.btnUngroup.UseVisualStyleBackColor = true;
             this.btnUngroup.Click += new System.EventHandler(this.btnUngroup_Click);
-            this.btnUngroup.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
+            this.btnUngroup.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Frm_KeyDown);
             // 
             // Form1
             // 
