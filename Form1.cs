@@ -185,7 +185,10 @@ namespace oopLab6
             }
             public override void setThickness(int thickness)
             {
-                this.thickness = thickness;
+                // we can move out of borders if we'll change thickness so we should check it
+                if (is_inBorders(new Point(p1.X - this.thickness + thickness, p1.Y - this.thickness + thickness))
+                    && is_inBorders(new Point(p2.X - this.thickness + thickness, p2.Y - this.thickness + thickness)))
+                    this.thickness = thickness;
             }
             public override void setColor(Color color)
             {
@@ -379,6 +382,13 @@ namespace oopLab6
                 }
             }
 
+            public override void setThickness(int thickness)
+            {
+                if (is_inBorders(new Point(p1.X - this.thickness + thickness, p1.Y - this.thickness + thickness))
+                    && is_inBorders(new Point(p2.X - this.thickness + thickness, p2.Y - this.thickness + thickness))
+                    && is_inBorders(new Point(p3.X - this.thickness + thickness, p3.Y - this.thickness + thickness)))
+                    this.thickness = thickness;
+        }
             public override Point getP3()
             {
                 return p3;
@@ -614,7 +624,7 @@ namespace oopLab6
                 {
                     if (_figures[i] == figure)
                     {
-                        AFigure[] temp = new AFigure[_maxcount - 1];
+                        AFigure[] temp = new AFigure[_count - 1];
                         int j = 0;
                         while (j != i)
                         {
@@ -622,7 +632,7 @@ namespace oopLab6
                             j++;
                         }
                         j = j + 1;
-                        for (; j < _maxcount; j++)
+                        for (; j < _count; j++)
                             temp[j - 1] = _figures[j];
 
                         _figures = new AFigure[temp.Length];
@@ -1239,7 +1249,7 @@ namespace oopLab6
                 int width = int.Parse(popup.mtbW.Text);
                 int height = int.Parse(popup.mtbH.Text);
 
-                if (width > 99 && width <= 1000 && height > 99 && height <= 1000)
+                if (width > 99 && width < 1000 && height > 99 && height < 1000)
                 {
                     canvasWidth = width;
                     canvasHeight = height;
@@ -1250,13 +1260,13 @@ namespace oopLab6
                 {
                     if (width < 99)
                         popup.mtbW.Text = "100";
-                    else if (width > 1000)
-                        popup.mtbW.Text = "1000";
+                    else if (width >= 1000)
+                        popup.mtbW.Text = "999";
 
                     if (height < 99)
                         popup.mtbH.Text = "100";
-                    else if (height > 1000)
-                        popup.mtbH.Text = "1000";
+                    else if (height >= 1000)
+                        popup.mtbH.Text = "99";
                 }
             }
             public void refreshCanvas()
@@ -1267,8 +1277,10 @@ namespace oopLab6
                 for (int i = 0; i < count; i++)
                 {
                     figure = storage.getFigure(i);
-                    if (figure.getP1().X > canvasWidth || figure.getP1().Y > canvasHeight ||
-                        figure.getP2().X > canvasWidth || figure.getP2().Y > canvasHeight)
+                    if (figure.getP1().X + figure.getThickness() > canvasWidth
+                        || figure.getP1().Y + figure.getThickness() > canvasHeight
+                        || figure.getP2().X + figure.getThickness() > canvasWidth
+                        || figure.getP2().Y + figure.getThickness() > canvasHeight)
                     {
                         figuresToDelete.Add(figure);
                     }
@@ -1281,37 +1293,40 @@ namespace oopLab6
 
                 foreach (AFigure f in figuresToDelete)
                 {
-                    if (f is Group) //of course I should have made the recoursive method, I just don't want to clutter up (захламлять) the model
-                    {
-                        AFigure groupFigure;
-                        int groupCount = (f as Group).getCount();
+                    //if (f is Group) //of course I should have made the recoursive method, I just don't want to clutter up (захламлять) the model
+                    //{
+                    //    AFigure groupFigure;
+                    //    int groupCount = (f as Group).getCount();
 
-                        for (int i = count; i >= 0; i--)
-                        {
-                            groupFigure = (f as Group).getFigure(i);
-                            if (groupFigure.getP1().X > canvasWidth || groupFigure.getP1().Y > canvasHeight ||
-                                groupFigure.getP2().X > canvasWidth || groupFigure.getP2().Y > canvasHeight)
-                            {
-                                (f as Group).removeFigure(groupFigure);
-                            }
-                            else
-                            {
-                                groupFigure.setMaxPosX(canvasWidth);
-                                groupFigure.setMaxPosY(canvasHeight);
-                            }
-                        }
+                    //    for (int i = groupCount - 1; i >= 0; i--)
+                    //    {
+                    //        groupFigure = (f as Group).getFigure(i);
+                    //        if (groupFigure.getP1().X + groupFigure.getThickness() > canvasWidth
+                    //            || groupFigure.getP1().Y + groupFigure.getThickness() > canvasHeight
+                    //            || groupFigure.getP2().X + groupFigure.getThickness() > canvasWidth
+                    //            || groupFigure.getP2().Y + groupFigure.getThickness() > canvasHeight)
+                    //        {
+                    //            (f as Group).removeFigure(groupFigure);
+                    //        }
+                    //        else
+                    //        {
+                    //            groupFigure.setMaxPosX(canvasWidth);
+                    //            groupFigure.setMaxPosY(canvasHeight);
+                    //        }
+                    //    }
 
-                        if ((f as Group).getCount() == 1)
-                        {
-                            //if count = 1 then, in the group remained only one element.
-                            //but the group that contains only one element - is not the group anymore. It's a single object.
-                            //so let's ungroup it:
+                    //    if ((f as Group).getCount() == 1)
+                    //    {
+                    //        //if count = 1 then, in the group remained only one element.
+                    //        //but the group that contains only one element - is not the group anymore. It's a single object.
+                    //        //so let's ungroup it:
 
-                            AFigure tempF = (f as Group).getFigure(0);
-                            unselect();
-                            storage.add(tempF);
-                        }
-                    }
+                    //        AFigure tempF = (f as Group).getFigure(0);
+                    //        unselect();
+                    //        storage.add(tempF);
+                    //    }
+                    //}
+
                     storage.remove(f);
                 }
                 obsInvoke();
