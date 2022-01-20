@@ -945,6 +945,7 @@ namespace oopLab6
             }
             public void tryCreateFigure(string type)
             {
+                unselect();     //we are creating a new element so let's forget about properties of the element we created before
                 if (positions[1].X != -1)
                 {
                     if (type == "trn" && positions[2].X != -1)
@@ -994,6 +995,7 @@ namespace oopLab6
                 else
                 {
                     unselect();
+                    positionReset();
                 }
 
                 positionReset();
@@ -1040,6 +1042,7 @@ namespace oopLab6
                 foreach (AFigure figure in selectedFigures)
                     storage.remove(figure);
                 unselect();
+                positionReset();
             }
             public void group()
             {
@@ -1052,6 +1055,7 @@ namespace oopLab6
                         storage.remove(selectedFigures[i]);
                     }
                     unselect();
+                    positionReset();
                     selectedFigures.Add(g);
                     storage.add(g);
                     obsInvoke();
@@ -1063,6 +1067,7 @@ namespace oopLab6
                 {
                     Group tempG = (selectedFigures[0] as Group);
                     unselect();
+                    positionReset();
                     AFigure tempF;
                     for (int i = 0; i < tempG.getCount(); i++)
                     {
@@ -1077,7 +1082,7 @@ namespace oopLab6
                     f.unfocus();
 
                 selectedFigures = new List<AFigure>();
-                positionReset();
+                //positionReset();
                 obsInvoke();
             }
             private void obsInvoke()    // changes the color of all the selected figures and invokes the controller
@@ -1102,6 +1107,7 @@ namespace oopLab6
             public void setBtn(string btnName)
             {
                 unselect();
+                positionReset();
                 this.btnName = btnName;
             }
             public void setCol(Color color)
