@@ -39,7 +39,7 @@ namespace oopLab6
             // mtbW
             // 
             this.mtbW.Location = new System.Drawing.Point(83, 26);
-            this.mtbW.Mask = "0000";
+            this.mtbW.Mask = "000";
             this.mtbW.Name = "mtbW";
             this.mtbW.Size = new System.Drawing.Size(63, 27);
             this.mtbW.TabIndex = 0;
@@ -66,7 +66,7 @@ namespace oopLab6
             // mtbH
             // 
             this.mtbH.Location = new System.Drawing.Point(83, 59);
-            this.mtbH.Mask = "0000";
+            this.mtbH.Mask = "000";
             this.mtbH.Name = "mtbH";
             this.mtbH.Size = new System.Drawing.Size(63, 27);
             this.mtbH.TabIndex = 0;
