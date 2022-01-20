@@ -57,6 +57,7 @@ namespace oopLab6
 
             //for check:
             public abstract bool is_inBorders(Point p);
+            public abstract bool is_movable(Point shift);
 
             //for save&load:
             public abstract void save(StreamWriter sw);
@@ -148,6 +149,22 @@ namespace oopLab6
                     p1 = tp1;
                     p2 = tp2;
                 }
+            }
+            public override bool is_movable(Point shift)
+            {
+                Point tp1 = new Point();
+                Point tp2 = new Point();
+
+                tp1.X = p1.X + shift.X;
+                tp1.Y = p1.Y + shift.Y;
+
+                tp2.X = p2.X + shift.X;
+                tp2.Y = p2.Y + shift.Y;
+
+                if (is_inBorders(tp1) && is_inBorders(tp2))
+                    return true;
+                else
+                    return false;
             }
             public override bool is_inBorders(Point p)
             {
@@ -381,6 +398,24 @@ namespace oopLab6
                     p3 = tp3;
                 }
             }
+            public override bool is_movable(Point shift)
+            {
+                Point tp1 = new Point();
+                Point tp2 = new Point();
+                Point tp3 = new Point();
+
+                tp1.X = p1.X + shift.X;
+                tp1.Y = p1.Y + shift.Y;
+                tp2.X = p2.X + shift.X;
+                tp2.Y = p2.Y + shift.Y;
+                tp3.X = p3.X + shift.X;
+                tp3.Y = p3.Y + shift.Y;
+
+                if (is_inBorders(tp1) && is_inBorders(tp2) && is_inBorders(tp3))
+                    return true;
+                else
+                    return false;
+            }
 
             public override void setThickness(int thickness)
             {
@@ -545,6 +580,7 @@ namespace oopLab6
             private string _name;
             private Point p1;       //left upper corner
             private Point p2;       //right lower corner
+            private Color color;
             private int thickness;
             private int maxPosX;
             private int maxPosY;
@@ -573,8 +609,15 @@ namespace oopLab6
                 else
                 {
                     if (_count != 0)
-                        figure.setColor(getColor());
-
+                    {
+                        figure.setColor(color);
+                        figure.setThickness(thickness);
+                    }
+                    else
+                    {
+                        color = figure.getColor();
+                        thickness = figure.getThickness();
+                    }
                     _count = _count + 1;
                     _figures[_count - 1] = figure;
                     
@@ -663,7 +706,8 @@ namespace oopLab6
             }
 
 
-            // realization of methods
+            // realization of methods:
+            // setters
             public override void setP1(Point p) { }
             public override void setP2(Point p) { }
             public override void setMaxPosX(int maxPosX)
@@ -675,16 +719,19 @@ namespace oopLab6
                 this.maxPosY = maxPosY;
             }
             public override void setThickness(int thickness) {
+                this.thickness = thickness;
 
                 foreach (AFigure figure in _figures)
                     figure.setThickness(thickness);
             }
             public override void setColor(Color color)
             {
+                this.color = color;
                 foreach (AFigure figure in _figures)
                     figure.setColor(color);
             }
 
+            // getters
             public override Point getP1()
             {
                 return p1;
@@ -746,6 +793,41 @@ namespace oopLab6
             }
             public override void move(Point shift)
             {
+                if (is_movable(shift))
+                {
+                    Point tp1 = new Point();
+                    Point tp2 = new Point();
+
+                    tp1.X = p1.X + shift.X;
+                    tp1.Y = p1.Y + shift.Y;
+
+                    tp2.X = p2.X + shift.X;
+                    tp2.Y = p2.Y + shift.Y;
+
+                    if (is_inBorders(tp1) && is_inBorders(tp2))
+                    {
+                        p1 = tp1;
+                        p2 = tp2;
+                        foreach (AFigure f in _figures)
+                        {
+                            f.move(shift);
+                        }
+                    }
+                }
+            }
+
+            //checks:
+            public override bool is_inBorders(Point p)
+            {
+                if (p.X - thickness >= 0 && p.X + thickness <= maxPosX && p.Y - thickness >= 0 && p.Y + thickness <= maxPosY)
+                    return true;
+                else
+                    return false;
+            }
+            public override bool is_movable(Point shift)
+            {
+                bool all_areMovable = true;
+                
                 Point tp1 = new Point();
                 Point tp2 = new Point();
 
@@ -755,24 +837,20 @@ namespace oopLab6
                 tp2.X = p2.X + shift.X;
                 tp2.Y = p2.Y + shift.Y;
 
-                if (is_inBorders(tp1) && is_inBorders(tp2))
+                if ((is_inBorders(tp1) && is_inBorders(tp2)) == false)
+                    all_areMovable = false;
+                else
                 {
-                    p1 = tp1;
-                    p2 = tp2;
-                    foreach (AFigure f in _figures)
+                    foreach (AFigure figure in _figures)
                     {
-                        f.move(shift);
+                        if (figure.is_movable(shift) == false)
+                        {
+                            all_areMovable = false;
+                            break;
+                        }
                     }
                 }
-            }
-
-            //check:
-            public override bool is_inBorders(Point p)
-            {
-                if (p.X - thickness >= 0 && p.X + thickness <= maxPosX && p.Y - thickness >= 0 && p.Y + thickness <= maxPosY)
-                    return true;
-                else
-                    return false;
+                return all_areMovable;
             }
 
             //for save&load:
