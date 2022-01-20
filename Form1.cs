@@ -506,12 +506,6 @@ namespace oopLab6
                 foreach (AFigure f in storage)
                     f.paint(grObj);
             }
-            public void focus(AFigure obj)
-            {
-            }
-            public void unfocus()
-            {
-            }
 
             public AFigure check_objs_underM(Point mouseP)
             {
@@ -531,6 +525,14 @@ namespace oopLab6
                 }
                 else
                     return null;
+            }
+            public int getCount()   // an emergency situation was occured - we need to send the storage to model
+            {
+                return storage.Length;
+            }
+            public AFigure getFigure(int iter)
+            {
+                return storage[iter];
             }
         }
 
@@ -1141,6 +1143,59 @@ namespace oopLab6
                 return thickness;
             }
 
+            //handling pop-up forms:
+            public void canvSetSizeSend(PopupCanvSetSize popup)
+            {
+                unselect();
+                positionReset();
+
+                popup.mtbW.Text = canvasWidth.ToString();
+                popup.mtbH.Text = canvasHeight.ToString();
+            }
+            public void canvSetSizeReceive(PopupCanvSetSize popup)
+            {
+                int width = int.Parse(popup.mtbW.Text);
+                int height = int.Parse(popup.mtbH.Text);
+
+                if (width > 99 && width <= 1000 && height > 99 && height <= 1000)
+                {
+                    canvasWidth = width;
+                    canvasHeight = height;
+                    popup.Close();
+                    refreshCanvas();
+                }
+                else
+                {
+                    if (width < 99)
+                        popup.mtbW.Text = "100";
+                    else if (width > 1000)
+                        popup.mtbW.Text = "1000";
+
+                    if (height < 99)
+                        popup.mtbH.Text = "100";
+                    else if (height > 1000)
+                        popup.mtbH.Text = "1000";
+                }
+            }
+            public void refreshCanvas()
+            {
+                List<AFigure> figuresToDelete = new List<AFigure>();
+                int count = storage.getCount();
+                AFigure figure;
+                for (int i = 0; i < count; i++)
+                {
+                    figure = storage.getFigure(i);
+                    if (figure.getP1().X > canvasWidth || figure.getP1().Y > canvasHeight ||
+                        figure.getP2().X > canvasWidth || figure.getP2().Y > canvasHeight)
+                    {
+                        figuresToDelete.Add(figure);
+                    }
+                }
+                foreach (AFigure f in figuresToDelete)
+                    storage.remove(f);
+                obsInvoke();
+            }
+
             //destructor and constructor
             public void destructor()
             {
@@ -1203,14 +1258,19 @@ namespace oopLab6
             flpP2.Visible = false;
             flpP3.Visible = false;
 
-            numPosX.Maximum = model.getCanvWidth();
-            nump2X.Maximum = model.getCanvWidth();
-            nump3X.Maximum = model.getCanvWidth();
-            numWdt.Maximum = model.getCanvWidth();
-            numPosY.Maximum = model.getCanvHeight();
-            nump2Y.Maximum = model.getCanvHeight();
-            nump3Y.Maximum = model.getCanvHeight();
-            numHgh.Maximum = model.getCanvHeight();
+            int width = model.getCanvWidth();
+            int height = model.getCanvHeight();
+
+            canvas.Size = new Size(width, height);
+
+            numPosX.Maximum = width;
+            nump2X.Maximum = width;
+            nump3X.Maximum = width;
+            numWdt.Maximum = width;
+            numPosY.Maximum = height;
+            nump2Y.Maximum = height;
+            nump3Y.Maximum = height;
+            numHgh.Maximum = height;
 
             if (model.getFigure(0) == null)
             {
@@ -1396,7 +1456,14 @@ namespace oopLab6
 
         private void setCanvasSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            PopupCanvSetSize popup = new PopupCanvSetSize(new PopupDelegate (popupFunc));
+            popup.Owner = this;
+            model.canvSetSizeSend(popup);
+            popup.ShowDialog();
+        }
+        public void popupFunc(PopupCanvSetSize popup)
+        {
+            model.canvSetSizeReceive(popup);
         }
     }
 }

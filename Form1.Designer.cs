@@ -67,9 +67,9 @@ namespace oopLab6
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.setCanvasSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnGroup = new System.Windows.Forms.Button();
             this.btnUngroup = new System.Windows.Forms.Button();
-            this.setCanvasSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flpCol.SuspendLayout();
@@ -519,6 +519,13 @@ namespace oopLab6
             this.toolStripMenuItem1.Text = "Clear everything";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
+            // setCanvasSizeToolStripMenuItem
+            // 
+            this.setCanvasSizeToolStripMenuItem.Name = "setCanvasSizeToolStripMenuItem";
+            this.setCanvasSizeToolStripMenuItem.Size = new System.Drawing.Size(121, 24);
+            this.setCanvasSizeToolStripMenuItem.Text = "Set canvas size";
+            this.setCanvasSizeToolStripMenuItem.Click += new System.EventHandler(this.setCanvasSizeToolStripMenuItem_Click);
+            // 
             // btnGroup
             // 
             this.btnGroup.Location = new System.Drawing.Point(58, 486);
@@ -541,17 +548,11 @@ namespace oopLab6
             this.btnUngroup.Click += new System.EventHandler(this.btnUngroup_Click);
             this.btnUngroup.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvObj_KeyDown);
             // 
-            // setCanvasSizeToolStripMenuItem
-            // 
-            this.setCanvasSizeToolStripMenuItem.Name = "setCanvasSizeToolStripMenuItem";
-            this.setCanvasSizeToolStripMenuItem.Size = new System.Drawing.Size(121, 24);
-            this.setCanvasSizeToolStripMenuItem.Text = "Set canvas size";
-            this.setCanvasSizeToolStripMenuItem.Click += new System.EventHandler(this.setCanvasSizeToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(948, 693);
             this.Controls.Add(this.btnUngroup);
             this.Controls.Add(this.btnGroup);

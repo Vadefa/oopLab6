@@ -20,4 +20,5 @@ namespace oopLab6
             Application.Run(new Form1());
         }
     }
+    public delegate void PopupDelegate(PopupCanvSetSize popup);
 }
