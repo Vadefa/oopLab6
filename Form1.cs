@@ -1453,7 +1453,6 @@ namespace oopLab6
                 canvasHeight = Properties.Settings.Default.canvasHeight;
 
                 ////loading objects:
-                FiguresFactory figuresArray = new FiguresFactory();
                 string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
                 try
                 {
