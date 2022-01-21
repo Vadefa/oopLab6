@@ -1324,14 +1324,14 @@ namespace oopLab6
                 int width = int.Parse(popup.mtbW.Text);
                 int height = int.Parse(popup.mtbH.Text);
 
-                if (width > 99 && width < 1000 && height > 99 && height < 1000)
+                if (width > 99 && width < 1000 && height > 99 && height < 1000) //if everything is as we want
                 {
                     canvasWidth = width;
                     canvasHeight = height;
                     popup.Close();
                     refreshCanvas();
                 }
-                else
+                else                                                            //if size does not satisfies
                 {
                     if (width < 99)
                         popup.mtbW.Text = "100";
