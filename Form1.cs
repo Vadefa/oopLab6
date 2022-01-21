@@ -61,7 +61,7 @@ namespace oopLab6
 
             //for save&load:
             public abstract void save(StreamWriter sw);
-            public abstract void load(StreamReader sr);
+            public abstract void load(StreamReader sr, IFactory factory);
         }
         public class Figure: AFigure
         {
@@ -271,7 +271,7 @@ namespace oopLab6
                     MessageBox.Show("We got the problem of saving objects");
                 }
             }
-            public override void load(StreamReader sr)
+            public override void load(StreamReader sr, IFactory factory)
             {
                 try
                 {
@@ -453,9 +453,9 @@ namespace oopLab6
                     MessageBox.Show("We got the problem of saving objects");
                 }
             }
-            public override void load(StreamReader sr)
+            public override void load(StreamReader sr, IFactory factory)
             {
-                base.load(sr);
+                base.load(sr, factory);
                 try
                 {
                     string[] cords3 = sr.ReadLine().Split();
@@ -468,120 +468,13 @@ namespace oopLab6
             }
         }
 
-        public class Storage
-        {
-            protected AFigure[] storage = new AFigure[0];
-            virtual public void add(AFigure obj)
-            {
-                AFigure[] temp = new AFigure[storage.Length];
-                for (int i = 0; i < temp.Length; i++)
-                    temp[i] = storage[i];
 
-                storage = new AFigure[temp.Length + 1];
-                for (int i = 0; i < temp.Length; i++)
-                    storage[i] = temp[i];
-
-                storage[storage.Length - 1] = obj;
-            }
-            virtual public void remove(AFigure obj)
-            {
-                int i = 0;
-                for (; i < storage.Length; i++)
-                    if (storage[i] == obj)
-                        break;
-
-                AFigure[] temp = new AFigure[storage.Length - 1];
-                int j = 0;
-                while (j != i)
-                {
-                    temp[j] = storage[j];
-                    j++;
-                }
-                j = j + 1;
-                for (; j < storage.Length; j++)
-                    temp[j - 1] = storage[j];
-
-                storage = new AFigure[temp.Length];
-                for (i = 0; i < temp.Length; i++)
-                    storage[i] = temp[i];
-            }
-        }
-        public class StorageService : Storage
-        {
-            public StorageService()
-            {
-            }
-            public override void add(AFigure obj)
-            {
-                base.add(obj);
-            }
-            public void fill(AFigure obj)
-            {
-                base.add(obj);
-            }
-            public void load(AFigure obj)
-            {
-                base.add(obj);
-            }
-            public void save(StreamWriter sw)
-            {
-                
-                sw.WriteLine(storage.Length.ToString());
-                foreach (AFigure f in storage)
-                    f.save(sw);
-            }
-            public override void remove(AFigure figure)
-            {
-                base.remove(figure);
-            }
-            public void clear()
-            {
-                storage = new AFigure[0];
-            }
-            public void paint(Graphics grObj)
-            {
-                foreach (AFigure f in storage)
-                    f.paint(grObj);
-            }
-
-            public AFigure check_objs_underM(Point mouseP)
-            {
-                bool is_underM = false;
-                int i = storage.Length - 1;
-                while (is_underM == false && i >= 0)
-                {
-                    if (storage[i].is_undermouse(mouseP))
-                        is_underM = true;
-                    else
-                        i--;
-                }
-
-                if (is_underM)
-                {
-                    return storage[i];
-                }
-                else
-                    return null;
-            }
-            public int getCount()   // an emergency situation was occured - we need to send the storage to model
-            {
-                return storage.Length;
-            }
-            public AFigure getFigure(int iter)
-            {
-                return storage[iter];
-            }
-        }
-
-        ////
-        ////objects are done
-        ////
-
-        public class Group: AFigure
+        //group - composite:
+        public class Group : AFigure
         {
             private int _maxcount;
             private int _count;
-            private AFigure []_figures;
+            private AFigure[] _figures;
             private string _name;
             private Point p1;       //left upper corner
             private Point p2;       //right lower corner
@@ -625,7 +518,7 @@ namespace oopLab6
                     }
                     _count = _count + 1;
                     _figures[_count - 1] = figure;
-                    
+
 
                     //setting new corners if the object is outside of the current group's "rectangle"
                     if (figure.getP1().X < p1.X || p1.X == -1)
@@ -700,7 +593,6 @@ namespace oopLab6
                     _figures[i] = null;
                 }
             }
-
             public int getCount()
             {
                 return _count;
@@ -723,7 +615,8 @@ namespace oopLab6
             {
                 this.maxPosY = maxPosY;
             }
-            public override void setThickness(int thickness) {
+            public override void setThickness(int thickness)
+            {
                 this.thickness = thickness;
 
                 foreach (AFigure figure in _figures)
@@ -780,7 +673,8 @@ namespace oopLab6
             }
 
             //operations:
-            public override void focus() {
+            public override void focus()
+            {
                 foreach (AFigure figure in _figures)
                     figure.focus();
             }
@@ -832,7 +726,7 @@ namespace oopLab6
             public override bool is_movable(Point shift)
             {
                 bool all_areMovable = true;
-                
+
                 Point tp1 = new Point();
                 Point tp2 = new Point();
 
@@ -873,7 +767,8 @@ namespace oopLab6
                     MessageBox.Show("We got the problem of saving a group of objects");
                 }
             }
-            public override void load(StreamReader sr) {
+            public override void load(StreamReader sr, IFactory factory)
+            {
                 try
                 {
                     string[] code;
@@ -886,18 +781,19 @@ namespace oopLab6
                     p1 = new Point(-1, -1);
                     p2 = new Point(-1, -1);
 
-                    MyFiguresArray tempArr = new MyFiguresArray();
+                    //FiguresFactory tempArr = new FiguresFactory();
+
                     for (int i = 0; i < _maxcount; i++)
                     {
                         code = sr.ReadLine().Split();
-                        AFigure f = tempArr.createFigure(code);
+                        AFigure f = factory.createFigure(code);
                         if (f != null)
                         {
-                            f.load(sr);
+                            f.load(sr, factory);
                             addFigure(f);
                         }
                     }
-                    
+
                 }
                 catch
                 {
@@ -906,29 +802,118 @@ namespace oopLab6
             }
         }
 
-        public class FiguresArray
+        //storage:
+        public class Storage
         {
-            private int _count;
-            private AFigure []_figures;
-            public virtual AFigure createFigure(string[] code) { return null; }
-            
-            public void loadFigures(StreamReader sr, StorageService storage)
+            protected AFigure[] storage = new AFigure[0];
+            virtual public void add(AFigure obj)
+            {
+                AFigure[] temp = new AFigure[storage.Length];
+                for (int i = 0; i < temp.Length; i++)
+                    temp[i] = storage[i];
+
+                storage = new AFigure[temp.Length + 1];
+                for (int i = 0; i < temp.Length; i++)
+                    storage[i] = temp[i];
+
+                storage[storage.Length - 1] = obj;
+            }
+            virtual public void remove(AFigure obj)
+            {
+                int i = 0;
+                for (; i < storage.Length; i++)
+                    if (storage[i] == obj)
+                        break;
+
+                AFigure[] temp = new AFigure[storage.Length - 1];
+                int j = 0;
+                while (j != i)
+                {
+                    temp[j] = storage[j];
+                    j++;
+                }
+                j = j + 1;
+                for (; j < storage.Length; j++)
+                    temp[j - 1] = storage[j];
+
+                storage = new AFigure[temp.Length];
+                for (i = 0; i < temp.Length; i++)
+                    storage[i] = temp[i];
+            }
+        }
+        public class StorageService : Storage
+        {
+            public StorageService()
+            {
+            }
+            public override void add(AFigure obj)
+            {
+                base.add(obj);
+            }
+            public void fill(AFigure obj)
+            {
+                base.add(obj);
+            }
+            public override void remove(AFigure figure)
+            {
+                base.remove(figure);
+            }
+            public void clear()
+            {
+                storage = new AFigure[0];
+            }
+            public void paint(Graphics grObj)
+            {
+                foreach (AFigure f in storage)
+                    f.paint(grObj);
+            }
+
+            public AFigure check_objs_underM(Point mouseP)
+            {
+                bool is_underM = false;
+                int i = storage.Length - 1;
+                while (is_underM == false && i >= 0)
+                {
+                    if (storage[i].is_undermouse(mouseP))
+                        is_underM = true;
+                    else
+                        i--;
+                }
+
+                if (is_underM)
+                {
+                    return storage[i];
+                }
+                else
+                    return null;
+            }
+            public int getCount()   // an emergency situation was occured - we need to send the storage to model
+            {
+                return storage.Length;
+            }
+            public AFigure getFigure(int iter)
+            {
+                return storage[iter];
+            }
+
+            //save&load:
+            public void load(StreamReader sr, IFactory fabric)
             {
                 string[] code;
                 try
                 {
-                    _count = int.Parse(sr.ReadLine());
-                    _figures = new AFigure[_count];
+                    int count = int.Parse(sr.ReadLine());
 
-                    for (int i = 0; i < _count; i++)
+                    AFigure tempfigure;                 //the figure to load
+                    for (int i = 0; i < count; i++)
                     {
                         code = sr.ReadLine().Split();
-                        _figures[i] = createFigure(code);
+                        tempfigure = fabric.createFigure(code);
 
-                        if (_figures[i] != null)        //if null -> empty string in the txt or something wrong
+                        if (tempfigure != null)        //if null -> empty string in the txt or something wrong
                         {
-                            _figures[i].load(sr);
-                            storage.load(_figures[i]);
+                            tempfigure.load(sr, fabric);
+                            add(tempfigure);
                         }
                     }
                 }
@@ -937,10 +922,26 @@ namespace oopLab6
                     MessageBox.Show("Can't get objects from the file");
                 }
             }
+            public void save(StreamWriter sw)
+            {
+
+                sw.WriteLine(storage.Length.ToString());
+                foreach (AFigure f in storage)
+                    f.save(sw);
+            }
         }
-        public class MyFiguresArray: FiguresArray
+
+
+
+
+        //factory:
+        public interface IFactory
         {
-            public override AFigure createFigure(string[] code)
+            public abstract AFigure createFigure(string[] code);
+        }
+        public class FiguresFactory: IFactory
+        {
+            public virtual AFigure createFigure(string[] code)
             {
                 AFigure figure = null;
                 switch(code[0])
@@ -965,6 +966,8 @@ namespace oopLab6
             }
         }
 
+
+        //model:
         public class Model
         {
             //argegating data:
@@ -1450,13 +1453,13 @@ namespace oopLab6
                 canvasHeight = Properties.Settings.Default.canvasHeight;
 
                 ////loading objects:
-                MyFiguresArray figuresArray = new MyFiguresArray();
+                FiguresFactory figuresArray = new FiguresFactory();
                 string path = "C:\\Users\\пк\\source\\repos\\oopLab6\\storage.txt";
                 try
                 {
                     using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
                     {
-                        figuresArray.loadFigures(sr, storage);
+                        storage.load(sr, new FiguresFactory());
                     }
                 }
                 catch
@@ -1562,7 +1565,8 @@ namespace oopLab6
 
         }
 
-        //model is done
+
+        //visual components control:
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
