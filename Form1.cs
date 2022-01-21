@@ -202,10 +202,15 @@ namespace oopLab6
             }
             public override void setThickness(int thickness)
             {
-                // we can move out of borders if we'll change thickness so we should check it
-                if (is_inBorders(new Point(p1.X - this.thickness + thickness, p1.Y - this.thickness + thickness))
-                    && is_inBorders(new Point(p2.X - this.thickness + thickness, p2.Y - this.thickness + thickness)))
-                    this.thickness = thickness;
+                int temp = this.thickness;
+                this.thickness = thickness;
+
+                move(new Point(thickness - temp, thickness - temp));
+                if ((is_inBorders(p1) && is_inBorders(p2)) == false)
+                {
+                    move(new Point(temp - thickness, temp - thickness));
+                    this.thickness = temp;
+                }
             }
             public override void setColor(Color color)
             {
