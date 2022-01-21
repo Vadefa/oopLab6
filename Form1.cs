@@ -1447,7 +1447,7 @@ namespace oopLab6
                 thickness = Properties.Settings.Default.thickness;
                 color = Color.Black;
 
-                btnName = "";
+                btnName = "btnArw";
 
                 canvasWidth = Properties.Settings.Default.canvasWidth;
                 canvasHeight = Properties.Settings.Default.canvasHeight;
